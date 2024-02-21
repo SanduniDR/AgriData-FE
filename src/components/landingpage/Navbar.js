@@ -1,37 +1,65 @@
-import React, { useState } from 'react'
-import Button from 'react-bootstrap/Button'
+import React from 'react'
 import Container from 'react-bootstrap/Container'
-import Form from 'react-bootstrap/Form'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
-import Logo from 'src/assets/landing_page/logo.png'
+import Image from 'react-bootstrap/Image'
+import Logo from 'src/assets/landing_page/logo-no-background.png'
 
-const NavigationBar = () => {
+function NavigationBar() {
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container fluid>
-        <Navbar.Brand href="#">
-          <img src={Logo} alt="" width="150" height="50" className="d-inline-block align-top" />
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
-            <Nav.Link href="#action1">Home</Nav.Link>
-            <Nav.Link href="#action2">Link</Nav.Link>
-            <NavDropdown title="Link" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-            </NavDropdown>
-            <Nav.Link href="#" disabled>
-              Link
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+    <div className="NavigationBar">
+      <Navbar expand="lg" className="bg-body-tertiary">
+        <Container>
+          <Navbar.Brand href="#home" style={{ marginRight: '100px' }}>
+            {' '}
+            <Image src={Logo} rounded width={200} height={100} />
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link style={{ fontSize: '30px' }} href="#home">
+                Home
+              </Nav.Link>
+              &nbsp;&nbsp;
+              <Nav.Link style={{ fontSize: '30px' }} href="#About">
+                About
+              </Nav.Link>
+              &nbsp;&nbsp;
+              <Nav.Link style={{ fontSize: '30px' }} href="#Advertising">
+                Contact
+              </Nav.Link>
+              &nbsp;&nbsp;
+              <NavDropdown title="Services" id="basic-nav-dropdown" style={{ fontSize: '30px' }}>
+                <NavDropdown.Item href="#action/3.1">Agricultural Data Collection</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.2">Free Advertising Support</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.4">
+                  Data Analysis & Report Generation
+                </NavDropdown.Item>
+              </NavDropdown>
+              &nbsp;&nbsp;
+              <NavDropdown title="Reports" id="basic-nav-dropdown" style={{ fontSize: '30px' }}>
+                <NavDropdown.Item href="#action/3.1">Latest Reports 2024</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.2">Generate Own Reports</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="#action/3.4">Request Data</NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+            <Nav className="justify-content-end">
+              <form className="form-inline justify-content-end">
+                <button
+                  className="btn btn-outline-success"
+                  style={{ fontSize: '30px' }}
+                  type="button"
+                >
+                  Sign In
+                </button>
+              </form>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </div>
   )
 }
 

@@ -2,12 +2,16 @@ import React from 'react'
 import BannerBackground from 'src/assets/landing_page/home-banner-background.png'
 import BannerImage from 'src/assets/landing_page/home-banner-image.png'
 import NavigationBar from './Navbar'
+import UncontrolledSlider from './slider'
 
 const Home = () => {
   return (
-    <div className="home-container" id="home">
+    <>
       <NavigationBar />
       <div className="home-banner-container">
+        <UncontrolledSlider />
+      </div>
+      {/* <div className="home-banner-container">
         <div className="home-bannerImage-container">
           <img src={BannerBackground} alt="" />
         </div>
@@ -22,9 +26,8 @@ const Home = () => {
         </div>
         <div className="home-image-section">
           <img src={BannerImage} alt="" />
-        </div>
-      </div>
-    </div>
+        </div> */}
+    </>
   )
 }
 
