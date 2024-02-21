@@ -1,0 +1,14 @@
+/* ProductListPage.css */
+.product-list-container {
+  margin: 20px;
+  border: 2px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.title {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
