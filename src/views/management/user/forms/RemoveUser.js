@@ -85,8 +85,13 @@ const RemoveUserForm = () => {
         }
       })
       .catch(function (error) {
-        console.error(error)
-        alert('An error occurred.')
+        if (error.response.status === 404) {
+          alert('User not found, please check the user ID and check again')
+        } else if (error.response.status === 400) {
+          alert('Failed. This user may have some dependencies.')
+        } else {
+          alert('Something went wrong!. Please contact DB Administrator and See logs')
+        }
       })
   }
 
@@ -123,7 +128,7 @@ const RemoveUserForm = () => {
       })
       .then(function (response) {
         const user = response.data
-        if (user) {
+        if (user && Object.keys(user).length !== 0) {
           setIsUserFound(true)
           setFormData((prevFormData) => ({
             ...prevFormData,
@@ -157,11 +162,6 @@ const RemoveUserForm = () => {
           <CCol md={9} lg={7} xl={6}>
             <CCard className="mx-4">
               <CCardBody className="p-4">
-                {/* {isFormEmpty && (
-                  <div className="alert alert-danger" role="alert">
-                    Please fill in all the fields.
-                  </div>
-                )} */}
                 <CForm>
                   <h1>Remove a User</h1>
                   <p className="text-medium-emphasis">Add user details</p>

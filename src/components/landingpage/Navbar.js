@@ -1,16 +1,60 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useContext, useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import Image from 'react-bootstrap/Image'
 import Logo from 'src/assets/landing_page/logo-no-background.png'
+import 'src/App.css'
+import { UserContext } from 'src'
+import LoginModal from 'src/views/popupBoxes/LoginModal'
+import PropTypes from 'prop-types'
 
-function NavigationBar() {
+function NavigationBar({ handleNavClick }) {
+  const { isValidUser, setIsValidUser } = useContext(UserContext)
+  const [username, setUsername] = useState('')
+  const [role, setRole] = useState(0)
+
+  useEffect(() => {
+    if (!isValidUser) {
+      console.log(isValidUser)
+      localStorage.clear()
+    }
+  }, [isValidUser])
+
+  const [show, setShow] = useState(false)
+
+  const handleSignIn = () => {
+    console.log('Sign In')
+    setShow(true)
+    handleNavClick('Home')
+  }
+
+  const handleSignOut = () => {
+    setIsValidUser(false)
+    localStorage.clear()
+    setRole(0)
+    handleNavClick('Home')
+  }
+
+  useEffect(() => {
+    if (isValidUser) {
+      const user = JSON.parse(localStorage.getItem('user'))
+      if (user && user.first_name) {
+        setUsername(user.first_name)
+        setRole(user.role)
+        console.log(user)
+      }
+    } else {
+      handleSignOut()
+    }
+  }, [isValidUser])
+
   return (
     <div className="NavigationBar">
       <Navbar expand="lg" className="bg-body-tertiary">
-        <Container>
+        <Container className="NavBarContainer">
           <Navbar.Brand href="#home" style={{ marginRight: '100px' }}>
             {' '}
             <Image src={Logo} rounded width={200} height={100} />
@@ -18,49 +62,90 @@ function NavigationBar() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link style={{ fontSize: '30px' }} href="#home">
+              <Nav.Link style={{ fontSize: '30px' }} onClick={() => handleNavClick('Home')}>
                 Home
               </Nav.Link>
               &nbsp;&nbsp;
-              <Nav.Link style={{ fontSize: '30px' }} href="#About">
-                About
-              </Nav.Link>
-              &nbsp;&nbsp;
-              <Nav.Link style={{ fontSize: '30px' }} href="#Advertising">
-                Contact
-              </Nav.Link>
-              &nbsp;&nbsp;
               <NavDropdown title="Services" id="basic-nav-dropdown" style={{ fontSize: '30px' }}>
-                <NavDropdown.Item href="#action/3.1">Agricultural Data Collection</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Free Advertising Support</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.4">
+                <NavDropdown.Item
+                  onClick={() =>
+                    role === 1
+                      ? handleNavClick('DataCollection')
+                      : role === 4
+                      ? handleNavClick('DataOfficerCollection')
+                      : null
+                  }
+                >
+                  {role === 1
+                    ? 'Agricultural Data Management -Admin'
+                    : role === 4
+                    ? 'Agricultural Data Management - Officer'
+                    : 'News & Updates'}
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={() => handleNavClick('Free Advertising Support')}>
+                  Free Advertising Support
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={() => handleNavClick('Data Analysis & Report Generation')}
+                >
                   Data Analysis & Report Generation
                 </NavDropdown.Item>
               </NavDropdown>
               &nbsp;&nbsp;
               <NavDropdown title="Reports" id="basic-nav-dropdown" style={{ fontSize: '30px' }}>
-                <NavDropdown.Item href="#action/3.1">Latest Reports 2024</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Generate Own Reports</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => handleNavClick('Latest_Reports')}>
+                  {role === 1
+                    ? 'Administrative Reports'
+                    : role === 4
+                    ? 'Officer Reports'
+                    : 'Latest Reports 2024 (H1)'}
+                </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Request Data</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => handleNavClick('Request Data')}>
+                  Request Data
+                </NavDropdown.Item>
               </NavDropdown>
+              &nbsp;&nbsp;
+              <Nav.Link style={{ fontSize: '30px' }} onClick={() => handleNavClick('About')}>
+                About Us
+              </Nav.Link>
+              <Nav.Link style={{ fontSize: '30px' }} onClick={() => handleNavClick('Contact')}>
+                Contact
+              </Nav.Link>
             </Nav>
             <Nav className="justify-content-end">
               <form className="form-inline justify-content-end">
-                <button
-                  className="btn btn-outline-success"
-                  style={{ fontSize: '30px' }}
-                  type="button"
-                >
-                  Sign In
-                </button>
+                {isValidUser ? (
+                  <NavDropdown
+                    title={username}
+                    id="basic-nav-dropdown"
+                    style={{ fontSize: '30px' }}
+                  >
+                    <NavDropdown.Item onClick={handleSignOut}>Settings</NavDropdown.Item>
+                    <NavDropdown.Item onClick={handleSignOut}>Sign out</NavDropdown.Item>
+                  </NavDropdown>
+                ) : (
+                  <button
+                    className="btn btn-outline-success"
+                    style={{ fontSize: '30px' }}
+                    type="button"
+                    onClick={handleSignIn}
+                  >
+                    Sign In
+                  </button>
+                )}
               </form>
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <LoginModal show={show} handleClose={() => setShow(false)} />
     </div>
   )
+}
+
+NavigationBar.propTypes = {
+  handleNavClick: PropTypes.func.isRequired,
 }
 
 export default NavigationBar

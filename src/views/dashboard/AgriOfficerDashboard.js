@@ -6,7 +6,7 @@ import { CCard, CCardBody } from '@coreui/react'
 
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import DistributionChart from '../reports/DistributionChart'
-import UserBYRole from '../reports/UserBYRole'
+import UserBYRole from '../reports/common/UserBYRole'
 
 const AgriOfficerDashboard = () => {
   const navigate = useNavigate()

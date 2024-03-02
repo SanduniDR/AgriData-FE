@@ -506,7 +506,7 @@ const Pesticides = () => {
                               <CButton
                                 className="me-2"
                                 color="danger"
-                                onClick={() => handleDelete(aid.aid_id)}
+                                onClick={() => handleDelete(aid.pesticides_id)}
                               >
                                 <CIcon icon={cilTrash} />
                               </CButton>

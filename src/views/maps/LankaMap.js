@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import statesData from '../../defaultData/LankaMapData/District_geo.json' // replace with the path to your statesData file
 import PropTypes from 'prop-types'
+import { API_BASE_URL } from 'src/Config'
 
 let geojson
 
@@ -14,31 +15,33 @@ function StatesDataLayer() {
   const [data, setData] = useState(null)
 
   useEffect(() => {
-    // Make a POST request
     axios
-      .post('YOUR_URL', {
-        // Your request body
+      .post(`${API_BASE_URL}/report/cultivation-info/cropByDistrict`, {
+        agri_year: 2023,
+        quarter: 'Q1',
       })
       .then((response) => {
-        // If the status code is 200, set the data to the response data
         if (response.status === 200) {
           const apiData = response.data
+          const apiDataByDistrict = apiData.reduce((acc, curr) => {
+            acc[curr.district] = curr
+            return acc
+          }, {})
+
           statesData.features.forEach((feature) => {
             const properties = feature.properties
-            const apiDataForFeature = apiData[properties.DISTRICT] // replace DISTRICT with the property that matches the keys in apiData
+            const apiDataForFeature = apiDataByDistrict[properties.ADM2_EN] // replace ADM1_EN with the property that matches the keys in apiData
             if (apiDataForFeature) {
-              // Merge the API data with the existing properties
               feature.properties = { ...properties, ...apiDataForFeature }
             }
+            console.log(feature.properties)
           })
           setData(statesData)
         } else {
-          // If the status code is not 200, set the data to statesData
           setData(statesData)
         }
       })
       .catch((error) => {
-        // If the request is not successful, set the data to statesData
         setData(statesData)
       })
   }, [])
@@ -55,9 +58,9 @@ function StatesDataLayer() {
       }
 
       info.current.update = function (props) {
-        // this._div.innerHTML =
-        //   '<h4>District Overall Cultivation Info 2024/h1</h4>' +
-        //   (props ? '<b>' + props.ADM2_EN : 'Hover over a district')
+        this._div.innerHTML =
+          '<h4 class="mapBanner" style="z-index: 500;"> District Overall Cultivation Info 2024/h1 </h4>' +
+          (props ? '<b>Paddy(Acrs):' + props.total_cultivated : 'Hover over a district')
       }
 
       info.current.addTo(map)
@@ -92,12 +95,12 @@ function StatesDataLayer() {
       geojson = L.geoJSON(statesData, {
         style: function (feature) {
           return {
-            fillColor: getColor(feature.properties.Shape_Leng),
+            fillColor: getColor(feature.properties.total_cultivated),
             weight: 2,
             opacity: 1,
             color: 'white',
             dashArray: '3',
-            fillOpacity: 0.1,
+            fillOpacity: 0.9,
           }
         },
         onEachFeature: onEachFeature,
@@ -145,19 +148,19 @@ const LankaMap = () => {
 }
 
 function getColor(d) {
-  if (d > 10) {
+  if (d > 1000) {
     return '#00441b' // dark green
-  } else if (d > 5) {
+  } else if (d > 500) {
     return '#006d2c'
-  } else if (d > 2) {
+  } else if (d > 200) {
     return '#238b45'
-  } else if (d > 1) {
+  } else if (d > 100) {
     return '#41ae76'
-  } else if (d > 0.5) {
+  } else if (d > 50) {
     return '#66c2a4'
-  } else if (d > 0.2) {
+  } else if (d > 30) {
     return '#99d8c9'
-  } else if (d > 0.1) {
+  } else if (d > 10) {
     return '#ccece6'
   } else {
     return '#edf8fb' // light green
@@ -166,6 +169,7 @@ function getColor(d) {
 
 StatesDataLayer.propTypes = {
   ADM2_EN: PropTypes.string.isRequired,
+  total_cultivated: PropTypes.number.isRequired,
 }
 
 export default LankaMap

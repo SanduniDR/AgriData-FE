@@ -1,13 +1,29 @@
 import React from 'react'
-
+import { Image } from 'react-bootstrap'
+import contact from 'src/assets/landing_page/contactUs/contact.png'
 const Contact = () => {
   return (
-    <div className="contact-page-wrapper" id="contact">
-      <h1 className="primary-heading">Have Question In Mind?</h1>
-      <h1 className="primary-heading">Let Us Help You</h1>
-      <div className="contact-form-container">
-        <input type="text" placeholder="yourmail@gmail.com" />
-        <button className="secondary-button">Submit</button>
+    <div className="main-content">
+      <div>
+        <Image src={contact} fluid />
+      </div>
+      <div className="Report-home">
+        <div className="text-container-map">
+          <p
+            style={{
+              position: 'inherit',
+              fontSize: '2em',
+              fontFamily: 'Lora, serif',
+              marginTop: '20px',
+              padding: '20px',
+            }}
+          >
+            Contact Details:
+            <br />
+            Email:sandunidlishika@gmail.com
+            <br />
+          </p>
+        </div>
       </div>
     </div>
   )

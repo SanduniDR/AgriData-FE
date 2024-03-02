@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from 'src'
-import UserBYRole from '../reports/UserBYRole'
+import UserBYRole from '../reports/common/UserBYRole'
 
 import { CCard, CCardBody, CCol, CRow } from '@coreui/react'
 

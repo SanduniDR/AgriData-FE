@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { CChart } from '@coreui/react-chartjs'
+import { CContainer } from '@coreui/react'
 
 const getRandomColor = () => {
   const letters = '0123456789ABCDEF'
@@ -26,19 +27,21 @@ const PieChart = ({ data }) => {
   }
 
   return (
-    <CChart
-      type="doughnut"
-      data={chartData}
-      options={{
-        plugins: {
-          legend: {
-            labels: {
-              color: '#000000',
+    <CContainer fluid>
+      <CChart
+        type="pie"
+        data={chartData}
+        options={{
+          plugins: {
+            legend: {
+              labels: {
+                color: '#000000',
+              },
             },
           },
-        },
-      }}
-    />
+        }}
+      />
+    </CContainer>
   )
 }
 

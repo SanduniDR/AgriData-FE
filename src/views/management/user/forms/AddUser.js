@@ -1,5 +1,4 @@
 import { React, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import {
   CButton,
@@ -15,25 +14,14 @@ import {
   CFormSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import {
-  cilLockLocked,
-  cilUser,
-  cilCloudUpload,
-  cilCalendar,
-  cilCreditCard,
-  cilTag,
-} from '@coreui/icons'
+import { cilLockLocked, cilUser, cilCalendar, cilCreditCard, cilTag } from '@coreui/icons'
 
 const AddUserForm = () => {
-  // To-do Call and get user roles list from backend and set the roles options
-
-  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     first_name: '',
     middle_name: '',
     last_name: '',
     dob: '',
-    profileImage: null,
     email: '',
     nic: '',
     role: '',
@@ -42,6 +30,7 @@ const AddUserForm = () => {
   })
   const [isFormEmpty, setIsFormEmpty] = useState(false)
   const [isPasswordMatch, setIsPasswordMatch] = useState(false)
+  const [selectedRole, setRoleSelected] = useState('')
 
   useEffect(() => {
     if (formData.password === formData.repeatPassword) {
@@ -49,6 +38,8 @@ const AddUserForm = () => {
     } else {
       setIsPasswordMatch(false)
     }
+
+    setRoleSelected(formData.role)
   }, [formData])
 
   const handleInputChange = (event) => {
@@ -60,22 +51,37 @@ const AddUserForm = () => {
     console.log(formData)
   }
 
-  function handleFileChange(event) {
-    const file = event.target.files[0]
-    const reader = new FileReader()
-
-    reader.onload = function (event) {
-      const arrayBuffer = event.target.result
-      const uint8Array = new Uint8Array(arrayBuffer)
-      const byteArray = Array.from(uint8Array)
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        profileImage: byteArray,
-      }))
-    }
-
-    reader.readAsArrayBuffer(file)
+  const CleanForm = () => {
+    setFormData({
+      first_name: '',
+      middle_name: '',
+      last_name: '',
+      dob: '',
+      email: '',
+      nic: '',
+      role: '',
+      password: '',
+      repeatPassword: '',
+    })
+    setIsFormEmpty(false)
   }
+
+  // function handleFileChange(event) {
+  //   const file = event.target.files[0]
+  //   const reader = new FileReader()
+
+  //   reader.onload = function (event) {
+  //     const arrayBuffer = event.target.result
+  //     const uint8Array = new Uint8Array(arrayBuffer)
+  //     const byteArray = Array.from(uint8Array)
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       profileImage: byteArray,
+  //     }))
+  //   }
+
+  //   reader.readAsArrayBuffer(file)
+  // }
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -86,11 +92,29 @@ const AddUserForm = () => {
       return
     }
 
+    if (!window.confirm('Are you sure you want to register this user?')) {
+      return
+    }
+
+    const token = localStorage.getItem('token')
+
     axios
-      .post('http://127.0.0.1:5000/user/register', formData)
+      .post('http://127.0.0.1:5000/user/register', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(function (response) {
         console.log(response)
-        alert('User Registered Successfully!')
+        // alert('User Registered Successfully!')
+        if (
+          window.confirm(
+            'User Registered Successfully! Do you want to inform this to user by email?',
+          )
+        ) {
+          // send mail
+        }
+        CleanForm()
       })
       .catch(function (error) {
         console.error(error)
@@ -181,15 +205,22 @@ const AddUserForm = () => {
                       onChange={handleInputChange}
                       name="role"
                       value={formData.role}
+                      title='If the role is selected as "Officer",
+                       Please add more details in Officer Management to assign Officer to their agricultural officers and areas.'
                     >
                       <option value="">Select Role</option>
                       <option value="1">Admin</option>
-                      <option value="2">User</option>
-                      <option value="3">RegionalAdmin</option>
                       <option value="4">AgricultureOfficer</option>
                       <option value="5">Farmer</option>
-                      <option value="6">Researcher</option>
                     </CFormSelect>
+                    {selectedRole === '4' ? (
+                      <div className="alert alert-warning" role="alert" style={{ margin: '5px' }}>
+                        Please add more details for the Agriculture Officer in Officer Management to
+                        assign the officer to their agricultural officers and areas.
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                   </CInputGroup>
                   <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
                     <CInputGroupText>
@@ -202,19 +233,6 @@ const AddUserForm = () => {
                       onChange={handleInputChange}
                       name="dob"
                       value={formData.dob}
-                    />
-                  </CInputGroup>
-                  <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
-                    <CInputGroupText>
-                      <CIcon icon={cilCloudUpload} />
-                    </CInputGroupText>
-                    <CFormInput
-                      type="file"
-                      placeholder="Upload Profile Image"
-                      accept=".png, .jpg, .bmp"
-                      onChange={handleFileChange}
-                      name="profileImage"
-                      value={formData.profileImage ? formData.profileImage.name : ''}
                     />
                   </CInputGroup>
                   <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>

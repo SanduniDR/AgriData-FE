@@ -25,6 +25,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilUser, cilCalendar, cilCreditCard, cilTag, cilTrash, cilPencil } from '@coreui/icons'
+import { API_BASE_URL } from 'src/Config'
 
 const SearchUserForm = () => {
   const navigate = useNavigate()
@@ -56,7 +57,7 @@ const SearchUserForm = () => {
     // Call the backend API to fetch users for the new page
     const token = localStorage.getItem('token')
     axios
-      .get('http://127.0.0.1:5000/user/search', {
+      .get(`${API_BASE_URL}/user/search`, {
         params: {
           ...formData,
           page: newPage,
@@ -96,15 +97,16 @@ const SearchUserForm = () => {
       })
       .then(function (response) {
         alert('User deleted successfully.')
-        // Refresh the user list
         handleCleanForm()
       })
       .catch(function (error) {
         console.error(error)
         if (error.response.status === 404) {
           handleCleanForm()
+        } else if (error.response.status === 400) {
+          alert('Failed. This user may have some dependencies.')
         } else {
-          alert('An error occurred while deleting the user.')
+          alert('Something went wrong!. Please contact DB Administrator and See logs')
         }
       })
   }
@@ -156,6 +158,7 @@ const SearchUserForm = () => {
       nic: '',
     })
     setUsers([])
+    setCurrentPage(1)
   }
 
   return (
@@ -265,6 +268,7 @@ const SearchUserForm = () => {
                   <CTable>
                     <CTableHead>
                       <CTableRow>
+                        <CTableHeaderCell>User ID</CTableHeaderCell>
                         <CTableHeaderCell>First Name</CTableHeaderCell>
                         <CTableHeaderCell>Last Name</CTableHeaderCell>
                         <CTableHeaderCell>NIC</CTableHeaderCell>
@@ -278,6 +282,7 @@ const SearchUserForm = () => {
                           console.log(user),
                           (
                             <CTableRow key={user.user_id}>
+                              <CTableDataCell>{user.user_id}</CTableDataCell>
                               <CTableDataCell>{user.first_name}</CTableDataCell>
                               <CTableDataCell>{user.last_name}</CTableDataCell>
                               <CTableDataCell>{user.nic}</CTableDataCell>
@@ -289,9 +294,6 @@ const SearchUserForm = () => {
                                   onClick={() => handleDelete(user.user_id)}
                                 >
                                   <CIcon icon={cilTrash} />
-                                </CButton>
-                                <CButton color="info" onClick={() => handleUpdate(user.user_id)}>
-                                  <CIcon icon={cilPencil} />
                                 </CButton>
                               </CTableDataCell>
                             </CTableRow>

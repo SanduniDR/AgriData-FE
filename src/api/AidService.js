@@ -85,6 +85,49 @@ const searchAidInfo = async (formData, page, pageSize) => {
   }
 }
 
+const searchTotalAidInfo = async (formData, pageSize) => {
+  const token = localStorage.getItem('token')
+  let page = 1
+  let totalItems = 0
+  let allData = []
+
+  try {
+    while (true) {
+      const response = await axios.get(`${API_BASE_URL}/aid/search`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          aid_name: formData.aid_name,
+          year: formData.year,
+          aid_batch: formData.aid_batch,
+          aid_id: formData.aid_id,
+          page: page,
+          pageSize: pageSize,
+        },
+      })
+
+      totalItems += response.data.data.length
+      allData = allData.concat(response.data.data)
+
+      if (totalItems >= response.data.total_items) {
+        break
+      }
+
+      page++
+    }
+
+    if (totalItems === 0) {
+      alert('No records found')
+    }
+    console.log('allData', allData)
+    return allData
+  } catch (error) {
+    console.error('Failed to search Aid information:', error)
+    return
+  }
+}
+
 const deleteAid = async (aid_id) => {
   const token = localStorage.getItem('token')
   try {
@@ -497,6 +540,7 @@ export {
   updateAid,
   getAidByID,
   searchAidInfo,
+  searchTotalAidInfo,
   deleteAid,
   searchPesticidesAidInfo,
   addPesticidesAid,

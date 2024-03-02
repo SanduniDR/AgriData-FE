@@ -4,6 +4,7 @@ import AddUserForm from './forms/AddUser'
 import UpdateUserForm from './forms/UpdateUser'
 import RemoveUserForm from './forms/RemoveUser'
 import SearchUserForm from './forms/SearchUser'
+import Officer from '../officer/Officer'
 
 const UserOperations = () => {
   const [activeKey, setActiveKey] = useState(1)
@@ -60,6 +61,18 @@ const UserOperations = () => {
               Search Users
             </CNavLink>
           </CNavItem>
+          <CNavItem role="presentation">
+            <CNavLink
+              active={activeKey === 5}
+              component="button"
+              role="tab"
+              aria-controls="disabled-tab-pane"
+              aria-selected={activeKey === 5}
+              onClick={() => setActiveKey(5)}
+            >
+              Officer management
+            </CNavLink>
+          </CNavItem>
         </CNav>
       </CCardHeader>
       <CTabContent>
@@ -74,6 +87,9 @@ const UserOperations = () => {
         </CTabPane>
         <CTabPane role="tabpanel" aria-labelledby="disabled-tab-pane" visible={activeKey === 4}>
           <SearchUserForm />
+        </CTabPane>
+        <CTabPane role="tabpanel" aria-labelledby="disabled-tab-pane" visible={activeKey === 5}>
+          <Officer />
         </CTabPane>
       </CTabContent>
     </CCard>

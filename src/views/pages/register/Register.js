@@ -81,7 +81,6 @@ const Register = () => {
         console.log(response)
         alert('User Registered Successfully!')
         // redirect to login page
-        navigate('/login', { replace: true })
       })
       .catch(function (error) {
         console.error(error)
@@ -100,12 +99,12 @@ const Register = () => {
   }, [formData])
 
   return (
-    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div className="bg-light">
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={9} lg={7} xl={6}>
-            <CCard className="mx-4">
-              <CCardBody className="p-4">
+            <CCard>
+              <CCardBody>
                 {isFormEmpty && (
                   <div className="alert alert-danger" role="alert">
                     Please fill in all the fields.
