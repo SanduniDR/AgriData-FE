@@ -134,6 +134,108 @@ const getFarmersCountByDistrict = async () => {
   }
 }
 
+const searchCultivationInfoCountByYearly = async (year, crop_id) => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/report/search/cultivation-info`,
+      {
+        crop_id: crop_id,
+        year: year,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    return response
+  } catch (error) {
+    console.error('Failed to fetch farmer for districts:', error)
+    return
+  }
+}
+
+const searchCultivationInfoCountByMonthly = async (year, crop_id, month) => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/report/search/cultivation-info/monthly`,
+      {
+        crop_id: crop_id,
+        year: year,
+        month: month,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    return response
+  } catch (error) {
+    console.error('Failed to fetch farmer for districts:', error)
+    return
+  }
+}
+
+const searchCultivationInfoCountByDistrictMonthly = async (year, crop_id, month, district) => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/report/search/cultivation-info/monthly/district`,
+
+      {
+        crop_id: crop_id,
+        year: year,
+        month: month,
+        district: district,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    return response
+  } catch (error) {
+    console.error('Failed to fetch farmer for districts:', error)
+    return
+  }
+}
+
+const searchCultivationInfoCountByDistrictMonthlyOffice = async (
+  year,
+  crop_id,
+  month,
+  district,
+  office_id,
+) => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/report/search/cultivation-info/monthly/district/office`,
+
+      {
+        crop_id: crop_id,
+        year: year,
+        month: month,
+        district: district,
+        office_id: office_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    return response
+  } catch (error) {
+    console.error('Failed to fetch farmer for districts:', error)
+    return
+  }
+}
+
 export {
   getUserGroupByRole,
   getAidDistributionsTotal,
@@ -142,4 +244,8 @@ export {
   getFarmersCountByDistrict,
   getAllFarmersByDistrictsAndProvince,
   getAidDistributionsTotalByFund,
+  searchCultivationInfoCountByYearly,
+  searchCultivationInfoCountByMonthly,
+  searchCultivationInfoCountByDistrictMonthly,
+  searchCultivationInfoCountByDistrictMonthlyOffice,
 }

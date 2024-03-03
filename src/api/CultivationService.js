@@ -62,6 +62,7 @@ const getCultivationInfoById = async (formData) => {
 
 const searchCultivationInfo = async (formData, page, pageSize) => {
   const token = localStorage.getItem('token')
+  console.log('searchCultivationInfo:', formData)
   try {
     const response = await axios.get(`http://127.0.0.1:5000/cultivation/search`, {
       headers: {
@@ -74,6 +75,7 @@ const searchCultivationInfo = async (formData, page, pageSize) => {
         quarter: formData.quarter,
         page: page,
         pageSize: pageSize,
+        per_page: pageSize,
       },
     })
     // return response
@@ -88,4 +90,37 @@ const searchCultivationInfo = async (formData, page, pageSize) => {
   }
 }
 
-export { addCultivationInfo, updateCultivationInfo, getCultivationInfoById, searchCultivationInfo }
+const getTotalCultivationRecordsByYearByType = async (formData, pageSize) => {
+  let page = 1
+  let totalRecords = []
+  while (true) {
+    try {
+      const response = await searchCultivationInfo(formData, page, pageSize)
+      console.log('getTotalCultivationRecordsByYearByType:', response)
+      if (response && response.data && response.data) {
+        totalRecords = totalRecords.concat(response.data.data)
+
+        if (totalRecords.length >= response.data.total_items) {
+          break
+        }
+
+        page++
+      } else {
+        break
+      }
+    } catch (error) {
+      console.error('Failed to get records:', error)
+      break
+    }
+  }
+
+  return totalRecords
+}
+
+export {
+  addCultivationInfo,
+  updateCultivationInfo,
+  getCultivationInfoById,
+  searchCultivationInfo,
+  getTotalCultivationRecordsByYearByType,
+}

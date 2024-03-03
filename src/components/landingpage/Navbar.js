@@ -53,92 +53,86 @@ function NavigationBar({ handleNavClick }) {
 
   return (
     <div className="NavigationBar">
+      {/* <Container className="NavBarContainer"> */}
       <Navbar expand="lg" className="bg-body-tertiary">
-        <Container className="NavBarContainer">
-          <Navbar.Brand href="#home" style={{ marginRight: '100px' }}>
-            {' '}
-            <Image src={Logo} rounded width={200} height={100} />
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link style={{ fontSize: '30px' }} onClick={() => handleNavClick('Home')}>
-                Home
-              </Nav.Link>
-              &nbsp;&nbsp;
-              <NavDropdown title="Services" id="basic-nav-dropdown" style={{ fontSize: '30px' }}>
-                <NavDropdown.Item
-                  onClick={() =>
-                    role === 1
-                      ? handleNavClick('DataCollection')
-                      : role === 4
-                      ? handleNavClick('DataOfficerCollection')
-                      : null
-                  }
-                >
-                  {role === 1
-                    ? 'Agricultural Data Management -Admin'
+        <Navbar.Brand href="#home" style={{ marginRight: '100px' }}>
+          {' '}
+          <Image src={Logo} rounded width={100} height={50} />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link style={{ fontSize: '30px' }} onClick={() => handleNavClick('Home')}>
+              Home
+            </Nav.Link>
+            &nbsp;&nbsp;
+            <NavDropdown title="Services" id="basic-nav-dropdown" style={{ fontSize: '30px' }}>
+              <NavDropdown.Item
+                onClick={() =>
+                  role === 1
+                    ? handleNavClick('DataCollection')
                     : role === 4
-                    ? 'Agricultural Data Management - Officer'
-                    : 'News & Updates'}
-                </NavDropdown.Item>
-                <NavDropdown.Item onClick={() => handleNavClick('Free Advertising Support')}>
-                  Free Advertising Support
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  onClick={() => handleNavClick('Data Analysis & Report Generation')}
+                    ? handleNavClick('DataOfficerCollection')
+                    : null
+                }
+              >
+                {role === 1
+                  ? 'Agricultural Data Management -Admin'
+                  : role === 4
+                  ? 'Agricultural Data Management - Officer'
+                  : 'News & Updates'}
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleNavClick('Free Advertising Support')}>
+                Free Advertising Support
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleNavClick('Data Analysis & Report Generation')}>
+                Data Analysis & Report Generation
+              </NavDropdown.Item>
+            </NavDropdown>
+            &nbsp;&nbsp;
+            <NavDropdown title="Reports" id="basic-nav-dropdown" style={{ fontSize: '30px' }}>
+              <NavDropdown.Item onClick={() => handleNavClick('Latest_Reports')}>
+                {role === 1
+                  ? 'Administrative Reports'
+                  : role === 4
+                  ? 'Officer Reports'
+                  : 'Latest Reports 2024 (H1)'}
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={() => handleNavClick('Request Data')}>
+                Request Data
+              </NavDropdown.Item>
+            </NavDropdown>
+            &nbsp;&nbsp;
+            <Nav.Link style={{ fontSize: '30px' }} onClick={() => handleNavClick('About')}>
+              About Us
+            </Nav.Link>
+            <Nav.Link style={{ fontSize: '30px' }} onClick={() => handleNavClick('Contact')}>
+              Contact
+            </Nav.Link>
+          </Nav>
+          <Nav className="justify-content-end" style={{ marginRight: '5px' }}>
+            <form className="form-inline justify-content-end">
+              {isValidUser ? (
+                <NavDropdown title={username} id="basic-nav-dropdown" style={{ fontSize: '30px' }}>
+                  <NavDropdown.Item onClick={handleSignOut}>Settings</NavDropdown.Item>
+                  <NavDropdown.Item onClick={handleSignOut}>Sign out</NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                <button
+                  className="btn btn-outline-success"
+                  style={{ fontSize: '30px' }}
+                  type="button"
+                  onClick={handleSignIn}
                 >
-                  Data Analysis & Report Generation
-                </NavDropdown.Item>
-              </NavDropdown>
-              &nbsp;&nbsp;
-              <NavDropdown title="Reports" id="basic-nav-dropdown" style={{ fontSize: '30px' }}>
-                <NavDropdown.Item onClick={() => handleNavClick('Latest_Reports')}>
-                  {role === 1
-                    ? 'Administrative Reports'
-                    : role === 4
-                    ? 'Officer Reports'
-                    : 'Latest Reports 2024 (H1)'}
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={() => handleNavClick('Request Data')}>
-                  Request Data
-                </NavDropdown.Item>
-              </NavDropdown>
-              &nbsp;&nbsp;
-              <Nav.Link style={{ fontSize: '30px' }} onClick={() => handleNavClick('About')}>
-                About Us
-              </Nav.Link>
-              <Nav.Link style={{ fontSize: '30px' }} onClick={() => handleNavClick('Contact')}>
-                Contact
-              </Nav.Link>
-            </Nav>
-            <Nav className="justify-content-end">
-              <form className="form-inline justify-content-end">
-                {isValidUser ? (
-                  <NavDropdown
-                    title={username}
-                    id="basic-nav-dropdown"
-                    style={{ fontSize: '30px' }}
-                  >
-                    <NavDropdown.Item onClick={handleSignOut}>Settings</NavDropdown.Item>
-                    <NavDropdown.Item onClick={handleSignOut}>Sign out</NavDropdown.Item>
-                  </NavDropdown>
-                ) : (
-                  <button
-                    className="btn btn-outline-success"
-                    style={{ fontSize: '30px' }}
-                    type="button"
-                    onClick={handleSignIn}
-                  >
-                    Sign In
-                  </button>
-                )}
-              </form>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
+                  Sign In
+                </button>
+              )}
+            </form>
+          </Nav>
+        </Navbar.Collapse>
       </Navbar>
+      {/* </Container> */}
       <LoginModal show={show} handleClose={() => setShow(false)} />
     </div>
   )

@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import axios from 'axios'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
-import statesData from 'src/defaultData/LankaMapData/District_geo.json' // replace with the path to your statesData file
+import MapFeatureData from 'src/defaultData/LankaMapData/District_geo.json' // replace with the path to your MapFeatureData file
 import PropTypes from 'prop-types'
 import { API_BASE_URL } from 'src/Config'
 import { cilArrowCircleBottom } from '@coreui/icons'
@@ -19,49 +19,223 @@ import {
   CInputGroupText,
   CButton,
 } from '@coreui/react'
-
-import { getAllOfficesAndDistrictsByProvince } from 'src/api/MisReportService'
+import Spinner from 'react-bootstrap/Spinner'
+import { getTotalCultivationRecordsByYearByType } from 'src/api/CultivationService'
+import {
+  getAllOfficesAndDistrictsByProvince,
+  searchCultivationInfoCountByYearly,
+  searchCultivationInfoCountByMonthly,
+  searchCultivationInfoCountByDistrictMonthly,
+  searchCultivationInfoCountByDistrictMonthlyOffice,
+} from 'src/api/MisReportService'
 
 let geojson
 
-function StatesDataLayer({ formData }) {
-  const { year, month, crop, district, office } = formData
+function MapFeatureDataLayer({ formData }) {
+  const { year, month, crop_id, district, office_id } = formData
   const map = useMap()
   const info = useRef(null)
   const [data, setData] = useState(null)
 
-  useEffect(() => {
-    axios
-      .post(`${API_BASE_URL}/report/cultivation-info/cropByDistrict`, {
-        agri_year: year,
-        month: month,
-        crop: crop,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          const apiData = response.data
-          const apiDataByDistrict = apiData.reduce((acc, curr) => {
-            acc[curr.district] = curr
-            return acc
-          }, {})
+  // useEffect(() => {
+  //   axios
+  //     .post(`${API_BASE_URL}/report/cultivation-info/cropByDistrict`, {
+  //       agri_year: year,
+  //       month: month,
+  //       crop: crop,
+  //     })
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         const apiData = response.data
+  //         const apiDataByDistrict = apiData.reduce((acc, curr) => {
+  //           acc[curr.district] = curr
+  //           return acc
+  //         }, {})
 
-          statesData.features.forEach((feature) => {
-            const properties = feature.properties
-            const apiDataForFeature = apiDataByDistrict[properties.ADM2_EN] // replace ADM1_EN with the property that matches the keys in apiData
-            if (apiDataForFeature) {
-              feature.properties = { ...properties, ...apiDataForFeature }
-            }
-            console.log(feature.properties)
-          })
-          setData(statesData)
-        } else {
-          setData(statesData)
-        }
-      })
-      .catch((error) => {
-        setData(statesData)
-      })
-  }, [])
+  //         MapFeatureData.features.forEach((feature) => {
+  //           const properties = feature.properties
+  //           const apiDataForFeature = apiDataByDistrict[properties.ADM2_EN] // replace ADM1_EN with the property that matches the keys in apiData
+  //           if (apiDataForFeature) {
+  //             feature.properties = { ...properties, ...apiDataForFeature }
+  //           }
+  //           console.log(feature.properties)
+  //         })
+  //         setData(MapFeatureData)
+  //       } else {
+  //         setData(MapFeatureData)
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setData(MapFeatureData)
+  //     })
+  // }, [formData.year])
+
+  useEffect(() => {
+    const freshStatesData = JSON.parse(JSON.stringify(MapFeatureData))
+    if (
+      formData.year !== '' &&
+      formData.crop_id !== '' &&
+      formData.month === '' &&
+      formData.district === '' &&
+      formData.office_id === ''
+    ) {
+      searchCultivationInfoCountByYearly(formData.year, formData.crop_id)
+        .then((response) => {
+          if (response.status === 200) {
+            const apiData = response.data
+            const apiDataByDistrict = apiData.reduce((acc, curr) => {
+              acc[curr.district] = curr
+              return acc
+            }, {})
+
+            freshStatesData.features.forEach((feature) => {
+              console.log('Admin fresh feature', feature)
+              console.log('Admin feature', feature)
+              const properties = feature.properties
+              const apiDataForFeature = apiDataByDistrict[properties.ADM2_EN] // replace ADM1_EN with the property that matches the keys in apiData
+              if (apiDataForFeature) {
+                feature.properties = { ...apiDataForFeature, ...properties }
+              }
+              console.log("'Admin feature after'", feature.properties)
+            })
+            setData(freshStatesData)
+          } else {
+            setData(freshStatesData)
+          }
+        })
+        .catch((error) => {
+          setData(freshStatesData)
+        })
+    }
+  }, [formData.year, formData.crop_id])
+
+  useEffect(() => {
+    if (
+      formData.year !== '' &&
+      formData.crop_id !== '' &&
+      formData.month !== '' &&
+      formData.district === '' &&
+      formData.office_id === ''
+    ) {
+      const freshStatesData = JSON.parse(JSON.stringify(MapFeatureData))
+      searchCultivationInfoCountByMonthly(formData.year, formData.crop_id, formData.month)
+        .then((response) => {
+          if (response.status === 200) {
+            const apiData = response.data
+            const apiDataByDistrict = apiData.reduce((acc, curr) => {
+              acc[curr.district] = curr
+              return acc
+            }, {})
+
+            freshStatesData.features.forEach((feature) => {
+              console.log('Admin fresh Month feature', feature)
+              console.log('Admin Month feature', feature)
+              const properties = feature.properties
+              const apiDataForFeature = apiDataByDistrict[properties.ADM2_EN] // replace ADM1_EN with the property that matches the keys in apiData
+              if (apiDataForFeature) {
+                feature.properties = { ...apiDataForFeature, ...properties }
+              }
+              console.log("'Admin feature Month after'", feature.properties)
+            })
+            setData(freshStatesData)
+          } else {
+            setData(freshStatesData)
+          }
+        })
+        .catch((error) => {
+          setData(freshStatesData)
+        })
+    }
+  }, [formData.year, formData.crop_id, formData.month])
+
+  useEffect(() => {
+    if (
+      formData.year !== '' &&
+      formData.crop_id !== '' &&
+      formData.month !== '' &&
+      formData.district !== '' &&
+      formData.office_id === ''
+    ) {
+      const freshStatesData = JSON.parse(JSON.stringify(MapFeatureData))
+      searchCultivationInfoCountByDistrictMonthly(
+        formData.year,
+        formData.crop_id,
+        formData.month,
+        formData.district,
+      )
+        .then((response) => {
+          if (response.status === 200) {
+            const apiData = response.data
+            const apiDataByDistrict = apiData.reduce((acc, curr) => {
+              acc[curr.district] = curr
+              return acc
+            }, {})
+
+            freshStatesData.features.forEach((feature) => {
+              console.log('Admin fresh district feature', feature)
+              console.log('Admin district feature', feature)
+              const properties = feature.properties
+              const apiDataForFeature = apiDataByDistrict[properties.ADM2_EN] // replace ADM1_EN with the property that matches the keys in apiData
+              if (apiDataForFeature) {
+                feature.properties = { ...apiDataForFeature, ...properties }
+              }
+              console.log("'Admin feature district after'", feature.properties)
+            })
+            setData(freshStatesData)
+          } else {
+            setData(freshStatesData)
+          }
+        })
+        .catch((error) => {
+          setData(freshStatesData)
+        })
+    }
+  }, [formData.year, formData.crop_id, formData.month, formData.district])
+
+  useEffect(() => {
+    if (
+      formData.year !== '' &&
+      formData.crop_id !== '' &&
+      formData.month !== '' &&
+      formData.district !== '' &&
+      formData.office_id !== ''
+    ) {
+      const freshStatesData = JSON.parse(JSON.stringify(MapFeatureData))
+      searchCultivationInfoCountByDistrictMonthlyOffice(
+        formData.year,
+        formData.crop_id,
+        formData.month,
+        formData.district,
+        formData.office_id,
+      )
+        .then((response) => {
+          if (response.status === 200) {
+            const apiData = response.data
+            const apiDataByDistrict = apiData.reduce((acc, curr) => {
+              acc[curr.district] = curr
+              return acc
+            }, {})
+
+            freshStatesData.features.forEach((feature) => {
+              console.log('Admin fresh office feature', feature)
+              console.log('Admin office feature', feature)
+              const properties = feature.properties
+              const apiDataForFeature = apiDataByDistrict[properties.ADM2_EN] // replace ADM1_EN with the property that matches the keys in apiData
+              if (apiDataForFeature) {
+                feature.properties = { ...apiDataForFeature, ...properties }
+              }
+              console.log("'Admin feature office after'", feature.properties)
+            })
+            setData(freshStatesData)
+          } else {
+            setData(freshStatesData)
+          }
+        })
+        .catch((error) => {
+          setData(freshStatesData)
+        })
+    }
+  }, [formData.year, formData.crop_id, formData.month, formData.district, formData.office_id])
 
   useEffect(() => {
     if (!info.current) {
@@ -75,9 +249,10 @@ function StatesDataLayer({ formData }) {
       }
 
       info.current.update = function (props) {
+        console.log('props', props)
         this._div.innerHTML =
-          '<h4 class="mapBanner" style="z-index: 500;"> District Overall Cultivation Info 2024/h1 </h4>' +
-          (props ? '<b>Paddy(Acrs):' + props.total_cultivated : 'Hover over a district')
+          '<h4 class="mapBanner" style="z-index: 500;"> District Overall Cultivation Info 2024 </h4>' +
+          (props ? '<b>' + props.crop_name + ':' + props.total_harvested : 'Hover over a district')
       }
 
       info.current.addTo(map)
@@ -109,10 +284,10 @@ function StatesDataLayer({ formData }) {
     }
 
     if (data) {
-      geojson = L.geoJSON(statesData, {
+      geojson = L.geoJSON(data, {
         style: function (feature) {
           return {
-            fillColor: getColor(feature.properties.total_cultivated),
+            fillColor: getColor(feature.properties.total_harvested),
             weight: 2,
             opacity: 1,
             color: 'white',
@@ -132,6 +307,8 @@ const LankaMapByCropYieldAdmin = () => {
   const center = [7.8731, 80.7718] // coordinates for Sri Lanka
   const [offices, setOffices] = useState([])
   const [crops, setCrops] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [records, setRecords] = useState([])
   const monthNames = [
     'January',
     'February',
@@ -149,12 +326,14 @@ const LankaMapByCropYieldAdmin = () => {
   const [formData, setFormData] = useState({
     year: '',
     month: '',
-    crop: '',
+    crop_id: '',
+    type: '',
     district: '',
-    office: '',
+    office_id: '',
   })
   const [districts, setDistrict] = useState([])
   const [filteredOffices, setFilteredOffices] = useState([])
+  const [mapKey, setMapKey] = useState(0)
   const sri_lanka_provinces = [
     'Central',
     'Eastern',
@@ -166,6 +345,10 @@ const LankaMapByCropYieldAdmin = () => {
     'Uva Province',
     'Sabaragamuwa',
   ]
+
+  useEffect(() => {
+    setMapKey((prevKey) => prevKey + 1)
+  }, [formData])
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -186,6 +369,22 @@ const LankaMapByCropYieldAdmin = () => {
   }, [])
 
   const handleTypeSelect = (event) => {
+    const { name, value } = event.target
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }))
+  }
+
+  const handleYearSelect = async (event) => {
+    const { name, value } = event.target
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }))
+  }
+
+  const handleMonthSelect = async (event) => {
     const { name, value } = event.target
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -222,147 +421,163 @@ const LankaMapByCropYieldAdmin = () => {
   }
 
   return (
-    <>
-      <CContainer>
-        <CCard>
-          <CCardBody>
-            <CRow>
-              <CCol style={{ margin: '30px' }}>
-                <h4>Crop Yield Report</h4>
-                <div style={{ height: 'auto', marginTop: '40px' }}>
-                  <CInputGroup className={`mb-3`}>
-                    <CFormSelect
-                      custom
-                      name="type"
-                      value={formData.type}
-                      onChange={handleTypeSelect}
-                    >
-                      <option value="">Crop Type</option>
-                      {crops.map((crop, index) => (
-                        <option key={index} value={crop.crop_id}>
-                          {crop.crop_name}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                  </CInputGroup>
-                  <CInputGroup className={`mb-3`}>
-                    <CFormSelect
-                      custom
-                      name="year"
-                      value={formData.year}
-                      onChange={handleTypeSelect}
-                    >
-                      <option value="">Select Year</option>
-                      <option value="2020">2020</option>
-                      <option value="2021">2021</option>
-                      <option value="2022">2022</option>
-                      <option value="2023">2023</option>
-                    </CFormSelect>
-                  </CInputGroup>
-                  <CInputGroup className={`mb-3`}>
-                    <CInputGroupText>Select Month</CInputGroupText>
-                    <CFormSelect name="month" value={formData.month} onChange={handleTypeSelect}>
-                      <option value="">Select Month</option>
-                      {monthNames.map((month, index) => (
-                        <option key={index} value={index + 1}>
-                          {month}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                    <CInputGroupText>
-                      <CButton color="secondary">
-                        <CIcon icon={cilArrowCircleBottom} />
-                      </CButton>
-                    </CInputGroupText>
-                  </CInputGroup>
-                  <CInputGroup className={`mb-3`}>
-                    <CInputGroupText>Select Province</CInputGroupText>
-                    <CFormSelect
-                      onChange={handleProvinceChange}
-                      name="province"
-                      value={formData.province}
-                    >
-                      <option value="">Select Province</option>
-                      {sri_lanka_provinces.map((province, index) => (
-                        <option key={index} value={province}>
-                          {province}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                  </CInputGroup>
-                  <CInputGroup className={`mb-3`}>
-                    <CInputGroupText>Select District</CInputGroupText>
-                    <CFormSelect
-                      name="District"
-                      value={formData.district}
-                      onChange={handleDistrictChange}
-                    >
-                      <option value="">Select District</option>
-                      {districts.map((district, index) => (
-                        <option key={index} value={district}>
-                          {district}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                    <CInputGroupText>
-                      <CButton color="secondary">
-                        <CIcon icon={cilArrowCircleBottom} />
-                      </CButton>
-                    </CInputGroupText>
-                  </CInputGroup>
-                  <CInputGroup className={`mb-3`}>
-                    <CInputGroupText>Select Office</CInputGroupText>
-                    <CFormSelect name="office" value={formData.office} onChange={handleTypeSelect}>
-                      <option value="">Select Office</option>
-                      {filteredOffices.map((office, index) => (
-                        <option key={index} value={office.agri_office_id}>
-                          {office.name}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                    <CInputGroupText>
-                      <CButton color="secondary">
-                        <CIcon icon={cilArrowCircleBottom} />
-                      </CButton>
-                    </CInputGroupText>
-                  </CInputGroup>
-                </div>
-              </CCol>
-            </CRow>
-          </CCardBody>
-        </CCard>
-      </CContainer>
+    <div>
+      {loading ? (
+        <Spinner animation="border" variant="primary" />
+      ) : (
+        <>
+          <CContainer>
+            <CCard>
+              <CCardBody>
+                <CRow>
+                  <CCol style={{ margin: '30px' }}>
+                    <h4>Crop Yield Report</h4>
+                    <div style={{ height: 'auto', marginTop: '40px' }}>
+                      <CInputGroup className={`mb-3`}>
+                        <CFormSelect
+                          custom
+                          name="crop_id"
+                          value={formData.crop_id}
+                          onChange={handleTypeSelect}
+                        >
+                          <option value="">Crop Type</option>
+                          {crops.map((crop, index) => (
+                            <option key={index} value={crop.crop_id}>
+                              {crop.crop_name}
+                            </option>
+                          ))}
+                        </CFormSelect>
+                      </CInputGroup>
+                      <CInputGroup className={`mb-3`}>
+                        <CFormSelect
+                          custom
+                          name="year"
+                          value={formData.year}
+                          onChange={handleYearSelect}
+                        >
+                          <option value="">Select Year</option>
+                          <option value="2020">2020</option>
+                          <option value="2021">2021</option>
+                          <option value="2022">2022</option>
+                          <option value="2023">2023</option>
+                          <option value="2024">2023</option>
+                        </CFormSelect>
+                      </CInputGroup>
+                      <CInputGroup className={`mb-3`}>
+                        <CInputGroupText>Select Month</CInputGroupText>
+                        <CFormSelect
+                          name="month"
+                          value={formData.month}
+                          onChange={handleMonthSelect}
+                        >
+                          <option value="">Select Month</option>
+                          {monthNames.map((month, index) => (
+                            <option key={index} value={index + 1}>
+                              {month}
+                            </option>
+                          ))}
+                        </CFormSelect>
+                        <CInputGroupText>
+                          <CButton color="secondary">
+                            <CIcon icon={cilArrowCircleBottom} />
+                          </CButton>
+                        </CInputGroupText>
+                      </CInputGroup>
+                      <CInputGroup className={`mb-3`}>
+                        <CInputGroupText>Select Province</CInputGroupText>
+                        <CFormSelect
+                          onChange={handleProvinceChange}
+                          name="province"
+                          value={formData.province}
+                        >
+                          <option value="">Select Province</option>
+                          {sri_lanka_provinces.map((province, index) => (
+                            <option key={index} value={province}>
+                              {province}
+                            </option>
+                          ))}
+                        </CFormSelect>
+                      </CInputGroup>
+                      <CInputGroup className={`mb-3`}>
+                        <CInputGroupText>Select District</CInputGroupText>
+                        <CFormSelect
+                          name="District"
+                          value={formData.district}
+                          onChange={handleDistrictChange}
+                        >
+                          <option value="">Select District</option>
+                          {districts.map((district, index) => (
+                            <option key={index} value={district}>
+                              {district}
+                            </option>
+                          ))}
+                        </CFormSelect>
+                        <CInputGroupText>
+                          <CButton color="secondary">
+                            <CIcon icon={cilArrowCircleBottom} />
+                          </CButton>
+                        </CInputGroupText>
+                      </CInputGroup>
+                      <CInputGroup className={`mb-3`}>
+                        <CInputGroupText>Select Office</CInputGroupText>
+                        <CFormSelect
+                          name="office_id"
+                          value={formData.office_id}
+                          onChange={handleTypeSelect}
+                        >
+                          <option value="">Select Office</option>
+                          {filteredOffices.map((office, index) => (
+                            <option key={index} value={office.agri_office_id}>
+                              {office.name}
+                            </option>
+                          ))}
+                        </CFormSelect>
+                        <CInputGroupText>
+                          <CButton color="secondary">
+                            <CIcon icon={cilArrowCircleBottom} />
+                          </CButton>
+                        </CInputGroupText>
+                      </CInputGroup>
+                    </div>
+                  </CCol>
+                </CRow>
+              </CCardBody>
+            </CCard>
+          </CContainer>
 
-      <div>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'top',
-            height: '700px',
-          }}
-        >
-          <MapContainer
-            center={center}
-            zoom={8}
-            style={{ height: '700px', width: '500px' }}
-            dragging={false}
-            touchZoom={false}
-            doubleClickZoom={false}
-            scrollWheelZoom={false}
-            keyboard={false}
-            zoomControl={false}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-              maxZoom={8}
-            />
-            <StatesDataLayer formData={formData} />
-          </MapContainer>
-        </div>
-      </div>
-    </>
+          <div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'top',
+                height: '700px',
+              }}
+            >
+              <MapContainer
+                key={mapKey}
+                center={center}
+                zoom={8}
+                style={{ height: '700px', width: '500px' }}
+                dragging={false}
+                touchZoom={false}
+                doubleClickZoom={false}
+                scrollWheelZoom={false}
+                keyboard={false}
+                zoomControl={false}
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                  maxZoom={8}
+                />
+                <MapFeatureDataLayer formData={formData} />
+              </MapContainer>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
   )
 }
 
@@ -386,15 +601,17 @@ function getColor(d) {
   }
 }
 
-StatesDataLayer.propTypes = {
+MapFeatureDataLayer.propTypes = {
   ADM2_EN: PropTypes.string.isRequired,
   total_cultivated: PropTypes.number.isRequired,
+  total_harvested: PropTypes.string.isRequired,
+  crop_name: PropTypes.string.isRequired,
   formData: PropTypes.shape({
     year: PropTypes.string.isRequired,
     month: PropTypes.string.isRequired,
-    crop: PropTypes.string.isRequired,
+    crop_id: PropTypes.string.isRequired,
     district: PropTypes.string.isRequired,
-    office: PropTypes.string.isRequired,
+    office_id: PropTypes.string.isRequired,
   }).isRequired,
 }
 
