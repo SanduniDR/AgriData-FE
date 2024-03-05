@@ -426,7 +426,7 @@ const LankaMapByCropYieldAdmin = () => {
         <Spinner animation="border" variant="primary" />
       ) : (
         <>
-          <CContainer>
+          <CContainer fluid>
             <CCard>
               <CCardBody>
                 <CRow>
@@ -460,7 +460,7 @@ const LankaMapByCropYieldAdmin = () => {
                           <option value="2021">2021</option>
                           <option value="2022">2022</option>
                           <option value="2023">2023</option>
-                          <option value="2024">2023</option>
+                          <option value="2024">2024</option>
                         </CFormSelect>
                       </CInputGroup>
                       <CInputGroup className={`mb-3`}>

@@ -236,7 +236,110 @@ const searchCultivationInfoCountByDistrictMonthlyOffice = async (
   }
 }
 
+const searchCultivationMapInfoByDistrictMonthlyOffice = async (
+  year,
+  crop_id,
+  month,
+  district,
+  office_id,
+) => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/report/search/cultivation-map/monthly/district/office`,
+
+      {
+        crop_id: crop_id,
+        year: year,
+        month: month,
+        district: district,
+        office_id: office_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    return response
+  } catch (error) {
+    console.error('Failed to fetch farmer for districts:', error)
+    return
+  }
+}
+
+const getAllOfficesByDistrict = async (district) => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.get(`${API_BASE_URL}/report/offices/by-district`, {
+      params: {
+        district: district,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to fetch offices:', error)
+    return
+  }
+}
+
+const getAllTaxPayersByDistrictByOffice = async (district, office_id) => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.get(`${API_BASE_URL}/report/search_tax/acre_tax`, {
+      params: {
+        district: district,
+        office_id: office_id,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to fetch offices:', error)
+  }
+}
+
+const getAllDistrictTaxData = async () => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.get(`${API_BASE_URL}/report/search_tax/all_acre_tax`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to fetch offices:', error)
+  }
+}
+
+const getOfficerDetailByOffice = async (office_id) => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.get(`${API_BASE_URL}/report/officers-by-office`, {
+      params: {
+        office_id: office_id,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to fetch offices:', error)
+  }
+}
+
 export {
+  getAllOfficesByDistrict,
+  getOfficerDetailByOffice,
+  getAllDistrictTaxData,
+  getAllTaxPayersByDistrictByOffice,
   getUserGroupByRole,
   getAidDistributionsTotal,
   getOfficesByDistrictAndProvince,
@@ -248,4 +351,5 @@ export {
   searchCultivationInfoCountByMonthly,
   searchCultivationInfoCountByDistrictMonthly,
   searchCultivationInfoCountByDistrictMonthlyOffice,
+  searchCultivationMapInfoByDistrictMonthlyOffice,
 }

@@ -12,6 +12,7 @@ import CropOperations from 'src/views/management/crop/CropOperations'
 import UserOperations from 'src/views/management/user/UserOperations'
 import AidDistributionOperations from 'src/views/management/aid/distribution/AidDistributionOperations'
 import FarmerOperations from 'src/views/management/farmer/FarmerOperations'
+import AdminMessageOperations from 'src/views/management/message/admin/AdminMessageOpreations'
 
 const DataAdminCollection = () => {
   const [isUserAccountClicked, setUserAccountClicked] = useState(false)
@@ -125,7 +126,7 @@ const DataAdminCollection = () => {
         {isUserAccountClicked ? <UserOperations /> : null}
         {isAddMainFundClick ? <AidOperations /> : null}
         {isAgriAidTypeClicked ? <AidDistributionOperations /> : null}
-        {isSendEmailClicked ? <UserOperations /> : null}
+        {isSendEmailClicked ? <AdminMessageOperations /> : null}
         {isCropInfoClicked ? <CropOperations /> : null}
       </div>
     </div>
