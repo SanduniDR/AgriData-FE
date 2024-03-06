@@ -1,6 +1,7 @@
 import { React, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { API_BASE_URL } from 'src/Config'
 import {
   CButton,
   CCard,
@@ -77,7 +78,7 @@ const SearchCultivationInfo = () => {
     // Call the backend API to delete the cultivation
     console.log(cultivation_id)
     axios
-      .delete(`http://127.0.0.1:5000/cultivation/${cultivation_id}`, {
+      .delete(`${API_BASE_URL}/cultivation/${cultivation_id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

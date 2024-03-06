@@ -16,6 +16,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilUser, cilCalendar, cilCreditCard, cilTag } from '@coreui/icons'
+import { API_BASE_URL } from 'src/Config'
 
 const RemoveUserForm = () => {
   const navigate = useNavigate()
@@ -72,7 +73,7 @@ const RemoveUserForm = () => {
     }
 
     axios
-      .delete(`http://127.0.0.1:5000/user/${user_id}`, {
+      .delete(`${API_BASE_URL}/user/${user_id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -121,7 +122,7 @@ const RemoveUserForm = () => {
     }
 
     axios
-      .get(`http://127.0.0.1:5000/user/${userId}`, {
+      .get(`${API_BASE_URL}/user/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -70,6 +70,29 @@ const updateAdvertisement = async (id, formData) => {
   }
 }
 
+const approveAdvertisement = async (id, formData) => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.put(`${API_BASE_URL}/approve/advertisement`, {
+      params: {
+        ad_id: id,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (response.status === 200) {
+      alert('Advertisement Approved successfully')
+    }
+
+    return
+  } catch (error) {
+    console.error('Failed to update Advertisement:', error)
+    return
+  }
+}
+
 const addAdvertisement = async (formData) => {
   const token = localStorage.getItem('token')
   try {
@@ -100,7 +123,27 @@ const deleteAdvertisement = async (id) => {
     })
 
     if (response.status === 200) {
-      alert('Advertisement deleted successfully')
+      console.log('Advertisement deleted successfully')
+    }
+
+    return response
+  } catch (error) {
+    console.error('Failed to delete Advertisement:', error)
+    return
+  }
+}
+
+const getAllofficerRegionalAdvertisement = async () => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.get(`${API_BASE_URL}/market/officer/regional/ads`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (response.status === 200) {
+      console.log('Advertisements received successfully')
     }
 
     return response
@@ -116,4 +159,6 @@ export {
   addAdvertisement,
   deleteAdvertisement,
   updateAdvertisement,
+  approveAdvertisement,
+  getAllofficerRegionalAdvertisement,
 }

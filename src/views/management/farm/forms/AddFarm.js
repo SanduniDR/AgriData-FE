@@ -1,6 +1,7 @@
 import { React, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { API_BASE_URL } from 'src/Config'
 import {
   CButton,
   CCard,
@@ -67,7 +68,7 @@ const AddFarmForm = () => {
     }
 
     axios
-      .post('http://127.0.0.1:5000/farm', formData, {
+      .post(`${API_BASE_URL}/farm`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

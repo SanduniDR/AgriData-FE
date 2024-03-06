@@ -15,6 +15,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPlant, cilFork, cilDescription } from '@coreui/icons'
+import { API_BASE_URL } from 'src/Config'
 
 const AddCropForm = () => {
   const [formData, setFormData] = useState({
@@ -56,7 +57,7 @@ const AddCropForm = () => {
     }
 
     axios
-      .post('http://127.0.0.1:5000/crop/add_crop', formData, {
+      .post(`${API_BASE_URL}/crop/add_crop`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

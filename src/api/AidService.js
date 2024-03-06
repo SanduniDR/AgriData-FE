@@ -4,7 +4,7 @@ import { API_BASE_URL } from 'src/Config'
 const addAid = async (formData) => {
   //   const token = localStorage.getItem('token')
   //   try {
-  //     const response = await axios.post(`http://127.0.0.1:5000/cultivation/info`, formData, {
+  //     const response = await axios.post(`${API_BASE_URL}/cultivation/info`, formData, {
   //       headers: {
   //         Authorization: `Bearer ${token}`,
   //       },
@@ -20,7 +20,7 @@ const updateAid = async (formData) => {
   //   const token = localStorage.getItem('token')
   //   try {
   //     const response = await axios.put(
-  //       `http://127.0.0.1:5000/cultivation/${formData.cultivation_info_id}`,
+  //       `${API_BASE_URL}/cultivation/${formData.cultivation_info_id}`,
   //       formData,
   //       {
   //         headers: {
@@ -39,7 +39,7 @@ const getAidByID = async (formData) => {
   //   const token = localStorage.getItem('token')
   //   try {
   //     const response = await axios.get(
-  //       `http://127.0.0.1:5000/cultivation/${formData.cultivation_info_id}`,
+  //       `${API_BASE_URL}/cultivation/${formData.cultivation_info_id}`,
   //       {
   //         headers: {
   //           Authorization: `Bearer ${token}`,

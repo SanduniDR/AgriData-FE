@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
 import backgroundImg from 'src/assets/images/barron.jpg'
 import axios from 'axios'
+import { API_BASE_URL } from 'src/Config'
 
 const DefaultLayout = () => {
   const [token, setTokenState] = useState(localStorage.getItem('token'))
@@ -11,7 +12,7 @@ const DefaultLayout = () => {
       window.location.href = '/login'
     }
     axios
-      .get('http://127.0.0.1:5000/user/info', {
+      .get(`${API_BASE_URL}/user/info`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

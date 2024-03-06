@@ -335,7 +335,32 @@ const getOfficerDetailByOffice = async (office_id) => {
   }
 }
 
+const searchDisasterInfoByDistrictMonthlyOffice = async (formData, page, per_page) => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.get(`${API_BASE_URL}/disaster/disaster-info/search`, {
+      params: {
+        year: formData.year,
+        month: formData.month,
+        crop_id: formData.crop_id,
+        type: formData.type,
+        district: formData.district,
+        office_id: formData.office_id,
+        page: page,
+        per_page: per_page,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to fetch disaster info:', error)
+  }
+}
+
 export {
+  searchDisasterInfoByDistrictMonthlyOffice,
   getAllOfficesByDistrict,
   getOfficerDetailByOffice,
   getAllDistrictTaxData,

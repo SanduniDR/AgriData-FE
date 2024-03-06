@@ -15,6 +15,8 @@ import {
 } from 'src/views/pages/dataCollection/DataCollection'
 import AdminReport from '../reports/AdminReport'
 import OfficerReport from '../reports/OfficerReport'
+import ProductListPage from 'src/views/marketplace/forms/ProductListPage'
+import AdsOperations from 'src/views/marketplace/AdsOperations'
 // import LatestReports from 'src/components/landingpage/LatestReports' // Import your LatestReports component
 
 function LandingPage() {
@@ -66,6 +68,7 @@ function LandingPage() {
           ))}
         {selectedNavItem === 'DataOfficerCollection' &&
           (isOfficer ? <DataOfficerCollection /> : <></>)}
+        {selectedNavItem === 'Free Advertising Support' && <ProductListPage />}
       </DefaultLayout2>
     </div>
   )

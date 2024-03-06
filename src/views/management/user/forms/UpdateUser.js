@@ -15,6 +15,7 @@ import {
   CFormSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import { API_BASE_URL } from 'src/Config'
 import {
   cilLockLocked,
   cilUser,
@@ -86,7 +87,7 @@ const UpdateUserForm = () => {
     }
 
     axios
-      .put(`http://127.0.0.1:5000/user/update/${formData.user_id}`, formData, {
+      .put(`${API_BASE_URL}/user/update/${formData.user_id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -131,7 +132,7 @@ const UpdateUserForm = () => {
     }
 
     axios
-      .get(`http://127.0.0.1:5000/user/${userId}`, {
+      .get(`${API_BASE_URL}/user/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

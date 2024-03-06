@@ -1,9 +1,9 @@
 import axios from 'axios'
-
+import { API_BASE_URL } from 'src/Config'
 const getFarmById = async (formData) => {
   const token = localStorage.getItem('token')
   try {
-    const response = await axios.get(`http://127.0.0.1:5000/farm/${formData.farm_id}`, {
+    const response = await axios.get(`${API_BASE_URL}/farm/${formData.farm_id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -15,6 +15,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilUser, cilPlant, cilFork, cilDescription } from '@coreui/icons'
+import { API_BASE_URL } from 'src/Config'
 
 const RemoveUserForm = () => {
   const navigate = useNavigate()
@@ -55,7 +56,7 @@ const RemoveUserForm = () => {
     }
 
     axios
-      .delete(`http://127.0.0.1:5000/crop/remove/${cropId}`, {
+      .delete(`${API_BASE_URL}/crop/remove/${cropId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -92,7 +93,7 @@ const RemoveUserForm = () => {
     }
 
     axios
-      .get(`http://127.0.0.1:5000/crop/crop_details/${cropId}`, {
+      .get(`${API_BASE_URL}/crop/crop_details/${cropId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

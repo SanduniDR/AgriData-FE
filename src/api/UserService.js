@@ -5,7 +5,7 @@ import { API_BASE_URL } from 'src/Config'
 const getFarmers = async (office_id = 0, field_area_id = 0, page = 1, per_page = 50) => {
   const token = localStorage.getItem('token')
   try {
-    const response = await axios.get('http://127.0.0.1:5000/user/search_farmers', {
+    const response = await axios.get(`${API_BASE_URL}/user/search_farmers`, {
       params: {
         office_id: office_id,
         field_area_id: field_area_id,
@@ -26,7 +26,7 @@ const getFarmers = async (office_id = 0, field_area_id = 0, page = 1, per_page =
 const getUserById = async (userId) => {
   const token = localStorage.getItem('token')
   try {
-    const response = await axios.get(`http://127.0.0.1:5000/user/${userId}`, {
+    const response = await axios.get(`${API_BASE_URL}/user/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -41,7 +41,7 @@ const getUserById = async (userId) => {
 const getUserByMail = async (email) => {
   const token = localStorage.getItem('token')
   try {
-    const response = await axios.get(`http://127.0.0.1:5000/user/find_by_email`, {
+    const response = await axios.get(`${API_BASE_URL}/user/find_by_email`, {
       params: {
         email: email,
       },
@@ -59,7 +59,7 @@ const getUserByMail = async (email) => {
 const getFarmerById = async (id) => {
   const token = localStorage.getItem('token')
   try {
-    const response = await axios.get(`http://127.0.0.1:5000/user/farmer/${id}`, {
+    const response = await axios.get(`${API_BASE_URL}/user/farmer/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -76,7 +76,7 @@ const addFarmer = async (farmerData) => {
   const token = localStorage.getItem('token')
   try {
     const response = await axios.post(
-      'http://127.0.0.1:5000/user/farmer',
+      `${API_BASE_URL}/user/farmer`,
       {
         assigned_field_area_id: farmerData.assigned_field_area_id,
         assigned_office_id: farmerData.assigned_office_id,
@@ -108,7 +108,7 @@ const updateFarmer = async (formData) => {
   const token = localStorage.getItem('token')
   try {
     const response = await axios.put(
-      `http://127.0.0.1:5000/user/farmer/${formData.user_id}`,
+      `${API_BASE_URL}/user/farmer/${formData.user_id}`,
       {
         assigned_field_area_id: formData.assigned_field_area_id,
         assigned_office_id: formData.assigned_office_id,
@@ -137,7 +137,7 @@ const updateFarmer = async (formData) => {
 
 const checkToken = async (token) => {
   try {
-    const response = await axios.get('http://127.0.0.1:5000/user/check_token', {
+    const response = await axios.get(`${API_BASE_URL}/user/check_token`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

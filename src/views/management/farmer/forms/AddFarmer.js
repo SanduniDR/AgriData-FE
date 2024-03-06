@@ -108,8 +108,7 @@ const AddFarmerForm = () => {
     }
 
     axios
-      .post(`${API_BASE_URL}/user/register`, formData) // .post('http://127.0.0.1:5000/user/register', formData)
-
+      .post(`${API_BASE_URL}/user/register`, formData)
       .then(function (response) {
         console.log(response)
         setIsUserAccountCreated(true)

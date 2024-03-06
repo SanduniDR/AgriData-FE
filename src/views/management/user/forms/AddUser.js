@@ -14,6 +14,7 @@ import {
   CFormSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import { API_BASE_URL } from 'src/Config'
 import { cilLockLocked, cilUser, cilCalendar, cilCreditCard, cilTag } from '@coreui/icons'
 
 const AddUserForm = () => {
@@ -66,23 +67,6 @@ const AddUserForm = () => {
     setIsFormEmpty(false)
   }
 
-  // function handleFileChange(event) {
-  //   const file = event.target.files[0]
-  //   const reader = new FileReader()
-
-  //   reader.onload = function (event) {
-  //     const arrayBuffer = event.target.result
-  //     const uint8Array = new Uint8Array(arrayBuffer)
-  //     const byteArray = Array.from(uint8Array)
-  //     setFormData((prevFormData) => ({
-  //       ...prevFormData,
-  //       profileImage: byteArray,
-  //     }))
-  //   }
-
-  //   reader.readAsArrayBuffer(file)
-  // }
-
   const handleSubmit = (event) => {
     event.preventDefault()
 
@@ -99,7 +83,7 @@ const AddUserForm = () => {
     const token = localStorage.getItem('token')
 
     axios
-      .post('http://127.0.0.1:5000/user/register', formData, {
+      .post(`${API_BASE_URL}/user/register`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

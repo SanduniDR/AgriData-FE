@@ -1,6 +1,7 @@
 import { React, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { API_BASE_URL } from 'src/Config'
 import {
   CButton,
   CCard,
@@ -60,7 +61,7 @@ const RemoveFarmForm = () => {
     }
 
     axios
-      .delete(`http://127.0.0.1:5000/farm/${farmId}`, {
+      .delete(`${API_BASE_URL}/farm/${farmId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -102,7 +103,7 @@ const RemoveFarmForm = () => {
     }
 
     axios
-      .get(`http://127.0.0.1:5000/farm/${farmId}`, {
+      .get(`${API_BASE_URL}/farm/${farmId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

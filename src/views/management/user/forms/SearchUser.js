@@ -90,7 +90,7 @@ const SearchUserForm = () => {
     // Call the backend API to delete the user
     console.log(userId)
     axios
-      .delete(`http://127.0.0.1:5000/user/${userId}`, {
+      .delete(`${API_BASE_URL}/user/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -125,7 +125,7 @@ const SearchUserForm = () => {
     }
 
     axios
-      .get('http://127.0.0.1:5000/user/search', {
+      .get(`${API_BASE_URL}/user/search`, {
         params: {
           ...formData,
           page: currentPage,

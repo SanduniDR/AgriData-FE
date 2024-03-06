@@ -14,6 +14,7 @@ import {
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import { API_BASE_URL } from 'src/Config'
 import { cilLockLocked, cilUser, cilCloudUpload, cilCalendar, cilCreditCard } from '@coreui/icons'
 
 const Register = () => {
@@ -76,11 +77,10 @@ const Register = () => {
     }
 
     axios
-      .post('http://127.0.0.1:5000/user/register', formData)
+      .post(`${API_BASE_URL}/user/register`, formData)
       .then(function (response) {
         console.log(response)
         alert('User Registered Successfully!')
-        // redirect to login page
       })
       .catch(function (error) {
         console.error(error)

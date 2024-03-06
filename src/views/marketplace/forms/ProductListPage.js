@@ -6,6 +6,7 @@ import Pagination from './Pagination'
 import './ProductListPage.css' // Import the CSS file for styling
 import PropTypes from 'prop-types'
 import { getAllAdvertisements } from 'src/api/AdsService'
+import { CContainer } from '@coreui/react'
 
 const ProductListPage = () => {
   const [products, setProducts] = useState([])
@@ -37,19 +38,22 @@ const ProductListPage = () => {
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct)
 
   return (
-    <div className="product-list-container">
-      {' '}
-      {/* Add a CSS class for styling */}
-      <h1 className="title">AgriCloud - MarketPlace</h1> {/* Add a CSS class for styling */}
-      <ProductList products={currentProducts} />
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-        onNextPage={() => handlePageChange(currentPage + 1)}
-        onPrevPage={() => handlePageChange(currentPage - 1)}
-      />
-    </div>
+    <CContainer fluid>
+      <div className="product-list-container">
+        {' '}
+        {/* Add a CSS class for styling */}
+        <h1 className="title">AgriData - Free Advertisement Service</h1>{' '}
+        {/* Add a CSS class for styling */}
+        <ProductList products={currentProducts} />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          onNextPage={() => handlePageChange(currentPage + 1)}
+          onPrevPage={() => handlePageChange(currentPage - 1)}
+        />
+      </div>
+    </CContainer>
   )
 }
 

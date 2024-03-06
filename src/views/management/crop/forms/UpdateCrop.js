@@ -15,6 +15,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilDescription, cilFork, cilPlant, cilUser } from '@coreui/icons'
+import { API_BASE_URL } from 'src/Config'
 
 const UpdateCropForm = () => {
   const navigate = useNavigate()
@@ -49,7 +50,7 @@ const UpdateCropForm = () => {
     }
 
     axios
-      .put(`http://127.0.0.1:5000/crop/update/${crop_id}`, formData, {
+      .put(`${API_BASE_URL}/crop/update/${crop_id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -87,7 +88,7 @@ const UpdateCropForm = () => {
     }
 
     axios
-      .get(`http://127.0.0.1:5000/crop/crop_details/${cropId}`, {
+      .get(`${API_BASE_URL}/crop/crop_details/${cropId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

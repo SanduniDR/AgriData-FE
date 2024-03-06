@@ -17,26 +17,28 @@ import {
   CFormSelect,
   CInputGroupText,
   CButton,
+  CPagination,
+  CTable,
+  CTableHead,
+  CTableBody,
+  CTableRow,
+  CTableHeaderCell,
+  CTableDataCell,
+  CPaginationItem,
 } from '@coreui/react'
 import Spinner from 'react-bootstrap/Spinner'
 import {
   getAllOfficesAndDistrictsByProvince,
-  searchCultivationMapInfoByDistrictMonthlyOffice,
+  searchDisasterInfoByDistrictMonthlyOffice,
 } from 'src/api/MisReportService'
-import PropTypes from 'prop-types'
 
-function ChangeView({ center, zoom }) {
-  const map = useMap()
-  map.setView(center, zoom)
-  return null
-}
-
-const LankaMapByFieldMapping = () => {
+const AdminDisasterOverview = () => {
   const center = [7.8731, 80.7718] // coordinates for Sri Lanka
   const [offices, setOffices] = useState([])
-  const [crops, setCrops] = useState([])
+  const [disasterType, setDisasterType] = useState([])
   const [loading, setLoading] = useState(false)
-  const [records, setRecords] = useState([])
+  const [disasters, setDisasters] = useState([])
+
   const monthNames = [
     'January',
     'February',
@@ -58,11 +60,14 @@ const LankaMapByFieldMapping = () => {
     type: '',
     district: '',
     office_id: '',
+    province: '',
   })
   const [districts, setDistrict] = useState([])
   const [filteredOffices, setFilteredOffices] = useState([])
   const [mapKey, setMapKey] = useState(0)
   const [markersData, setMarkersData] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
   const sri_lanka_provinces = [
     'Central',
     'Eastern',
@@ -74,56 +79,18 @@ const LankaMapByFieldMapping = () => {
     'Uva Province',
     'Sabaragamuwa',
   ]
-  const myIcon = new L.Icon({
-    iconUrl: iconImage,
-    iconSize: [20, 50],
-  })
-
-  let bounds = null
-  if (markersData.length > 0) {
-    bounds = L.latLngBounds(markersData.map((data) => [data.latitude, data.longitude]))
-  }
-
-  useEffect(() => {
-    setMapKey((prevKey) => prevKey + 1)
-  }, [formData])
-
-  useEffect(() => {
-    if (
-      formData.year !== '' &&
-      formData.crop_id !== '' &&
-      formData.month !== '' &&
-      formData.district !== '' &&
-      formData.office_id !== ''
-    ) {
-      searchCultivationMapInfoByDistrictMonthlyOffice(
-        formData.year,
-        formData.crop_id,
-        formData.month,
-        formData.district,
-        formData.office_id,
-      )
-        .then((response) => {
-          if (response.status === 200) {
-            setMarkersData(response.data)
-            console.log('response', response.data)
-          }
-        })
-        .catch((error) => {})
-    }
-  }, [formData.year, formData.crop_id, formData.month, formData.district, formData.office_id])
 
   useEffect(() => {
     const token = localStorage.getItem('token')
     axios
-      .get(`${API_BASE_URL}/crop/crops`, {
+      .get(`${API_BASE_URL}/disaster/disasters/type`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
         if (response.status === 200) {
-          setCrops(response.data)
+          setDisasterType(response.data.disasterTypes)
         }
       })
       .catch((error) => {
@@ -183,6 +150,48 @@ const LankaMapByFieldMapping = () => {
     return offices.filter((office) => office.district === district)
   }
 
+  const handlePageChange = async (newPage) => {
+    setCurrentPage(newPage)
+    // Call the backend API to fetch users for the new page
+    const token = localStorage.getItem('token')
+
+    try {
+      const response = await searchDisasterInfoByDistrictMonthlyOffice(formData, newPage)
+      setDisasters(response.data.disasters)
+      console.log(response.data.disasters)
+      setTotalPages(response.data.total_pages)
+      console.log(response.data.total_pages)
+      console.log(totalPages)
+    } catch (error) {
+      console.error(error)
+      alert('An error occurred while fetching users for the new page.')
+    }
+  }
+
+  const handleNewItemSendButtonSubmit = async (event) => {
+    setLoading(true)
+    const response = await searchDisasterInfoByDistrictMonthlyOffice(formData, currentPage)
+    console.log(response)
+    setDisasters(response.data.disasters)
+    console.log(response.data.disasters)
+    setTotalPages(response.data.total_pages)
+    console.log(response.data.total_pages)
+    console.log(totalPages)
+    setLoading(false)
+  }
+
+  const handleSendMessageCleanForm = () => {
+    setFormData({
+      year: '',
+      month: '',
+      crop_id: '',
+      type: '',
+      district: '',
+      office_id: '',
+      province: '',
+    })
+  }
+
   return (
     <div>
       {loading ? (
@@ -194,19 +203,19 @@ const LankaMapByFieldMapping = () => {
               <CCardBody>
                 <CRow>
                   <CCol style={{ margin: '30px' }}>
-                    <h4>Field Mapping Report</h4>
+                    <h4>Disaster OverView Report</h4>
                     <div style={{ height: 'auto', marginTop: '40px' }}>
                       <CInputGroup className={`mb-3`}>
                         <CFormSelect
                           custom
-                          name="crop_id"
-                          value={formData.crop_id}
+                          name="type"
+                          value={formData.type}
                           onChange={handleTypeSelect}
                         >
-                          <option value="">Crop Type</option>
-                          {crops.map((crop, index) => (
-                            <option key={index} value={crop.crop_id}>
-                              {crop.crop_name}
+                          <option value="">Disaster Type</option>
+                          {disasterType.map((disaster, index) => (
+                            <option key={index} value={disaster}>
+                              {disaster}
                             </option>
                           ))}
                         </CFormSelect>
@@ -301,80 +310,85 @@ const LankaMapByFieldMapping = () => {
                           </CButton>
                         </CInputGroupText>
                       </CInputGroup>
+                      <div className="d-grid">
+                        <CButton color="success" onClick={handleNewItemSendButtonSubmit}>
+                          Submit
+                        </CButton>
+
+                        <br />
+                        <CButton color="secondary" onClick={handleSendMessageCleanForm}>
+                          Clear
+                        </CButton>
+                      </div>
                     </div>
                   </CCol>
                 </CRow>
               </CCardBody>
             </CCard>
+            {disasters.length !== 0 ? (
+              <CRow className="justify-content-center mt-4">
+                <CCol xs={12}>
+                  <CCard className="mx-4">
+                    <CCardBody className="p-4">
+                      <CTable>
+                        <CTableHead>
+                          <CTableRow>
+                            <CTableHeaderCell>Disaster info Id</CTableHeaderCell>
+                            <CTableHeaderCell>Crop Id</CTableHeaderCell>
+                            <CTableHeaderCell>Crop Name</CTableHeaderCell>
+                            <CTableHeaderCell>Date</CTableHeaderCell>
+                            <CTableHeaderCell>District</CTableHeaderCell>
+                            <CTableHeaderCell>Office Id</CTableHeaderCell>
+                            <CTableHeaderCell>Type</CTableHeaderCell>
+                          </CTableRow>
+                        </CTableHead>
+                        <CTableBody>
+                          {disasters.map(
+                            (disaster) => (
+                              console.log(disaster),
+                              (
+                                <CTableRow>
+                                  <CTableDataCell>{disaster.disaster_info_id}</CTableDataCell>
+                                  <CTableDataCell>{disaster.crop_id}</CTableDataCell>
+                                  <CTableDataCell>{disaster.crop_name}</CTableDataCell>
+                                  <CTableDataCell>{disaster.date}</CTableDataCell>
+                                  <CTableDataCell>{disaster.district}</CTableDataCell>
+                                  <CTableDataCell>{disaster.office_id}</CTableDataCell>
+                                  <CTableDataCell>{disaster.type}</CTableDataCell>
+                                </CTableRow>
+                              )
+                            ),
+                          )}
+                        </CTableBody>
+                        <CPagination
+                          size="sm"
+                          activePage={currentPage}
+                          pages={totalPages}
+                          onActivePageChange={(i) => handlePageChange(i)}
+                        >
+                          {Array.from({ length: totalPages }, (_, index) => (
+                            <CPaginationItem
+                              key={index + 1}
+                              active={index + 1 === currentPage}
+                              onClick={() => handlePageChange(index + 1)}
+                            >
+                              {index + 1}
+                            </CPaginationItem>
+                          ))}
+                        </CPagination>
+                      </CTable>
+                    </CCardBody>
+                  </CCard>
+                </CCol>
+              </CRow>
+            ) : (
+              <></>
+            )}
           </CContainer>
-
-          <div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'top',
-                height: '700px',
-              }}
-            >
-              <MapContainer
-                key={mapKey}
-                center={center}
-                zoom={8}
-                style={{ height: '700px', width: '500px' }}
-              >
-                <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                  maxZoom={16}
-                />
-
-                {bounds && <ChangeView center={bounds.getCenter()} zoom={13} />}
-
-                {markersData.map(
-                  (data, index) => (
-                    console.log('dataToAdd', data),
-                    (
-                      <Marker
-                        key={index}
-                        position={[data.latitude, data.longitude]}
-                        icon={myIcon}
-                      />
-                    )
-                  ),
-                )}
-              </MapContainer>
-            </div>
-          </div>
         </>
       )}
     </div>
   )
 }
 
-function getColor(d) {
-  if (d > 4500) {
-    return '#ccece6'
-  } else if (d > 4300) {
-    return '#99d8c9'
-  } else if (d > 3750) {
-    return '#66c2a4'
-  } else if (d > 3500) {
-    return '#41ae76'
-  } else if (d > 3250) {
-    return '#238b45'
-  } else if (d > 3000) {
-    return '#006d2c'
-  } else if (d > 100) {
-    return '#00441b' // dark green
-  } else {
-    return '#edf8fb' // light green
-  }
-}
-
-ChangeView.propTypes = {
-  center: PropTypes.array.isRequired,
-  zoom: PropTypes.number.isRequired,
-}
-
-export default LankaMapByFieldMapping
+export default AdminDisasterOverview

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { CCard, CCardHeader, CNav, CNavItem, CNavLink, CTabContent, CTabPane } from '@coreui/react'
 import Advertisement from './forms/Advertisement'
+import AdvertisementApproval from './forms/AdvertisementApproval'
 import ProductListPage from './forms/ProductListPage'
 const AdsOperations = () => {
   const [activeKey, setActiveKey] = useState(1)
@@ -30,6 +31,18 @@ const AdsOperations = () => {
               aria-selected={activeKey === 2}
               onClick={() => setActiveKey(2)}
             >
+              Approvals
+            </CNavLink>
+          </CNavItem>
+          <CNavItem role="presentation">
+            <CNavLink
+              active={activeKey === 3}
+              component="button"
+              role="tab"
+              aria-controls="all-tab-pane"
+              aria-selected={activeKey === 3}
+              onClick={() => setActiveKey(3)}
+            >
               All Advertisements
             </CNavLink>
           </CNavItem>
@@ -40,6 +53,9 @@ const AdsOperations = () => {
           <Advertisement />
         </CTabPane>
         <CTabPane role="tabpanel" aria-labelledby="ads-tab-pane" visible={activeKey === 2}>
+          <AdvertisementApproval />
+        </CTabPane>
+        <CTabPane role="tabpanel" aria-labelledby="ads-tab-pane" visible={activeKey === 3}>
           <ProductListPage />
         </CTabPane>
       </CTabContent>

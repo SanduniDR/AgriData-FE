@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
 import Register from '../pages/register/Register'
+import { API_BASE_URL } from 'src/Config'
 
 function LoginModal({ show, handleClose }) {
   const [username, setUsername] = useState('')
@@ -28,7 +29,7 @@ function LoginModal({ show, handleClose }) {
       alert('password has left Blank!')
     } else {
       await axios
-        .post('http://127.0.0.1:5000/user/login', {
+        .post(`${API_BASE_URL}/user/login`, {
           email: username,
           password: password,
         })
@@ -38,7 +39,7 @@ function LoginModal({ show, handleClose }) {
             // Validate the user with the token
             axios
               .post(
-                'http://127.0.0.1:5000/user/validate',
+                `${API_BASE_URL}/user/validate`,
                 {
                   email: username,
                 },
@@ -120,9 +121,9 @@ function LoginModal({ show, handleClose }) {
             <Button variant="secondary" className="ml-auto" onClick={handleRegister}>
               Register
             </Button>
-            <Button variant="secondary" onClick={handleClose}>
+            {/* <Button variant="secondary" onClick={handleClose}>
               Close
-            </Button>
+            </Button> */}
             <Button variant="primary" onClick={handleSubmit}>
               Sign In
             </Button>
@@ -166,9 +167,9 @@ function LoginModal({ show, handleClose }) {
             <Button variant="secondary" className="ml-auto" onClick={handleRegister}>
               Register
             </Button>
-            <Button variant="secondary" onClick={handleClose}>
+            {/* <Button variant="secondary" onClick={handleClose}>
               Close
-            </Button>
+            </Button> */}
             <Button variant="primary" onClick={handleSubmit}>
               Sign In
             </Button>

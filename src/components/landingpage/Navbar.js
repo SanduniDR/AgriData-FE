@@ -73,6 +73,8 @@ function NavigationBar({ handleNavClick }) {
                     ? handleNavClick('DataCollection')
                     : role === 4
                     ? handleNavClick('DataOfficerCollection')
+                    : role === 5
+                    ? handleNavClick('DataCollection')
                     : null
                 }
               >
@@ -80,10 +82,12 @@ function NavigationBar({ handleNavClick }) {
                   ? 'Agricultural Data Management -Admin'
                   : role === 4
                   ? 'Agricultural Data Management - Officer'
-                  : 'News & Updates'}
+                  : role === 5
+                  ? 'Agricultural Data Management - Farmer'
+                  : null}
               </NavDropdown.Item>
               <NavDropdown.Item onClick={() => handleNavClick('Free Advertising Support')}>
-                Free Advertising Support
+                View All published Advertisements from Farmers
               </NavDropdown.Item>
               <NavDropdown.Item onClick={() => handleNavClick('Data Analysis & Report Generation')}>
                 Data Analysis & Report Generation

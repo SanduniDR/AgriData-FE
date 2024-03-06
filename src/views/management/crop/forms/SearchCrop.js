@@ -24,6 +24,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilUser, cilCalendar, cilCreditCard, cilTag, cilTrash, cilPencil } from '@coreui/icons'
+import { API_BASE_URL } from 'src/Config'
 
 const SearchCropForm = () => {
   const navigate = useNavigate()
@@ -58,7 +59,7 @@ const SearchCropForm = () => {
     })
 
     axios
-      .get('http://127.0.0.1:5000/crop/search', {
+      .get(`${API_BASE_URL}/crop/search`, {
         params: {
           ...formData,
           page: newPage,
@@ -92,7 +93,7 @@ const SearchCropForm = () => {
     // Call the backend API to delete the user
     console.log(cropId)
     axios
-      .delete(`http://127.0.0.1:5000/crop/remove/${cropId}`, {
+      .delete(`${API_BASE_URL}/crop/remove/${cropId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -133,7 +134,7 @@ const SearchCropForm = () => {
     })
 
     axios
-      .get('http://127.0.0.1:5000/crop/search', {
+      .get(`${API_BASE_URL}/crop/search`, {
         params: {
           ...formData,
           page: currentPage,

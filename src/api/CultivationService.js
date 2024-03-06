@@ -1,9 +1,10 @@
 import axios from 'axios'
+import { API_BASE_URL } from 'src/Config'
 
 const addCultivationInfo = async (formData) => {
   const token = localStorage.getItem('token')
   try {
-    const response = await axios.post(`http://127.0.0.1:5000/cultivation/info`, formData, {
+    const response = await axios.post(`${API_BASE_URL}/cultivation/info`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -23,7 +24,7 @@ const updateCultivationInfo = async (formData) => {
   const token = localStorage.getItem('token')
   try {
     const response = await axios.put(
-      `http://127.0.0.1:5000/cultivation/${formData.cultivation_info_id}`,
+      `${API_BASE_URL}/cultivation/${formData.cultivation_info_id}`,
       formData,
       {
         headers: {
@@ -42,7 +43,7 @@ const getCultivationInfoById = async (formData) => {
   const token = localStorage.getItem('token')
   try {
     const response = await axios.get(
-      `http://127.0.0.1:5000/cultivation/${formData.cultivation_info_id}`,
+      `${API_BASE_URL}/cultivation/${formData.cultivation_info_id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -64,7 +65,7 @@ const searchCultivationInfo = async (formData, page, pageSize) => {
   const token = localStorage.getItem('token')
   console.log('searchCultivationInfo:', formData)
   try {
-    const response = await axios.get(`http://127.0.0.1:5000/cultivation/search`, {
+    const response = await axios.get(`${API_BASE_URL}/cultivation/search`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

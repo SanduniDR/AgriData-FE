@@ -23,6 +23,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilUser, cilCalendar, cilCreditCard, cilTrash } from '@coreui/icons'
+import { API_BASE_URL } from 'src/Config'
 
 const SearchFarmerForm = () => {
   const navigate = useNavigate()
@@ -60,7 +61,7 @@ const SearchFarmerForm = () => {
     // Call the backend API to fetch users for the new page
     const token = localStorage.getItem('token')
     axios
-      .get('http://127.0.0.1:5000/user/search_farmers', {
+      .get(`${API_BASE_URL}/user/search_farmers`, {
         params: {
           ...formData,
           page: newPage,
@@ -97,7 +98,7 @@ const SearchFarmerForm = () => {
     // Call the backend API to delete the user
     console.log(userId)
     axios
-      .delete(`http://127.0.0.1:5000/user/farmer/${userId}`, {
+      .delete(`${API_BASE_URL}/user/farmer/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -131,7 +132,7 @@ const SearchFarmerForm = () => {
     }
 
     axios
-      .get('http://127.0.0.1:5000/user/search_farmers', {
+      .get(`${API_BASE_URL}/user/search_farmers`, {
         params: {
           ...formData,
           page: currentPage,

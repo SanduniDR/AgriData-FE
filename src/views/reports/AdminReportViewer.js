@@ -24,6 +24,8 @@ import AidDistributionByAidTypeAdmin from './adminReports/AidDistributionByAidTy
 import LankaMapByFieldMapping from './adminReports/LankaMapByFieldMapping'
 import LankaMapByCropYieldAdmin from './adminReports/LankaMapByCropYeildAdmin'
 import TotalTaxPayerReport from './adminReports/TotalTaxPayerReport'
+import AdminDisasterOverview from './adminReports/AdminDisasterOverview'
+import AdminAdvertisementServiceReport from './adminReports/AdminAdvertismentServiceReport'
 
 const AdminReportViewer = () => {
   const [activeKey, setActiveKey] = useState('')
@@ -77,6 +79,18 @@ const AdminReportViewer = () => {
               >
                 Tax Prayer Report
               </CListGroupItem>
+              <CListGroupItem
+                className="blue-link"
+                onClick={() => handleItemClick('Disaster Overview')}
+              >
+                Disaster Overview Report
+              </CListGroupItem>
+              <CListGroupItem
+                className="blue-link"
+                onClick={() => handleItemClick('AdvertisementServiceReport')}
+              >
+                Advertisement Overview Report
+              </CListGroupItem>
             </CListGroup>
           </CCol>
           <CCol className="viewer">
@@ -87,6 +101,8 @@ const AdminReportViewer = () => {
             {activeKey === 'Crop Yield Reports' && <LankaMapByCropYieldAdmin />}
             {activeKey === 'Field Mapping' && <LankaMapByFieldMapping />}
             {activeKey === 'Tax Payer Report' && <TotalTaxPayerReport />}
+            {activeKey === 'Disaster Overview' && <AdminDisasterOverview />}
+            {activeKey === 'AdvertisementServiceReport' && <AdminAdvertisementServiceReport />}
           </CCol>
         </CRow>
       </CContainer>

@@ -13,6 +13,7 @@ import UserOperations from 'src/views/management/user/UserOperations'
 import AidDistributionOperations from 'src/views/management/aid/distribution/AidDistributionOperations'
 import FarmerOperations from 'src/views/management/farmer/FarmerOperations'
 import AdminMessageOperations from 'src/views/management/message/admin/AdminMessageOpreations'
+import AdsOperations from 'src/views/marketplace/AdsOperations'
 
 const DataAdminCollection = () => {
   const [isUserAccountClicked, setUserAccountClicked] = useState(false)
@@ -135,21 +136,25 @@ const DataAdminCollection = () => {
 
 const DataGenericCollection = () => {
   const [isUserAccountClicked, setUserAccountClicked] = useState(false)
+  const [isAddAdvertisementClicked, setAddAdvertisementClicked] = useState(false)
 
-  const tasks = ['Manage user accounts']
+  const tasks = ['Manage user accounts', 'Add advertisements']
 
-  const images = [um]
+  const images = [um, fm]
 
   const handleButtonClick = (index) => {
     console.log(`Button ${index + 1} was clicked`)
     ResetClicks()
     if (index === 0) {
       setUserAccountClicked(true)
+    } else if (index === 1) {
+      setAddAdvertisementClicked(true)
     }
   }
 
   const ResetClicks = () => {
     setUserAccountClicked(false)
+    setAddAdvertisementClicked(false)
   }
 
   return (
@@ -172,11 +177,23 @@ const DataGenericCollection = () => {
                   </Card.Body>
                 </Card>
               </Col>
+              <Col sm className="card-container-adminops">
+                <Card className="card">
+                  <Card.Img variant="top" src={images[1]} />
+                  <Card.Body className="card-body-adminops">
+                    <Card.Text style={{ fontWeight: 'bold' }}>{tasks[1]}</Card.Text>
+                    <Button className="card-button-adminops" onClick={() => handleButtonClick(1)}>
+                      Open
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
             </Row>
           </Container>
         </div>
       </div>
       <div>{isUserAccountClicked ? null : null}</div>
+      <div>{isAddAdvertisementClicked ? <AdsOperations /> : null}</div>
     </div>
   )
 }
@@ -185,9 +202,15 @@ const DataOfficerCollection = () => {
   const [isUserAccountClicked, setUserAccountClicked] = useState(false)
   const [isCultivationsClicked, setisCultivationsClicked] = useState(false)
   const [isAdiDistribution, setisAdiDistribution] = useState(false)
-  const tasks = ['Manage Farmer accounts', 'Manage Cultivations', 'Manage Aid Distribution']
+  const [isAdvertisementClicked, setAdvertisementClicked] = useState(false)
+  const tasks = [
+    'Manage Farmer accounts',
+    'Manage Cultivations',
+    'Manage Aid Distribution',
+    'Manage Advertisements',
+  ]
 
-  const images = [um, mf, fm]
+  const images = [um, mf, fm, um]
 
   const handleButtonClick = (index) => {
     console.log(`Button ${index + 1} was clicked`)
@@ -198,6 +221,8 @@ const DataOfficerCollection = () => {
       setisCultivationsClicked(true)
     } else if (index === 2) {
       setisAdiDistribution(true)
+    } else if (index === 3) {
+      setAdvertisementClicked(true)
     }
   }
 
@@ -205,6 +230,7 @@ const DataOfficerCollection = () => {
     setUserAccountClicked(false)
     setisCultivationsClicked(false)
     setisAdiDistribution(false)
+    setAdvertisementClicked(false)
   }
 
   return (
@@ -249,6 +275,17 @@ const DataOfficerCollection = () => {
                   </Card.Body>
                 </Card>
               </Col>
+              <Col sm className="card-container-adminops">
+                <Card className="card">
+                  <Card.Img variant="top" src={images[3]} />
+                  <Card.Body className="card-body-adminops">
+                    <Card.Text>{tasks[3]}</Card.Text>
+                    <Button className="card-button-adminops" onClick={() => handleButtonClick(3)}>
+                      Open
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
             </Row>
           </Container>
         </div>
@@ -256,6 +293,7 @@ const DataOfficerCollection = () => {
       <div>{isUserAccountClicked ? <FarmerOperations /> : null}</div>
       <div>{isCultivationsClicked ? <FarmerOperations /> : null}</div>
       <div>{isAdiDistribution ? <AidDistributionOperations /> : null}</div>
+      <div>{isAdvertisementClicked ? <AdsOperations /> : null}</div>
     </div>
   )
 }
