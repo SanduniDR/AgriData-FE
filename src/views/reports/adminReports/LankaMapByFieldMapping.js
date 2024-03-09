@@ -34,6 +34,8 @@ function ChangeView({ center, zoom }) {
 const LankaMapByFieldMapping = () => {
   const center = [7.8731, 80.7718] // coordinates for Sri Lanka
   const [offices, setOffices] = useState([])
+  const [districts, setDistrict] = useState([])
+  const [filteredOffices, setFilteredOffices] = useState([])
   const [crops, setCrops] = useState([])
   const [loading, setLoading] = useState(false)
   const [records, setRecords] = useState([])
@@ -59,8 +61,6 @@ const LankaMapByFieldMapping = () => {
     district: '',
     office_id: '',
   })
-  const [districts, setDistrict] = useState([])
-  const [filteredOffices, setFilteredOffices] = useState([])
   const [mapKey, setMapKey] = useState(0)
   const [markersData, setMarkersData] = useState([])
   const sri_lanka_provinces = [
@@ -88,7 +88,9 @@ const LankaMapByFieldMapping = () => {
     setMapKey((prevKey) => prevKey + 1)
   }, [formData])
 
+  // The function passed to useEffect will run after the render is committed to the screen.
   useEffect(() => {
+    // Check if all necessary fields in formData are filled
     if (
       formData.year !== '' &&
       formData.crop_id !== '' &&
@@ -96,6 +98,7 @@ const LankaMapByFieldMapping = () => {
       formData.district !== '' &&
       formData.office_id !== ''
     ) {
+      // If all fields are filled, make a request to get the cultivation map info
       searchCultivationMapInfoByDistrictMonthlyOffice(
         formData.year,
         formData.crop_id,
@@ -104,31 +107,44 @@ const LankaMapByFieldMapping = () => {
         formData.office_id,
       )
         .then((response) => {
+          // If the request is successful (status code 200), update the markersData state
           if (response.status === 200) {
             setMarkersData(response.data)
             console.log('response', response.data)
           }
         })
-        .catch((error) => {})
+        .catch((error) => {
+          // If the request fails, do nothing
+        })
     }
+    // The array of dependencies. When one of these values changes, the function will be run again.
   }, [formData.year, formData.crop_id, formData.month, formData.district, formData.office_id])
 
+  // useEffect is a React Hook that performs side effects in function components.
+  // The function passed to useEffect will run after the render is committed to the screen.
   useEffect(() => {
+    // Retrieve the token from local storage
     const token = localStorage.getItem('token')
+
+    // Make a GET request to the /crop/crops endpoint
     axios
       .get(`${API_BASE_URL}/crop/crops`, {
+        // Include the token in the Authorization header
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
+        // If the request is successful (status code 200), update the crops state
         if (response.status === 200) {
           setCrops(response.data)
         }
       })
       .catch((error) => {
+        // If the request fails, log the error to the console
         console.log(error)
       })
+    // The empty array [] means this useEffect will run once when the component mounts, and not on every re-render.
   }, [])
 
   const handleTypeSelect = (event) => {
@@ -155,27 +171,38 @@ const LankaMapByFieldMapping = () => {
     }))
   }
 
+  // This function is called when the selected province changes.
   const handleProvinceChange = async (event) => {
     const { name, value } = event.target
+
+    // Update the formData state with the new selected province.
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }))
-    console.log(formData)
+
+    // Make an asynchronous request to get all offices and districts by the selected province.
     const response = await getAllOfficesAndDistrictsByProvince(value)
-    console.log(response)
+
+    // Update the offices and districts state with the data from the response.
     setOffices(response.data.offices)
     setDistrict(response.data.districts)
   }
 
+  // This function is called when the selected district changes.
   const handleDistrictChange = async (event) => {
     const { value } = event.target
+
+    // Update the formData state with the new selected district.
     setFormData((prevFormData) => ({
       ...prevFormData,
       district: value,
     }))
+
+    // Filter the offices by the selected district.
     const filteredOffices = filterOfficesByDistrict(offices, value)
-    console.log('filtered offices', filteredOffices)
+
+    // Update the filteredOffices state with the filtered offices.
     setFilteredOffices(filteredOffices)
   }
 

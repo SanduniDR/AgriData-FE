@@ -1,22 +1,25 @@
 // ProductListPage.js
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import ProductList from './ProductList'
 import Pagination from './Pagination'
 import './ProductListPage.css' // Import the CSS file for styling
-import PropTypes from 'prop-types'
 import { getAllAdvertisements } from 'src/api/AdsService'
 import { CContainer } from '@coreui/react'
 
 const ProductListPage = () => {
+  // Add state to store the products
   const [products, setProducts] = useState([])
+  // Add state to store the current page
   const [currentPage, setCurrentPage] = useState(1)
-  const productsPerPage = 5 // Adjust as needed
+  // Add state to store the number of products per page
+  const productsPerPage = 5
 
+  // Fetch products when the component mounts
   useEffect(() => {
     fetchProducts(currentPage)
   }, [])
 
+  // Fetch products from the API
   const fetchProducts = async (currentPage) => {
     try {
       const response = await getAllAdvertisements(currentPage, 10)

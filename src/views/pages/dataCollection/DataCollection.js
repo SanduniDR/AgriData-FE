@@ -14,6 +14,7 @@ import AidDistributionOperations from 'src/views/management/aid/distribution/Aid
 import FarmerOperations from 'src/views/management/farmer/FarmerOperations'
 import AdminMessageOperations from 'src/views/management/message/admin/AdminMessageOpreations'
 import AdsOperations from 'src/views/marketplace/AdsOperations'
+import FarmerAdsOperations from 'src/views/marketplace/FarmerAdsOperations'
 
 const DataAdminCollection = () => {
   const [isUserAccountClicked, setUserAccountClicked] = useState(false)
@@ -138,7 +139,7 @@ const DataGenericCollection = () => {
   const [isUserAccountClicked, setUserAccountClicked] = useState(false)
   const [isAddAdvertisementClicked, setAddAdvertisementClicked] = useState(false)
 
-  const tasks = ['Manage user accounts', 'Add advertisements']
+  const tasks = ['Manage user accounts', 'Manage advertisements']
 
   const images = [um, fm]
 
@@ -193,7 +194,7 @@ const DataGenericCollection = () => {
         </div>
       </div>
       <div>{isUserAccountClicked ? null : null}</div>
-      <div>{isAddAdvertisementClicked ? <AdsOperations /> : null}</div>
+      <div>{isAddAdvertisementClicked ? <FarmerAdsOperations /> : null}</div>
     </div>
   )
 }

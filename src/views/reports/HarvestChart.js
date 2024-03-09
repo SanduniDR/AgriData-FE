@@ -34,7 +34,7 @@ const HarvestChart = () => {
         <option value="2023">2023</option>
       </CFormSelect>
       <CChartBar
-        style={{ height: '300px', marginTop: '40px' }}
+        style={{ height: '300px', marginTop: '40px' }} //Component for the bar chart
         data={{
           labels: harvestData.map((data) => data.crop_name),
           datasets: [

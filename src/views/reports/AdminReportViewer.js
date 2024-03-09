@@ -27,9 +27,11 @@ import TotalTaxPayerReport from './adminReports/TotalTaxPayerReport'
 import AdminDisasterOverview from './adminReports/AdminDisasterOverview'
 import AdminAdvertisementServiceReport from './adminReports/AdminAdvertismentServiceReport'
 
+//Admin report viewer
 const AdminReportViewer = () => {
   const [activeKey, setActiveKey] = useState('')
 
+  //Handle the item click
   const handleItemClick = (key) => {
     setActiveKey(key)
   }
@@ -87,7 +89,7 @@ const AdminReportViewer = () => {
               </CListGroupItem>
               <CListGroupItem
                 className="blue-link"
-                onClick={() => handleItemClick('AdvertisementServiceReport')}
+                onClick={() => handleItemClick('AdvertisementServiceReport')} //Change the key
               >
                 Advertisement Overview Report
               </CListGroupItem>

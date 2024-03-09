@@ -41,6 +41,8 @@ import { API_BASE_URL } from 'src/Config'
 
 const Advertisement = () => {
   const navigate = useNavigate()
+  const [productImage, setProductImage] = useState(null)
+  const [ad_id, setAd_id] = useState('')
   const [formData, setFormData] = useState({
     type: '',
     title: '',
@@ -138,6 +140,45 @@ const Advertisement = () => {
     setShowModal(false)
   }
 
+  const uploadProductImage = async () => {
+    // Create a FormData instance
+    const data = new FormData()
+
+    // Append the productImage data
+    // Note: 'productImage' should match the name expected by the server
+    data.append('file', new Blob([new Uint8Array(productImage)]), 'image.jpg')
+
+    // Send the POST request
+    try {
+      let url = `${API_BASE_URL}/file/upload/product/` + ad_id
+      const response = await axios.post(url, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+
+      console.log(response.data)
+    } catch (error) {
+      console.error(error)
+      alert('Failed to upload the product image')
+    }
+  }
+
+  function handleFileChange(event) {
+    const file = event.target.files[0]
+    const reader = new FileReader()
+
+    reader.onload = function (event) {
+      const arrayBuffer = event.target.result
+      const uint8Array = new Uint8Array(arrayBuffer)
+      const byteArray = Array.from(uint8Array)
+      setProductImage(byteArray)
+    }
+
+    reader.readAsArrayBuffer(file)
+  }
+
   const handleCleanForm = () => {
     setFormData({
       type: '',
@@ -162,6 +203,12 @@ const Advertisement = () => {
 
   const [isFormEmpty, setIsFormEmpty] = useState(false)
   const token = localStorage.getItem('token')
+
+  useEffect(() => {
+    if (ad_id !== '') {
+      uploadProductImage()
+    }
+  }, [ad_id])
 
   useEffect(() => {
     if (Object.values(formData).some((value) => value !== '' || value !== null)) {
@@ -190,7 +237,8 @@ const Advertisement = () => {
         },
       })
       .then(function (response) {
-        console.log(response)
+        console.log(response.data.ad_id)
+        setAd_id(response.data.ad_id)
         alert('New advertisement was added Successfully!')
       })
       .catch(function (error) {
@@ -335,6 +383,16 @@ const Advertisement = () => {
                         onChange={handleInputChange}
                         name="telephone_no"
                         value={formData.telephone_no}
+                      />
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>Upload Product Image</CInputGroupText>
+                      <CFormInput
+                        type="file"
+                        id="fileInput"
+                        name="fileInput"
+                        accept=".png, .jpg, .bmp"
+                        onChange={handleFileChange}
                       />
                     </CInputGroup>
                     <div className="d-grid">

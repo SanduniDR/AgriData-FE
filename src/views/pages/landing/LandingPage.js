@@ -16,8 +16,6 @@ import {
 import AdminReport from '../reports/AdminReport'
 import OfficerReport from '../reports/OfficerReport'
 import ProductListPage from 'src/views/marketplace/forms/ProductListPage'
-import AdsOperations from 'src/views/marketplace/AdsOperations'
-// import LatestReports from 'src/components/landingpage/LatestReports' // Import your LatestReports component
 
 function LandingPage() {
   const { isValidUser, setIsValidUser } = useContext(UserContext)
@@ -27,38 +25,64 @@ function LandingPage() {
   const [isAdmin, setIsAdmin] = useState(false)
   const [isOfficer, setOIsOfficer] = useState(false)
 
+  //UseEffect to check if the user is valid
   useEffect(() => {
     if (isValidUser) {
-      const user = JSON.parse(localStorage.getItem('user'))
+      const user = JSON.parse(localStorage.getItem('user')) //Get the user from the local storage
       if (!user) {
-        setIsValidUser(false)
+        setIsValidUser(false) //If the user is not valid, set the valid user to false
       }
+      console.log('ValidUser: ', isValidUser)
+      console.log('User: ', user)
+      console.log('Role: ', user.role)
       setUser(user)
       setUserRole(user.role)
       if (user.role === 1) {
         setIsAdmin(true)
+        setOIsOfficer(false)
       } else if (user.role === 4) {
         setOIsOfficer(true)
+        setIsAdmin(false)
+      } else {
+        setIsAdmin(false)
+        setOIsOfficer(false)
       }
     }
-  }, [isValidUser, setIsValidUser])
+  }, [isValidUser, setIsValidUser]) //The useEffect will run when the isValidUser changes
 
-  const handleAboutContent = (navItem) => {
+  //Handle the navigation bar click
+  const handleContent = (navItem) => {
     setSelectedNavItem(navItem)
   }
 
+  useEffect(() => {
+    if (selectedNavItem === 'SignOut') {
+      handleSignOut()
+      setSelectedNavItem('Home')
+    }
+  }, [selectedNavItem])
+
+  const handleSignOut = () => {
+    setIsValidUser(false)
+    setIsAdmin(false)
+    setOIsOfficer(false)
+    localStorage.clear()
+    return <MainContent />
+  }
+
+  // returns` the landing page view
   return (
     <div>
       <DefaultLayout2>
         <div className="App-header">
-          <NavigationBar handleNavClick={handleAboutContent} />
+          <NavigationBar handleNavClick={handleContent} />
         </div>
         {selectedNavItem === 'About' && <About />}
         {selectedNavItem === 'Home' && <MainContent />}
         {selectedNavItem === 'Latest_Reports' &&
           (isAdmin ? <AdminReport /> : isOfficer ? <OfficerReport /> : <DefaultReportSet />)}
         {selectedNavItem === 'Contact' && <Contact />}
-        {selectedNavItem === 'DataCollection' &&
+        {selectedNavItem === 'DataCollection' && //Check the user role and display the relevant data collection page
           (isAdmin ? (
             <DataAdminCollection />
           ) : isOfficer ? (
@@ -66,7 +90,7 @@ function LandingPage() {
           ) : (
             <DataGenericCollection />
           ))}
-        {selectedNavItem === 'DataOfficerCollection' &&
+        {selectedNavItem === 'DataOfficerCollection' && // Check the user role and display the relevant data collection page
           (isOfficer ? <DataOfficerCollection /> : <></>)}
         {selectedNavItem === 'Free Advertising Support' && <ProductListPage />}
       </DefaultLayout2>
@@ -74,4 +98,5 @@ function LandingPage() {
   )
 }
 
+// Export the LandingPage component
 export default LandingPage

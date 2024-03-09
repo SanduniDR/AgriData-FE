@@ -251,15 +251,6 @@ const AdminMessageOperations = () => {
     }
   }, [messageSendingForm.district, messageSendingForm.officerList])
 
-  //   useEffect(() => {
-  //     if (messageSendingForm.officerList.length !== 0) {
-  //       setMsgSendingFormData((prevFormData) => ({
-  //         ...prevFormData,
-  //         mailList: messageSendingForm.officers.split(','),
-  //       }))
-  //     }
-  //   }, [messageSendingForm.district])
-
   const getOfficersByOfficeId = async () => {
     const response = await getOfficerDetailByOffice(messageSendingForm.office_id)
     const officerEmails = response.data.officers.map((officer) => officer.email)

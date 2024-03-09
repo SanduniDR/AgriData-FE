@@ -31,29 +31,30 @@ function NavigationBar({ handleNavClick }) {
     handleNavClick('Home')
   }
 
+  // Handle the sign out
   const handleSignOut = () => {
     setIsValidUser(false)
     localStorage.clear()
     setRole(0)
-    handleNavClick('Home')
+    handleNavClick('SignOut')
   }
 
+  //UseEffect to check if the user is valid
   useEffect(() => {
     if (isValidUser) {
-      const user = JSON.parse(localStorage.getItem('user'))
+      const user = JSON.parse(localStorage.getItem('user')) //Get the user from the local storage
       if (user && user.first_name) {
-        setUsername(user.first_name)
+        setUsername(user.first_name) //Set the username
         setRole(user.role)
         console.log(user)
       }
     } else {
       handleSignOut()
     }
-  }, [isValidUser])
+  }, [isValidUser]) //The useEffect will run when the isValidUser changes
 
   return (
     <div className="NavigationBar">
-      {/* <Container className="NavBarContainer"> */}
       <Navbar expand="lg" className="bg-body-tertiary">
         <Navbar.Brand href="#home" style={{ marginRight: '100px' }}>
           {' '}
@@ -87,7 +88,7 @@ function NavigationBar({ handleNavClick }) {
                   : null}
               </NavDropdown.Item>
               <NavDropdown.Item onClick={() => handleNavClick('Free Advertising Support')}>
-                View All published Advertisements from Farmers
+                View All Advertisements
               </NavDropdown.Item>
               <NavDropdown.Item onClick={() => handleNavClick('Data Analysis & Report Generation')}>
                 Data Analysis & Report Generation
@@ -119,7 +120,7 @@ function NavigationBar({ handleNavClick }) {
             <form className="form-inline justify-content-end">
               {isValidUser ? (
                 <NavDropdown title={username} id="basic-nav-dropdown" style={{ fontSize: '30px' }}>
-                  <NavDropdown.Item onClick={handleSignOut}>Settings</NavDropdown.Item>
+                  {/* <NavDropdown.Item onClick={handleSignOut}>Settings</NavDropdown.Item> */}
                   <NavDropdown.Item onClick={handleSignOut}>Sign out</NavDropdown.Item>
                 </NavDropdown>
               ) : (
@@ -136,7 +137,6 @@ function NavigationBar({ handleNavClick }) {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      {/* </Container> */}
       <LoginModal show={show} handleClose={() => setShow(false)} />
     </div>
   )

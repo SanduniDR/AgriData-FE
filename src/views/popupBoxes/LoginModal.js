@@ -167,9 +167,6 @@ function LoginModal({ show, handleClose }) {
             <Button variant="secondary" className="ml-auto" onClick={handleRegister}>
               Register
             </Button>
-            {/* <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button> */}
             <Button variant="primary" onClick={handleSubmit}>
               Sign In
             </Button>
