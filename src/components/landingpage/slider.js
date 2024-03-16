@@ -1,7 +1,6 @@
 import React from 'react'
 import Carousel from 'react-bootstrap/Carousel'
-//import ExampleCarouselImage1 from 'src/assets/landing_page/home-banner-background.png'
-import { SliderImage1, SliderImage2, SliderImage3 } from './sliderImage'
+import { SliderImage1, SliderImage2, SliderImage3, SliderImage4 } from './sliderImage'
 
 function UncontrolledSlider() {
   return (
@@ -15,7 +14,7 @@ function UncontrolledSlider() {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            fontSize: '6em',
+            fontSize: '5em',
             fontFamily: 'Protest Revolution',
           }}
         >
@@ -32,7 +31,7 @@ function UncontrolledSlider() {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            fontSize: '6em',
+            fontSize: '5em',
             fontFamily: 'Protest Revolution',
           }}
         >
@@ -49,13 +48,31 @@ function UncontrolledSlider() {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            fontSize: '6em',
+            fontSize: '5em',
             fontFamily: 'Protest Revolution',
             color: 'black',
           }}
         >
           <h3>Agricultural community & The Government Support</h3>
           <p>Trying to distribute aids where it needs and on time</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item>
+        <SliderImage4 text="Fourth slide" />
+        <Carousel.Caption
+          className="CarouselCaption"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            fontSize: '4em',
+            fontFamily: 'Protest Revolution',
+            color: 'white',
+          }}
+        >
+          <h3>Helps Agricultural Field officers</h3>
+          <p>Support farmer and the Government to make the Agricultural development</p>
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>

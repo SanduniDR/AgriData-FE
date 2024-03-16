@@ -3,7 +3,7 @@ import 'src/App.css'
 
 import { UserContext } from 'src'
 import MainContent from './MainContent'
-import DefaultLayout2 from 'src/layout/DefaultLayout2'
+import DefaultLayout from 'src/layout/DefaultLayout'
 import NavigationBar from 'src/components/landingpage/Navbar'
 import About from 'src/components/landingpage/About'
 import { DefaultReportSet, AdminReportSet } from 'src/views/reports/ReportSet'
@@ -73,7 +73,7 @@ function LandingPage() {
   // returns` the landing page view
   return (
     <div>
-      <DefaultLayout2>
+      <DefaultLayout>
         <div className="App-header">
           <NavigationBar handleNavClick={handleContent} />
         </div>
@@ -93,7 +93,7 @@ function LandingPage() {
         {selectedNavItem === 'DataOfficerCollection' && // Check the user role and display the relevant data collection page
           (isOfficer ? <DataOfficerCollection /> : <></>)}
         {selectedNavItem === 'Free Advertising Support' && <ProductListPage />}
-      </DefaultLayout2>
+      </DefaultLayout>
     </div>
   )
 }

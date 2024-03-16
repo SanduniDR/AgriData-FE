@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import Image1 from 'src/assets/landing_page/slideshow/image1.jpg'
 import Image2 from 'src/assets/landing_page/slideshow/image2.jpg'
 import Image3 from 'src/assets/landing_page/slideshow/image3.jpg'
+import Image4 from 'src/assets/landing_page/slideshow/image4.jpg'
 
 function SliderImage1({ text }) {
   return (
@@ -29,6 +30,14 @@ function SliderImage3({ text }) {
   )
 }
 
+function SliderImage4({ text }) {
+  return (
+    <div>
+      <Image src={Image4} alt={text} width="100%" height="100%" />
+    </div>
+  )
+}
+
 SliderImage1.propTypes = {
   text: PropTypes.string.isRequired,
 }
@@ -36,8 +45,11 @@ SliderImage1.propTypes = {
 SliderImage2.propTypes = {
   text: PropTypes.string.isRequired,
 }
-
 SliderImage3.propTypes = {
   text: PropTypes.string.isRequired,
 }
-export { SliderImage1, SliderImage2, SliderImage3 }
+
+SliderImage4.propTypes = {
+  text: PropTypes.string.isRequired,
+}
+export { SliderImage1, SliderImage2, SliderImage3, SliderImage4 }
