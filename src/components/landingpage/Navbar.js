@@ -15,6 +15,7 @@ function NavigationBar({ handleNavClick }) {
   const { isValidUser, setIsValidUser } = useContext(UserContext)
   const [username, setUsername] = useState('')
   const [role, setRole] = useState(0)
+  const [show, setShow] = useState(false)
 
   useEffect(() => {
     if (!isValidUser) {
@@ -22,8 +23,6 @@ function NavigationBar({ handleNavClick }) {
       localStorage.clear()
     }
   }, [isValidUser])
-
-  const [show, setShow] = useState(false)
 
   const handleSignIn = () => {
     console.log('Sign In')

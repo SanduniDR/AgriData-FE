@@ -2,11 +2,12 @@ import React from 'react'
 import { CCard, CCardBody, CCardHeader, CCardText, CButton, CRow, CCol } from '@coreui/react'
 import PropTypes from 'prop-types'
 import testImage from './testImages/product1.jpg'
-import testImage2 from './testImages/product2.jpg'
-import testImage3 from './testImages/product3.jpg'
+import paddy from './testImages/paddy.jpg'
+import tea from './testImages/tea.jpg'
+import veg from './testImages/product3.jpg'
 
 // Import test images and this will be removed - test purpose only
-const images = [testImage, testImage2, testImage3]
+const images = [paddy]
 
 const ProductList = ({ products }) => {
   const cardWidth = 150
