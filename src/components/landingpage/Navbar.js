@@ -10,6 +10,7 @@ import 'src/App.css'
 import { UserContext } from 'src'
 import LoginModal from 'src/views/popupBoxes/LoginModal'
 import PropTypes from 'prop-types'
+import { ToastContainer, toast } from 'react-toastify'
 
 function NavigationBar({ handleNavClick }) {
   const { isValidUser, setIsValidUser } = useContext(UserContext)
@@ -54,6 +55,7 @@ function NavigationBar({ handleNavClick }) {
 
   return (
     <div className="NavigationBar">
+      <ToastContainer />
       <Navbar expand="lg" className="bg-body-tertiary">
         <Navbar.Brand style={{ marginRight: '100px' }}>
           {' '}
@@ -115,6 +117,7 @@ function NavigationBar({ handleNavClick }) {
               Contact
             </Nav.Link>
           </Nav>
+
           <Nav className="justify-content-end" style={{ marginRight: '5px' }}>
             <form className="form-inline justify-content-end">
               {isValidUser ? (

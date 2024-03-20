@@ -17,6 +17,7 @@ import {
 import AdminReport from '../reports/AdminReport'
 import OfficerReport from '../reports/OfficerReport'
 import ProductListPage from 'src/views/marketplace/forms/ProductListPage'
+import RequestDataTable from 'src/components/landingpage/RequestDataTable'
 
 function LandingPage() {
   const { isValidUser, setIsValidUser } = useContext(UserContext)
@@ -80,7 +81,8 @@ function LandingPage() {
         </div>
         {selectedNavItem === 'About' && <About />}
         {selectedNavItem === 'Home' && <MainContent />}
-        {selectedNavItem === 'Request Data' && <RequestData />}
+        {selectedNavItem === 'Request Data' &&
+          (isAdmin ? <RequestDataTable /> : isOfficer ? <></> : <RequestData />)}
         {selectedNavItem === 'Latest_Reports' &&
           (isAdmin ? <AdminReport /> : isOfficer ? <OfficerReport /> : <DefaultReportSet />)}
         {selectedNavItem === 'Contact' && <Contact />}
