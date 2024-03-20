@@ -6,6 +6,7 @@ import MainContent from './MainContent'
 import DefaultLayout from 'src/layout/DefaultLayout'
 import NavigationBar from 'src/components/landingpage/Navbar'
 import About from 'src/components/landingpage/About'
+import RequestData from 'src/components/landingpage/RequestData'
 import { DefaultReportSet, AdminReportSet } from 'src/views/reports/ReportSet'
 import Contact from 'src/components/landingpage/Contact'
 import {
@@ -79,6 +80,7 @@ function LandingPage() {
         </div>
         {selectedNavItem === 'About' && <About />}
         {selectedNavItem === 'Home' && <MainContent />}
+        {selectedNavItem === 'Request Data' && <RequestData />}
         {selectedNavItem === 'Latest_Reports' &&
           (isAdmin ? <AdminReport /> : isOfficer ? <OfficerReport /> : <DefaultReportSet />)}
         {selectedNavItem === 'Contact' && <Contact />}

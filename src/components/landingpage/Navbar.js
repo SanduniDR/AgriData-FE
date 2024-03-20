@@ -55,7 +55,7 @@ function NavigationBar({ handleNavClick }) {
   return (
     <div className="NavigationBar">
       <Navbar expand="lg" className="bg-body-tertiary">
-        <Navbar.Brand href="#home" style={{ marginRight: '100px' }}>
+        <Navbar.Brand style={{ marginRight: '100px' }}>
           {' '}
           <Image src={Logo} rounded width={100} height={50} />
         </Navbar.Brand>

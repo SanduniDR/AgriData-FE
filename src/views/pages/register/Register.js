@@ -15,16 +15,15 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { API_BASE_URL } from 'src/Config'
-import { cilLockLocked, cilUser, cilCloudUpload, cilCalendar, cilCreditCard } from '@coreui/icons'
+import PropTypes from 'prop-types'
 
-const Register = () => {
-  const navigate = useNavigate()
+const Register = ({ handleUserRegistrationCompletion }) => {
   const [formData, setFormData] = useState({
     first_name: '',
     middle_name: '',
     last_name: '',
     dob: '',
-    profileImage: null,
+    profileImage: 'N/A',
     email: '',
     nic: '',
     password: '',
@@ -32,6 +31,7 @@ const Register = () => {
   })
   const [isFormEmpty, setIsFormEmpty] = useState(false)
   const [isPasswordMatch, setIsPasswordMatch] = useState(false)
+  const [isSuccessfulRegistration, setIsSuccessfulRegistration] = useState(false)
 
   useEffect(() => {
     if (formData.password === formData.repeatPassword) {
@@ -47,6 +47,7 @@ const Register = () => {
       ...prevFormData,
       [name]: value,
     }))
+    setIsSuccessfulRegistration(false)
     console.log(formData)
   }
 
@@ -80,6 +81,10 @@ const Register = () => {
       .post(`${API_BASE_URL}/user/register`, formData)
       .then(function (response) {
         console.log(response)
+        setIsSuccessfulRegistration(true)
+        if (response.status === 201) {
+          handleUserRegistrationCompletion(response.data.user)
+        }
         alert('User Registered Successfully!')
       })
       .catch(function (error) {
@@ -114,9 +119,7 @@ const Register = () => {
                   <h1>Register</h1>
                   <p className="text-medium-emphasis">Create your account</p>
                   <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
-                    <CInputGroupText>
-                      <CIcon icon={cilUser} />
-                    </CInputGroupText>
+                    <CInputGroupText>First Name</CInputGroupText>
                     <CFormInput
                       placeholder="First name"
                       autoComplete="First name"
@@ -126,9 +129,7 @@ const Register = () => {
                     />
                   </CInputGroup>
                   <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
-                    <CInputGroupText>
-                      <CIcon icon={cilUser} />
-                    </CInputGroupText>
+                    <CInputGroupText>Middle Name</CInputGroupText>
                     <CFormInput
                       placeholder="Middle name"
                       autoComplete="Middle name"
@@ -138,9 +139,7 @@ const Register = () => {
                     />
                   </CInputGroup>
                   <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
-                    <CInputGroupText>
-                      <CIcon icon={cilUser} />
-                    </CInputGroupText>
+                    <CInputGroupText>Last Name</CInputGroupText>
                     <CFormInput
                       placeholder="Last name"
                       autoComplete="Last name"
@@ -150,9 +149,7 @@ const Register = () => {
                     />
                   </CInputGroup>
                   <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
-                    <CInputGroupText>
-                      <CIcon icon={cilCreditCard} />
-                    </CInputGroupText>
+                    <CInputGroupText>NIC</CInputGroupText>
                     <CFormInput
                       placeholder="NIC"
                       autoComplete="NIC"
@@ -162,9 +159,7 @@ const Register = () => {
                     />
                   </CInputGroup>
                   <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
-                    <CInputGroupText>
-                      <CIcon icon={cilCalendar} />
-                    </CInputGroupText>
+                    <CInputGroupText>DoB</CInputGroupText>
                     <CFormInput
                       type="date"
                       placeholder="Date of Birth"
@@ -174,7 +169,7 @@ const Register = () => {
                       value={formData.dob}
                     />
                   </CInputGroup>
-                  <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
+                  {/* <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
                     <CInputGroupText>
                       <CIcon icon={cilCloudUpload} />
                     </CInputGroupText>
@@ -186,9 +181,9 @@ const Register = () => {
                       name="profileImage"
                       value={formData.profileImage ? formData.profileImage.name : ''}
                     />
-                  </CInputGroup>
+                  </CInputGroup> */}
                   <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
-                    <CInputGroupText>@</CInputGroupText>
+                    <CInputGroupText>E-mail</CInputGroupText>
                     <CFormInput
                       placeholder="Email"
                       autoComplete="email"
@@ -198,9 +193,7 @@ const Register = () => {
                     />
                   </CInputGroup>
                   <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
-                    <CInputGroupText>
-                      <CIcon icon={cilLockLocked} />
-                    </CInputGroupText>
+                    <CInputGroupText>Password</CInputGroupText>
                     <CFormInput
                       type="password"
                       placeholder="Password"
@@ -211,9 +204,7 @@ const Register = () => {
                     />
                   </CInputGroup>
                   <CInputGroup className={`mb-4 ${isFormEmpty ? 'border border-danger' : ''}`}>
-                    <CInputGroupText>
-                      <CIcon icon={cilLockLocked} />
-                    </CInputGroupText>
+                    <CInputGroupText>Repeat Password</CInputGroupText>
                     <CFormInput
                       type="password"
                       placeholder="Repeat password"
@@ -225,7 +216,11 @@ const Register = () => {
                     />
                   </CInputGroup>
                   <div className="d-grid">
-                    <CButton color="success" onClick={handleSubmit} disabled={!isPasswordMatch}>
+                    <CButton
+                      color="success"
+                      onClick={handleSubmit}
+                      disabled={!isPasswordMatch || isSuccessfulRegistration}
+                    >
                       Create Account
                     </CButton>
                   </div>
@@ -238,5 +233,7 @@ const Register = () => {
     </div>
   )
 }
-
+Register.propTypes = {
+  handleUserRegistrationCompletion: PropTypes.func,
+}
 export default Register

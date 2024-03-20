@@ -59,8 +59,8 @@ function StatesDataLayer() {
 
       info.current.update = function (props) {
         this._div.innerHTML =
-          '<h4 class="mapBanner" style="z-index: 500;"> District Overall Cultivation Info 2024/h1 </h4>' +
-          (props ? '<b>Paddy(Acrs):' + props.total_cultivated : 'Hover over a district')
+          '<h4 class="mapBanner" style="z-index: 500;"> District Overall Cultivation Info 2024 </h4>' +
+          (props ? '<b>Paddy(Acrs):' + props.total_cultivated : '')
       }
 
       info.current.addTo(map)

@@ -51,7 +51,9 @@ const MainContent = () => {
             innovation, increase productivity, and achieve sustainable growth in agriculture.
           </p>
         </div>
-        <div className="map-container">{/* <LankaMap /> */}</div>
+        <div className="map-container">
+          <LankaMap />
+        </div>
       </div>
       <div className="Report-home-advertising">
         <Card style={{ width: '18rem', margin: '30px' }}>

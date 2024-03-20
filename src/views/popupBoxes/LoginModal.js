@@ -100,33 +100,42 @@ function LoginModal({ show, handleClose }) {
         })
     }
   }
+
+  const handleModalClose = () => {
+    setIsRegisterClicked(false)
+    handleClose()
+  }
+
   return (
     <div>
       <ToastContainer />
       {isRegisterClicked ? (
         <Modal
           show={show}
-          onHide={handleClose}
+          onHide={handleModalClose}
           size="lg"
           aria-labelledby="contained-modal-title-vcenter"
           centered
         >
           <Modal.Header closeButton>
-            <Modal.Title>Sign In</Modal.Title>
+            <Modal.Title>Register</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Register />
+            <Register
+              handleUserRegistrationCompletion={() => null}
+              handleRegistrationFormClose={() => setIsRegisterClicked(false)}
+            />
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" className="ml-auto" onClick={handleRegister}>
+            {/* <Button variant="secondary" className="ml-auto" onClick={handleRegister}>
               Register
-            </Button>
+            </Button> */}
             {/* <Button variant="secondary" onClick={handleClose}>
               Close
             </Button> */}
-            <Button variant="primary" onClick={handleSubmit}>
+            {/* <Button variant="primary" onClick={handleSubmit}>
               Sign In
-            </Button>
+            </Button> */}
           </Modal.Footer>
         </Modal>
       ) : (

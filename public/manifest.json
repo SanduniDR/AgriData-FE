@@ -1,6 +1,7 @@
-{
-  "short_name": "AgriData React",
-  "name": "AgriData React",
+
+{ 
+   "short_name": "AgriData React",
+  "name": "Ceylon AgriData",
   "icons": [
     {
       "src": "./assets/img/favicon.png",
