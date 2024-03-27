@@ -7,6 +7,7 @@ import backgroundImageMapContainer from 'src/assets/landing_page/home-banner-bac
 import img1 from 'src/assets/landing_page/Footer_Bar/img1.jpg'
 import img2 from 'src/assets/landing_page/Footer_Bar/img2.jpg'
 import img3 from 'src/assets/landing_page/Footer_Bar/img3.jpg'
+import img5 from 'src/assets/landing_page/Footer_Bar/img5.jpg'
 import { Card } from 'react-bootstrap'
 
 const MainContent = () => {
@@ -32,7 +33,7 @@ const MainContent = () => {
               color: 'white',
             }}
           >
-            Agricultural Data Collection & Analysis
+            Agricultural Data Collection & Representation
           </h3>
           <p
             style={{
@@ -43,7 +44,8 @@ const MainContent = () => {
               padding: '20px',
             }}
           >
-            Welcome to our Agricultural Data Collection & Analysis platform,
+            Welcome to Ceylon AgriData, the cloud-based system for reliable Agri Data collecting and
+            Representation platform.
             <br /> where fast information services empower decision-making. Our intuitive tools
             streamline data collection and analysis,
             <br />
@@ -59,8 +61,15 @@ const MainContent = () => {
         <Card style={{ width: '18rem', margin: '30px' }}>
           <Card.Img variant="top" src={img1} />
           <Card.Body>
-            <Card.Title>Free Advertising</Card.Title>
+            <Card.Title>Free Advertising Service</Card.Title>
             <Card.Text>We support our farmers to advertise their products for free.</Card.Text>
+          </Card.Body>
+        </Card>
+        <Card style={{ width: '18rem', margin: '30px' }}>
+          <Card.Img variant="top" src={img5} />
+          <Card.Body>
+            <Card.Title>Agricultural Data Solution</Card.Title>
+            <Card.Text>We offer a centralized data storage solution.</Card.Text>
           </Card.Body>
         </Card>
         <Card style={{ width: '18rem', margin: '30px' }}>
@@ -68,7 +77,7 @@ const MainContent = () => {
           <Card.Body>
             <Card.Title>Agricultural Aid</Card.Title>
             <Card.Text>
-              Supporting agricultural Aid distribution on time to the right place.
+              Supporting agricultural Aid distribution on timely manner to the right place.
             </Card.Text>
           </Card.Body>
         </Card>

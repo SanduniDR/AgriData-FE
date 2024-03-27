@@ -35,5 +35,3 @@ createRoot(document.getElementById('root')).render(
     </UserProvider>
   </Provider>,
 )
-
-reportWebVitals(console.log)

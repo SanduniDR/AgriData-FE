@@ -21,34 +21,15 @@ const FarmerAdsOperations = () => {
               Advertisements
             </CNavLink>
           </CNavItem>
-          <CNavItem role="presentation">
-            <CNavLink
-              active={activeKey === 3}
-              component="button"
-              role="tab"
-              aria-controls="all-tab-pane"
-              aria-selected={activeKey === 2}
-              onClick={() => setActiveKey(2)}
-            >
-              All Advertisements
-            </CNavLink>
-          </CNavItem>
         </CNav>
       </CCardHeader>
       <CTabContent>
         <CTabPane role="tabpanel" aria-labelledby="ads-tab-pane" visible={activeKey === 1}>
           <Advertisement />
         </CTabPane>
-        <CTabPane role="tabpanel" aria-labelledby="ads-tab-pane" visible={activeKey === 2}>
-          <ProductListPage />
-        </CTabPane>
       </CTabContent>
     </CCard>
   )
-}
-
-FarmerAdsOperations.propTypes = {
-  // Add prop types if needed
 }
 
 export default FarmerAdsOperations

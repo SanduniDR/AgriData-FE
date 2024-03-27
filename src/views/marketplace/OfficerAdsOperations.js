@@ -3,6 +3,7 @@ import { CCard, CCardHeader, CNav, CNavItem, CNavLink, CTabContent, CTabPane } f
 import Advertisement from './forms/Advertisement'
 import AdvertisementApproval from './forms/AdvertisementApproval'
 import ProductListPage from './forms/ProductListPage'
+
 const AdsOperations = () => {
   const [activeKey, setActiveKey] = useState(1)
 
@@ -19,7 +20,7 @@ const AdsOperations = () => {
               aria-selected={activeKey === 1}
               onClick={() => setActiveKey(1)}
             >
-              Advertisements
+              Manage Advertisements
             </CNavLink>
           </CNavItem>
           <CNavItem role="presentation">
@@ -31,19 +32,7 @@ const AdsOperations = () => {
               aria-selected={activeKey === 2}
               onClick={() => setActiveKey(2)}
             >
-              Approvals
-            </CNavLink>
-          </CNavItem>
-          <CNavItem role="presentation">
-            <CNavLink
-              active={activeKey === 3}
-              component="button"
-              role="tab"
-              aria-controls="all-tab-pane"
-              aria-selected={activeKey === 3}
-              onClick={() => setActiveKey(3)}
-            >
-              All Advertisements
+              Advertisements Approvals
             </CNavLink>
           </CNavItem>
         </CNav>
@@ -55,16 +44,9 @@ const AdsOperations = () => {
         <CTabPane role="tabpanel" aria-labelledby="ads-tab-pane" visible={activeKey === 2}>
           <AdvertisementApproval />
         </CTabPane>
-        <CTabPane role="tabpanel" aria-labelledby="ads-tab-pane" visible={activeKey === 3}>
-          <ProductListPage />
-        </CTabPane>
       </CTabContent>
     </CCard>
   )
-}
-
-AdsOperations.propTypes = {
-  // Add prop types if needed
 }
 
 export default AdsOperations

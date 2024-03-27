@@ -21,12 +21,15 @@ function LoginModal({ show, handleClose }) {
     setIsRegisterClicked(!isRegisterClicked)
   }
 
+  //sending Login Request to api
   const handleSubmit = async () => {
+    //validate username:email and password
     if (username.length === 0) {
-      alert('Email has left Blank!')
+      alert('Email is Blank!')
     } else if (password.length === 0) {
-      alert('password has left Blank!')
+      alert('Password is Empty')
     } else {
+      //send api call
       await axios
         .post(`${API_BASE_URL}/user/login`, {
           email: username,
@@ -35,7 +38,6 @@ function LoginModal({ show, handleClose }) {
         .then(function (response) {
           console.log(response)
           if (response.data.token) {
-            // Validate the user with the token
             axios
               .post(
                 `${API_BASE_URL}/user/validate`,
@@ -58,7 +60,7 @@ function LoginModal({ show, handleClose }) {
                   handleClose()
                   setUsername('')
                   setPassword('')
-                  toast('Sign in successful!', {
+                  toast('Sign In Successful !', {
                     position: 'bottom-right',
                     autoClose: 4000,
                     hideProgressBar: false,
@@ -68,33 +70,39 @@ function LoginModal({ show, handleClose }) {
                     progress: undefined,
                   })
                 } else {
-                  toast('Sign in Failure!')
-                  alert('User validation failed, please log in again or contact Admin')
+                  toast('Sign In Failure !', {
+                    position: 'bottom-right',
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  })
+                  alert('User Validation Fail!')
                 }
               })
               .catch(function (validateError) {
                 console.log(validateError, 'validateError')
-                alert('Error validating token')
+                alert('Error Validating Token')
                 setIsValidUser(false)
               })
           } else {
-            alert('Invalid token')
+            alert('Invalid token.')
             setIsValidUser(false)
           }
         })
         .catch(function (error) {
-          console.log(error, 'error')
+          console.log(error, 'ErrorLogin')
           if (error.response) {
-            if (error.response.status === 401) {
-              alert('Invalid credentials, please try again.')
+            if (error.response.status === 404) {
+              alert('Invalid credentials, please try again!')
+              setIsValidUser(false)
+              setUsername('')
+              setPassword('')
             }
-          } else if (error instanceof AxiosError) {
-            alert('An network occurred. Please try again later')
-          } else if (error.code === 'ECONNREFUSED') {
-            alert('Connection refused. Please check your network connection.')
           } else {
-            console.log(error)
-            alert('An error occurred. Please try again later.')
+            alert('Login Failed!, Please check your credentials or network connection.')
           }
         })
     }
@@ -109,6 +117,7 @@ function LoginModal({ show, handleClose }) {
     <div>
       <ToastContainer />
       {isRegisterClicked ? (
+        // Register Modal
         <Modal
           show={show}
           onHide={handleModalClose}

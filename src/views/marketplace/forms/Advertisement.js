@@ -308,9 +308,7 @@ const Advertisement = () => {
                       />
                     </CInputGroup>
                     <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
-                      <CInputGroupText>
-                        <CIcon icon={cilFork} />
-                      </CInputGroupText>
+                      <CInputGroupText>Title </CInputGroupText>
                       <CFormInput
                         placeholder="Title"
                         autoComplete="Title"
@@ -416,6 +414,7 @@ const Advertisement = () => {
         </CContainer>
       ) : (
         <CContainer>
+          {/* Button for add new advertisements by officer */}
           <CRow className="justify-content-center">
             <CCol xs="auto" className={'mb-3'}>
               <CButton color="success" onClick={handleAddAdvertisement}>
@@ -485,7 +484,7 @@ const Advertisement = () => {
                                 color="danger"
                                 onClick={() => handleDelete(ad.ad_id)}
                               >
-                                <CIcon icon={cilTrash} />
+                                Delete{' '}
                               </CButton>
                               {/* <CButton color="info" onClick={() => handlePenClick(ad)}>
                                 <CIcon icon={cilPencil} />

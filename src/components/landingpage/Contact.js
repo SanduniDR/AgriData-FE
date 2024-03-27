@@ -20,7 +20,7 @@ const Contact = () => {
           >
             Contact Details:
             <br />
-            Email:sandunidlishika@gmail.com
+            Name: L.R.S.D.Rathnayake & Email: sandunidlishika@gmail.com
             <br />
           </p>
         </div>

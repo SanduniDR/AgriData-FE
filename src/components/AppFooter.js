@@ -8,12 +8,16 @@ const AppFooter = () => {
         <a href="https://cmb.ac.lk/" target="_blank" rel="noopener noreferrer">
           UCSC - University of Colombo School of Computing
         </a>
-        <span className="ms-1">&copy; 2020 MIT Final Project</span>
+        <span className="ms-1">&copy; 2024 MIT Final Project</span>
       </div>
       <div className="ms-auto">
         <span className="me-1">Supervised By</span>
-        <a href="https://coreui.io/react" target="_blank" rel="noopener noreferrer">
-          Dr Noel Fernando
+        <a
+          href="https://scholar.google.com/citations?user=116_3ZIAAAAJ&hl=en"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Prof. M G Noel A S Fernando
         </a>
       </div>
     </CFooter>

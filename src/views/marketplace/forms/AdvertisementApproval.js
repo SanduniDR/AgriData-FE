@@ -80,7 +80,7 @@ const AdvertisementApproval = () => {
     verified_officer_id: '',
     image_link: '',
   })
-
+  const [isApproveSuccess, setIsApproveSuccess] = useState(false)
   const handleInputChange = (event) => {
     const { name, value } = event.target
     setFormData((prevFormData) => ({
@@ -131,6 +131,10 @@ const AdvertisementApproval = () => {
   useEffect(() => {
     handleSubmit()
   }, [])
+
+  useEffect(() => {
+    handleSubmit()
+  }, [isApproveSuccess])
 
   const handleSubmit = async () => {
     const token = localStorage.getItem('token')
@@ -229,7 +233,7 @@ const AdvertisementApproval = () => {
     const response = await approveAdvertisement(currentRecord.ad_id)
     console.log(response)
     if (response.status === 200) {
-      alert('Advertisement updated successfully.')
+      setIsApproveSuccess(true)
     } else {
       alert('Advertisement update failed.')
     }
@@ -281,7 +285,7 @@ const AdvertisementApproval = () => {
                           </CTableDataCell>
                           <CTableDataCell>
                             <CButton color="info" onClick={() => handlePenClick(ad)}>
-                              <CIcon icon={cilPencil} />
+                              Approve{' '}
                             </CButton>
                           </CTableDataCell>
                         </CTableRow>

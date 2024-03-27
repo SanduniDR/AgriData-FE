@@ -82,7 +82,7 @@ function LandingPage() {
         {selectedNavItem === 'About' && <About />}
         {selectedNavItem === 'Home' && <MainContent />}
         {selectedNavItem === 'Request Data' &&
-          (isAdmin ? <RequestDataTable /> : isOfficer ? <></> : <RequestData />)}
+          (isAdmin ? <RequestDataTable /> : isOfficer ? <RequestData /> : <RequestData />)}
         {selectedNavItem === 'Latest_Reports' &&
           (isAdmin ? <AdminReport /> : isOfficer ? <OfficerReport /> : <DefaultReportSet />)}
         {selectedNavItem === 'Contact' && <Contact />}

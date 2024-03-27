@@ -52,4 +52,5 @@ SliderImage3.propTypes = {
 SliderImage4.propTypes = {
   text: PropTypes.string.isRequired,
 }
+
 export { SliderImage1, SliderImage2, SliderImage3, SliderImage4 }

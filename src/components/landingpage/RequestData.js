@@ -1,4 +1,5 @@
-import { React, useEffect, useState } from 'react'
+import { React, useEffect, useState, useContext } from 'react'
+import { UserContext } from 'src'
 import axios from 'axios'
 import { API_BASE_URL } from 'src/Config'
 import {
@@ -26,6 +27,20 @@ export default function RequestData() {
   const [isFormEmpty, setIsFormEmpty] = useState(false)
   const [isRegistered, setIsRegistered] = useState(false)
   const [registeredUser, setRegisteredUser] = useState(null)
+  const { isValidUser, setIsValidUser } = useContext(UserContext)
+
+  //get email and user id of a signed in user: farmer or researcher
+  useEffect(() => {
+    if (isValidUser) {
+      const user = JSON.parse(localStorage.getItem('user')) //Get the user from the local storage
+      console.log(user)
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        ['email']: user.email,
+        ['user_id']: user.user_id,
+      }))
+    }
+  }, [isValidUser])
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -72,7 +87,7 @@ export default function RequestData() {
         <CRow className="justify-content-center">
           <CCol xs={6}>
             <CCard>
-              {!isRegistered ? (
+              {!isRegistered && !isValidUser ? (
                 <div>
                   <CCardBody>
                     <CCardTitle>Please register to request data. </CCardTitle>

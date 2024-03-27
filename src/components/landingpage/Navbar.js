@@ -59,7 +59,7 @@ function NavigationBar({ handleNavClick }) {
       <Navbar expand="lg" className="bg-body-tertiary">
         <Navbar.Brand style={{ marginRight: '100px' }}>
           {' '}
-          <Image src={Logo} rounded width={100} height={50} />
+          <Image src={Logo} rounded width={120} height={60} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -85,15 +85,15 @@ function NavigationBar({ handleNavClick }) {
                   : role === 4
                   ? 'Agricultural Data Management - Officer'
                   : role === 5
-                  ? 'Agricultural Data Management - Farmer'
+                  ? 'Publish an Advertisement'
                   : null}
               </NavDropdown.Item>
               <NavDropdown.Item onClick={() => handleNavClick('Free Advertising Support')}>
-                View All Advertisements
+                View Published Advertisements
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={() => handleNavClick('Data Analysis & Report Generation')}>
+              {/* <NavDropdown.Item onClick={() => handleNavClick('Data Analysis & Report Generation')}>
                 Data Analysis & Report Generation
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
             </NavDropdown>
             &nbsp;&nbsp;
             <NavDropdown title="Reports" id="basic-nav-dropdown" style={{ fontSize: '30px' }}>
@@ -122,7 +122,7 @@ function NavigationBar({ handleNavClick }) {
             <form className="form-inline justify-content-end">
               {isValidUser ? (
                 <NavDropdown title={username} id="basic-nav-dropdown" style={{ fontSize: '30px' }}>
-                  {/* <NavDropdown.Item onClick={handleSignOut}>Settings</NavDropdown.Item> */}
+                  &nbsp;&nbsp;&nbsp;
                   <NavDropdown.Item onClick={handleSignOut}>Sign out</NavDropdown.Item>
                 </NavDropdown>
               ) : (

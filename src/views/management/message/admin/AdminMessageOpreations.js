@@ -540,16 +540,17 @@ const AdminMessageOperations = () => {
                   <CForm>
                     <h1>Search Mail information</h1>
                     <p className="text-medium-emphasis">Filter Mail records</p>
-                    <CFormCheck
-                      className="radio-border"
-                      type="radio"
-                      name="searchOptionSelectionRadio"
-                      id="searchOptionSelectionRadio2"
-                      onChange={handleRadioChange}
-                      value="true"
-                      label="Get all records with no filters"
-                      disabled={true}
-                    />
+                    <div className="radio-border">
+                      <CFormCheck
+                        type="radio"
+                        name="searchOptionSelectionRadio"
+                        id="searchOptionSelectionRadio2"
+                        onChange={handleRadioChange}
+                        value="true"
+                        label="Get all records with no filters"
+                        disabled={true}
+                      />
+                    </div>
                     <div className="radio-border">
                       <CFormCheck
                         type="radio"

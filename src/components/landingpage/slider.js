@@ -18,7 +18,7 @@ function UncontrolledSlider() {
             fontFamily: 'Protest Revolution',
           }}
         >
-          <h3>Agricultural Data Collection & Analysis</h3>
+          <h3>Agricultural Data Collection & Representation</h3>
           <p>Empowering decision making with fast Information Service</p>
         </Carousel.Caption>
       </Carousel.Item>
@@ -35,8 +35,8 @@ function UncontrolledSlider() {
             fontFamily: 'Protest Revolution',
           }}
         >
-          <h3>Advertising Portal</h3>
-          <p>Exposing our product to the world</p>
+          <h3>Free Advertising Portal</h3>
+          <p>Exposing our farmers products to the world</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>

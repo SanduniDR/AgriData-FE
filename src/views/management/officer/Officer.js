@@ -25,10 +25,6 @@ import {
   CModalTitle,
   CModalBody,
 } from '@coreui/react'
-
-import CIcon from '@coreui/icons-react'
-import { cilTrash, cilFork, cilPencil } from '@coreui/icons'
-
 import { addOfficer, searchOfficers, deleteOfficer, updateOfficer } from 'src/api/UserService'
 
 const Officer = () => {
@@ -36,12 +32,12 @@ const Officer = () => {
   const [formData, setFormData] = useState({
     user_id: '',
     employee_id: '',
+    managed_by_employee_id: '',
     agri_office_id: '',
     service_start_date: '',
     field_area_id: '',
     district: '',
   })
-
   const [officers, setOfficers] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
@@ -56,6 +52,10 @@ const Officer = () => {
     district: '',
   })
   const [isAllSearchClicked, setIsAllSearchClicked] = useState(false)
+  const [isFormEmpty, setIsFormEmpty] = useState(false)
+  const token = localStorage.getItem('token')
+
+  //Handle radio button click
   const handleRadioChange = (event) => {
     if (event.target.value === 'true') {
       setIsAllSearchClicked(true)
@@ -64,6 +64,7 @@ const Officer = () => {
     }
   }
 
+  //Handle the form when no filter fields added
   const handleFormHasNoData = () => {
     if (Object.values(formData).every((value) => value === '' || value === null)) {
       setIsFormEmpty(true)
@@ -76,6 +77,7 @@ const Officer = () => {
     }
   }
 
+  //set form data while user inputs data
   const handleInputChange = (event) => {
     const { name, value } = event.target
     setFormData((prevFormData) => ({
@@ -85,6 +87,8 @@ const Officer = () => {
     console.log(formData)
     setOfficers([])
   }
+
+  //handle update fields of update form
   const handleUpdateInputChange = (event) => {
     setCurrentRecord({
       ...currentRecord,
@@ -92,6 +96,7 @@ const Officer = () => {
     })
   }
 
+  //handle pagination -->load required page
   const handlePageChange = async (newPage) => {
     setCurrentPage(newPage)
     const token = localStorage.getItem('token')
@@ -104,10 +109,11 @@ const Officer = () => {
     const response = await searchOfficers(formData, newPage, 10)
     setOfficers(response.data.officers)
     console.log(response.data.officers)
-    setTotalPages(response.data.total_pages)
+    // setTotalPages(response.data.total_pages)
     console.log(response.data.total_pages, 'totalPages')
   }
 
+  //handle delete operation -->api call
   const handleDelete = async (id) => {
     const token = localStorage.getItem('token')
     if (!token) {
@@ -123,6 +129,7 @@ const Officer = () => {
     }
   }
 
+  //handle search officer operation -->api call
   const handleSubmit = async () => {
     const token = localStorage.getItem('token')
     if (!token) {
@@ -143,6 +150,7 @@ const Officer = () => {
     setShowModal(false)
   }
 
+  //clean form fields in search form
   const handleCleanForm = () => {
     setFormData({
       user_id: '',
@@ -157,25 +165,29 @@ const Officer = () => {
     setShowModal(false)
   }
 
+  // clean update clean form
+  const handleUpdateCleanForm = () => {
+    setCurrentRecord({
+      user_id: '',
+      employee_id: '',
+      agri_office_id: '',
+      service_start_date: '',
+      field_area_id: '',
+      district: '',
+    })
+  }
+
+  //perform add officer form
   const handleAddOfficer = () => {
     setShowForm(!showForm)
     handleCleanForm()
   }
-
-  const [isFormEmpty, setIsFormEmpty] = useState(false)
-  const token = localStorage.getItem('token')
 
   useEffect(() => {
     if (Object.values(formData).some((value) => value !== '' || value !== null)) {
       setIsFormEmpty(false)
     }
   }, [formData])
-
-  if (!token) {
-    alert('Please login first.')
-    navigate('/login', { replace: true })
-    return
-  }
 
   const handleNewItemAddButtonSubmit = async (event) => {
     event.preventDefault()
@@ -189,14 +201,20 @@ const Officer = () => {
     console.log(response)
     if (response.status === 201) {
       alert('New Officer was added Successfully!')
-    } else if (response.status === 409) {
-      alert(response.data.message)
+    } else if (response.response.status === 409) {
+      alert(response.response.data)
     } else {
       alert('Officer adding to the system failed. Contact DB Admin service')
     }
+
+    handleCleanForm()
   }
 
   const handleUpdate = async () => {
+    if (currentRecord.user_id === '') {
+      alert('USer Id is Empty !')
+      return
+    }
     const response = await updateOfficer(currentRecord)
     console.log(response)
     if (response.status === 200) {
@@ -216,10 +234,12 @@ const Officer = () => {
     handleCleanForm()
   }
 
+  //Setting the view
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       {showForm ? (
         <CContainer>
+          {/* Close button of form - Add New Officer */}
           <CRow className="justify-content-end">
             <CCol xs="auto">
               <CButton color="danger" onClick={handleAddOfficer}>
@@ -236,15 +256,16 @@ const Officer = () => {
                       Please fill in all the fields.
                     </div>
                   )}
+                  {/* Add new Agri-field officer form */}
                   <CForm>
                     <h1>Add New Agricultural Field Officer</h1>
-                    <p className="text-medium-emphasis">
-                      Add new agricultural field Officer to the system
+                    <p className="text-medium-emphasis" style={{ color: 'red' }}>
+                      **Register as a user first, before assigning.
                     </p>
                     <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
-                      <CInputGroupText>User Account ID</CInputGroupText>
+                      <CInputGroupText>User ID</CInputGroupText>
                       <CFormInput
-                        placeholder="User Account ID"
+                        placeholder="User ID"
                         autoComplete="User ID"
                         onChange={handleInputChange}
                         name="user_id"
@@ -252,9 +273,7 @@ const Officer = () => {
                       />
                     </CInputGroup>
                     <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
-                      <CInputGroupText>
-                        <CIcon icon={cilFork} />
-                      </CInputGroupText>
+                      <CInputGroupText>Employee Id </CInputGroupText>
                       <CFormInput
                         placeholder="Employee ID (Optional)"
                         autoComplete="Employee ID (Optional)"
@@ -264,10 +283,10 @@ const Officer = () => {
                       />
                     </CInputGroup>
                     <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
-                      <CInputGroupText>Managing User ID</CInputGroupText>
+                      <CInputGroupText>Managed_by Employee ID</CInputGroupText>
                       <CFormInput
-                        placeholder="Manger ID"
-                        autoComplete="Manager ID"
+                        placeholder="Manger Employee ID"
+                        autoComplete="Manager Employee ID"
                         onChange={handleInputChange}
                         name="managed_by_employee_id"
                         value={formData.managed_by_employee_id}
@@ -304,6 +323,17 @@ const Officer = () => {
                         value={formData.field_area_id}
                       />
                     </CInputGroup>
+                    <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
+                      <CInputGroupText>District</CInputGroupText>
+                      <CFormInput
+                        placeholder="District"
+                        autoComplete="District"
+                        onChange={handleInputChange}
+                        name="district"
+                        value={formData.district}
+                      />
+                    </CInputGroup>
+                    {/* Submit button to Add new Agri-officer;endpoint */}
                     <div className="d-grid">
                       <CButton
                         color="success"
@@ -313,6 +343,7 @@ const Officer = () => {
                         Submit
                       </CButton>{' '}
                       <br />
+                      {/* Clear button to clean add new field officer form fields */}
                       <CButton color="secondary" onClick={handleCleanForm}>
                         Clear
                       </CButton>
@@ -327,11 +358,13 @@ const Officer = () => {
         <CContainer>
           <CRow className="justify-content-center">
             <CCol xs="auto" className={'mb-3'} style={{ marginTop: '10px' }}>
+              {/* Add new officer button */}
               <CButton color="success" onClick={handleAddOfficer}>
                 + Add New Officer
               </CButton>
             </CCol>
           </CRow>
+          {/* Search Officer Form  */}
           <CRow className="justify-content-center">
             <CCol md={9} lg={7} xl={6}>
               <CCard className="mx-4">
@@ -339,22 +372,23 @@ const Officer = () => {
                   <CForm>
                     <h1>Search officer information</h1>
                     <p className="text-medium-emphasis">Filter officer records</p>
-                    <CFormCheck
-                      className="radio-border"
-                      type="radio"
-                      name="searchOptionSelectionRadio"
-                      id="searchOptionSelectionRadio2"
-                      onChange={handleRadioChange}
-                      value="true"
-                      label="Get all records with no filters"
-                    />
+                    <div className="radio-border">
+                      <CFormCheck
+                        type="radio"
+                        name="searchOptionSelectionRadio"
+                        id="searchOptionSelectionRadio2"
+                        value="true"
+                        onChange={handleRadioChange}
+                        label="Get all records with no filters"
+                      />{' '}
+                    </div>
                     <div className="radio-border">
                       <CFormCheck
                         type="radio"
                         name="searchOptionSelectionRadio"
                         id="searchOptionSelectionRadio1"
-                        onChange={handleRadioChange}
                         value="false"
+                        onChange={handleRadioChange}
                         label="Use Filters to Search"
                         defaultChecked
                       />
@@ -426,11 +460,13 @@ const Officer = () => {
                         </CInputGroup>
                       </div>
                     </div>
+                    {/* Search officer button */}
                     <div className="d-grid">
                       <CButton color="primary" onClick={handleSubmit}>
                         Search
                       </CButton>
                       <br />
+                      {/* Search officer form clear button */}
                       <CButton color="danger" onClick={handleCleanForm}>
                         Clear
                       </CButton>
@@ -440,6 +476,7 @@ const Officer = () => {
               </CCard>
             </CCol>
           </CRow>
+          {/* If search results available preview the table */}
           {officers.length !== 0 ? (
             <CRow className="justify-content-center mt-4">
               <CCol xs={12}>
@@ -476,15 +513,16 @@ const Officer = () => {
                                 color="danger"
                                 onClick={() => handleDelete(officer.officer.user_id)}
                               >
-                                <CIcon icon={cilTrash} />
+                                Delete
                               </CButton>
                               <CButton color="info" onClick={() => handlePenClick(officer.officer)}>
-                                <CIcon icon={cilPencil} />
+                                Update
                               </CButton>
                             </CTableDataCell>
                           </CTableRow>
                         ))}
                       </CTableBody>
+                      {/* Handle pagination */}
                       <CPagination
                         size="sm"
                         activePage={currentPage}
@@ -502,6 +540,7 @@ const Officer = () => {
                         ))}
                       </CPagination>
                     </CTable>
+                    {/* Update Officer Model */}
                     <CModal visible={showModal} onClose={() => setShowModal(false)}>
                       <CModalHeader onClose={handleClose}>
                         <CModalTitle>Update Record</CModalTitle>
@@ -527,9 +566,7 @@ const Officer = () => {
                           <CInputGroup
                             className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}
                           >
-                            <CInputGroupText>
-                              <CIcon icon={cilFork} />
-                            </CInputGroupText>
+                            <CInputGroupText>Employee Id </CInputGroupText>
                             <CFormInput
                               placeholder="Employee ID (Optional)"
                               autoComplete="Employee ID (Optional)"
@@ -565,12 +602,14 @@ const Officer = () => {
                               value={currentRecord.service_start_date}
                             />
                           </CInputGroup>
+                          {/* Update Button */}
                           <div className="d-grid">
                             <CButton color="success" onClick={() => handleUpdate()}>
                               Update
                             </CButton>
                             <br />
-                            <CButton color="secondary" onClick={handleCleanForm}>
+                            {/* Clear Button */}
+                            <CButton color="secondary" onClick={handleUpdateCleanForm}>
                               Clear
                             </CButton>
                           </div>

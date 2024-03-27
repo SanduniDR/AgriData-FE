@@ -14,9 +14,10 @@ const getMyAdvertisements = async (formData, page, pageSize) => {
         page_size: pageSize,
       },
     })
-
-    if (response.data.total_items === 0) {
+    console.log(response, 'response')
+    if (response.request.status === 404) {
       alert('No records found')
+      return response
     }
 
     return response
@@ -73,20 +74,24 @@ const updateAdvertisement = async (id, formData) => {
 const approveAdvertisement = async (id, formData) => {
   const token = localStorage.getItem('token')
   try {
-    const response = await axios.put(`${API_BASE_URL}/approve/advertisement`, {
-      params: {
-        ad_id: id,
+    const response = await axios.put(
+      `${API_BASE_URL}/market/approve/advertisement`,
+      null, // Pass null as the second argument for PUT requests if no data is sent in the request body
+      {
+        params: {
+          ad_id: id,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    )
 
     if (response.status === 200) {
       alert('Advertisement Approved successfully')
     }
 
-    return
+    return response
   } catch (error) {
     console.error('Failed to update Advertisement:', error)
     return

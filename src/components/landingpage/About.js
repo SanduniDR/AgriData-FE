@@ -28,11 +28,11 @@ const About = () => {
             }}
           >
             Ceylon AgriData offers a comprehensive solution for Sri Lanka&apos;s agriculture sector,
-            combining mobile data collection, cloud-based storage, market connections, and
-            communication tools. By seamlessly integrating these features, AgriCloud streamlines
-            data management and decision-making processes for agricultural stakeholders. From field
-            data collection to analysis and decision-making, AgriCloud ensures efficiency and
-            effectiveness every step of the way.
+            combining reliable mobile data collection, cloud-based storage, free advertising portal,
+            and communication tools. By seamlessly integrating these features, Ceylon AgriData
+            streamlines data management and decision-making processes for agricultural stakeholders.
+            From field data collection to analysis and decision-making, Ceylon AgriData ensures
+            efficiency and effectiveness every step of the way.
           </p>
         </div>
       </div>

@@ -5,13 +5,15 @@ import Pagination from './Pagination'
 import './ProductListPage.css' // Import the CSS file for styling
 import { getAllAdvertisements } from 'src/api/AdsService'
 import { CContainer } from '@coreui/react'
+import pl from 'src/assets/landing_page/AdminOperations/adds.png'
+import { Image, Card, Button, Container, Row, Col } from 'react-bootstrap'
 
 const ProductListPage = () => {
-  // Add state to store the products
+  // products
   const [products, setProducts] = useState([])
-  // Add state to store the current page
+  //  current page
   const [currentPage, setCurrentPage] = useState(1)
-  // Add state to store the number of products per page
+  // products per page
   const productsPerPage = 5
 
   // Fetch products when the component mounts
@@ -19,7 +21,7 @@ const ProductListPage = () => {
     fetchProducts(currentPage)
   }, [])
 
-  // Fetch products from the API
+  // Fetch products --> API call
   const fetchProducts = async (currentPage) => {
     try {
       const response = await getAllAdvertisements(currentPage, 10)
@@ -41,22 +43,24 @@ const ProductListPage = () => {
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct)
 
   return (
-    <CContainer fluid>
-      <div className="product-list-container">
-        {' '}
-        {/* Add a CSS class for styling */}
-        <h1 className="title">AgriData - Free Advertisement Service</h1>{' '}
-        {/* Add a CSS class for styling */}
-        <ProductList products={currentProducts} />
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-          onNextPage={() => handlePageChange(currentPage + 1)}
-          onPrevPage={() => handlePageChange(currentPage - 1)}
-        />
+    <div className="main-content" style={{ marginTop: '60px' }}>
+      <div>
+        <Image src={pl} style={{ width: '100%' }} fluid />
       </div>
-    </CContainer>
+      <CContainer fluid>
+        <div className="product-list-container">
+          <h1 className="title">Ceylon AgriData - Free Advertisement Service</h1>{' '}
+          <ProductList products={currentProducts} />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            onNextPage={() => handlePageChange(currentPage + 1)}
+            onPrevPage={() => handlePageChange(currentPage - 1)}
+          />
+        </div>
+      </CContainer>
+    </div>
   )
 }
 

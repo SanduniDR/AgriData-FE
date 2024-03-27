@@ -2,6 +2,7 @@ import axios from 'axios'
 import { saveAs } from 'file-saver'
 import { API_BASE_URL } from 'src/Config'
 
+// Search Farmers
 const getFarmers = async (office_id = 0, field_area_id = 0, page = 1, per_page = 50) => {
   const token = localStorage.getItem('token')
   try {
@@ -23,6 +24,7 @@ const getFarmers = async (office_id = 0, field_area_id = 0, page = 1, per_page =
   }
 }
 
+// get User by User Id
 const getUserById = async (userId) => {
   const token = localStorage.getItem('token')
   try {
@@ -38,6 +40,7 @@ const getUserById = async (userId) => {
   }
 }
 
+// Get user by mail
 const getUserByMail = async (email) => {
   const token = localStorage.getItem('token')
   try {
@@ -56,6 +59,7 @@ const getUserByMail = async (email) => {
   }
 }
 
+// Get farmer by Id
 const getFarmerById = async (id) => {
   const token = localStorage.getItem('token')
   try {
@@ -72,6 +76,7 @@ const getFarmerById = async (id) => {
   }
 }
 
+// Add Farmer
 const addFarmer = async (farmerData) => {
   const token = localStorage.getItem('token')
   try {
@@ -104,6 +109,7 @@ const addFarmer = async (farmerData) => {
   }
 }
 
+//Update farmer
 const updateFarmer = async (formData) => {
   const token = localStorage.getItem('token')
   try {
@@ -135,6 +141,7 @@ const updateFarmer = async (formData) => {
   }
 }
 
+// Check Token
 const checkToken = async (token) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/user/check_token`, {
@@ -153,6 +160,7 @@ const checkToken = async (token) => {
   }
 }
 
+//Add Field Officer
 const addOfficer = async (formData) => {
   const token = localStorage.getItem('token')
   try {
@@ -172,20 +180,21 @@ const addOfficer = async (formData) => {
         },
       },
     )
-    if (response.data.error) {
+    if (response.status === '400') {
       alert(response.data.error)
       return null
     } else {
-      alert('Officer Added Successfully!')
+      // alert('Officer Added Successfully!')
       return response
     }
   } catch (error) {
-    alert('Something went wrong!, Contact DB & Support Admin Service')
+    // alert(error.message)
     console.error('Failed to add officer:', error)
-    return null
+    return error
   }
 }
 
+//Update field officer
 const updateOfficer = async (formData) => {
   const token = localStorage.getItem('token')
   try {
@@ -219,6 +228,7 @@ const updateOfficer = async (formData) => {
   }
 }
 
+//Delete field officer
 const deleteOfficer = async (userId) => {
   const token = localStorage.getItem('token')
   try {
@@ -241,6 +251,7 @@ const deleteOfficer = async (userId) => {
   }
 }
 
+//Search field officer
 const searchOfficers = async (formdata, page = 1, per_page = 50) => {
   const token = localStorage.getItem('token')
   try {
@@ -268,6 +279,7 @@ const searchOfficers = async (formdata, page = 1, per_page = 50) => {
   }
 }
 
+//Get all farmers by office id
 const getAllFarmersByOfficeID = async (office_id = 0, field_area_id = 0, per_page = 50) => {
   const token = localStorage.getItem('token')
   let page = 1
@@ -301,6 +313,7 @@ const getAllFarmersByOfficeID = async (office_id = 0, field_area_id = 0, per_pag
   saveAs(blob, 'farmers.csv')
 }
 
+// Convert to CSV format
 const convertJsonToCsv = (data) => {
   const replacer = (key, value) => (value === null ? '' : value)
   const header = Object.keys(data[0])
