@@ -20,14 +20,14 @@ import UsersGroupByRoleByAdmin from 'src/views/reports/adminReports/UsersGroupBy
 import FertilizersUsage from 'src/views/reports/adminReports/FertilizerUsage'
 import AidsAdminTable from 'src/views/reports/adminReports/AidsAdminTable'
 import AidFundingAdminTable from 'src/views/reports/adminReports/AidFundingAdminTable'
-import AidDistributionByAidTypeAdmin from './adminReports/AidDistributionByAidTypeAdmin'
-import LankaMapByFieldMapping from './adminReports/LankaMapByFieldMapping'
-import LankaMapByCropYieldAdmin from './adminReports/LankaMapByCropYeildAdmin'
-import TotalTaxPayerReport from './adminReports/TotalTaxPayerReport'
-import AdminDisasterOverview from './adminReports/AdminDisasterOverview'
-import AdminAdvertisementServiceReport from './adminReports/AdminAdvertismentServiceReport'
+import AidDistributionByAidTypeAdmin from '../adminReports/AidDistributionByAidTypeAdmin'
+import LankaMapByFieldMapping from '../adminReports/LankaMapByFieldMapping'
+import LankaMapByCropYieldAdmin from '../adminReports/LankaMapByCropYeildAdmin'
+import TotalTaxPayerReport from '../adminReports/TotalTaxPayerReport'
+import AdminDisasterOverview from '../adminReports/AdminDisasterOverview'
+import AdminAdvertisementServiceReport from '../adminReports/AdminAdvertismentServiceReport'
 
-//Admin report viewer
+//Admin report links set
 const AdminReportViewer = () => {
   const [activeKey, setActiveKey] = useState('')
 
@@ -43,7 +43,7 @@ const AdminReportViewer = () => {
           <CCol>
             <CListGroup>
               <CListGroupItem className="blue-link" onClick={() => handleItemClick('User Reports')}>
-                Total Registered Users
+                Total Registered Farmers
               </CListGroupItem>
               <CListGroupItem
                 className="blue-link"
@@ -61,7 +61,7 @@ const AdminReportViewer = () => {
                 className="blue-link"
                 onClick={() => handleItemClick('New Aid distribution')}
               >
-                Agricultural Aid Distribution Funding & Aids
+                Total Agricultural Funding and Aid Distribution
               </CListGroupItem>
               <CListGroupItem
                 className="blue-link"
@@ -79,7 +79,7 @@ const AdminReportViewer = () => {
                 className="blue-link"
                 onClick={() => handleItemClick('Tax Payer Report')}
               >
-                Tax Prayer Report
+                Acre Tax Payers
               </CListGroupItem>
               <CListGroupItem
                 className="blue-link"
@@ -89,7 +89,7 @@ const AdminReportViewer = () => {
               </CListGroupItem>
               <CListGroupItem
                 className="blue-link"
-                onClick={() => handleItemClick('AdvertisementServiceReport')} //Change the key
+                onClick={() => handleItemClick('AdvertisementServiceReport')}
               >
                 Advertisement Overview Report
               </CListGroupItem>

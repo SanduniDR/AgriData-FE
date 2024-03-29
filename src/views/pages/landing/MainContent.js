@@ -1,7 +1,7 @@
 import React from 'react'
 import 'src/App.css'
 
-import UncontrolledSlider from 'src/components/landingpage/slider'
+import UncontrolledSlider from 'src/components/landingpageComponents/slider'
 import LankaMap from 'src/views/maps/LankaMap'
 import backgroundImageMapContainer from 'src/assets/landing_page/home-banner-background.png'
 import img1 from 'src/assets/landing_page/Footer_Bar/img1.jpg'

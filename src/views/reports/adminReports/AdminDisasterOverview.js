@@ -31,6 +31,8 @@ import {
   getAllOfficesAndDistrictsByProvince,
   searchDisasterInfoByDistrictMonthlyOffice,
 } from 'src/api/MisReportService'
+import { convertJsonToCsv } from 'src/api/UserService'
+import { saveAs } from 'file-saver'
 
 const AdminDisasterOverview = () => {
   const center = [7.8731, 80.7718] // coordinates for Sri Lanka
@@ -98,6 +100,7 @@ const AdminDisasterOverview = () => {
       })
   }, [])
 
+  //disaster type
   const handleTypeSelect = (event) => {
     const { name, value } = event.target
     setFormData((prevFormData) => ({
@@ -106,6 +109,7 @@ const AdminDisasterOverview = () => {
     }))
   }
 
+  //Year
   const handleYearSelect = async (event) => {
     const { name, value } = event.target
     setFormData((prevFormData) => ({
@@ -114,6 +118,7 @@ const AdminDisasterOverview = () => {
     }))
   }
 
+  //MOnth
   const handleMonthSelect = async (event) => {
     const { name, value } = event.target
     setFormData((prevFormData) => ({
@@ -122,6 +127,7 @@ const AdminDisasterOverview = () => {
     }))
   }
 
+  //Province --gets offices and districts list from AgriOffice
   const handleProvinceChange = async (event) => {
     const { name, value } = event.target
     setFormData((prevFormData) => ({
@@ -131,10 +137,11 @@ const AdminDisasterOverview = () => {
     console.log(formData)
     const response = await getAllOfficesAndDistrictsByProvince(value)
     console.log(response)
-    setOffices(response.data.offices)
+    setOffices(response.data.offices) //sets offices
     setDistrict(response.data.districts)
   }
 
+  //District
   const handleDistrictChange = async (event) => {
     const { value } = event.target
     setFormData((prevFormData) => ({
@@ -143,11 +150,19 @@ const AdminDisasterOverview = () => {
     }))
     const filteredOffices = filterOfficesByDistrict(offices, value)
     console.log('filtered offices', filteredOffices)
-    setFilteredOffices(filteredOffices)
+    setFilteredOffices(filteredOffices) //set resulting array to filteredOffices
+  }
+  //office
+  const handleOfficeSelect = async (event) => {
+    const { name, value } = event.target
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }))
   }
 
   const filterOfficesByDistrict = (offices, district) => {
-    return offices.filter((office) => office.district === district)
+    return offices.filter((office) => office.district === district) //if the condition true return the office
   }
 
   const handlePageChange = async (newPage) => {
@@ -168,7 +183,7 @@ const AdminDisasterOverview = () => {
     }
   }
 
-  const handleNewItemSendButtonSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     setLoading(true)
     const response = await searchDisasterInfoByDistrictMonthlyOffice(formData, currentPage)
     console.log(response)
@@ -190,6 +205,30 @@ const AdminDisasterOverview = () => {
       office_id: '',
       province: '',
     })
+    setFilteredOffices([])
+    setOffices([])
+    setDistrict([])
+    setFilteredOffices([])
+    setDisasters([])
+  }
+
+  const handleDownload = () => {
+    //dowanload as a csv file
+    const csv = convertJsonToCsv(offices)
+    const blob = new Blob([csv], { type: 'text/csv' })
+    saveAs(blob, 'OfficesInSelectedProvince.csv')
+  }
+  const handleDownloadDistrict = () => {
+    //dowanload as a csv file
+    const csv = convertJsonToCsv(filteredOffices)
+    const blob = new Blob([csv], { type: 'text/csv' })
+    saveAs(blob, 'OfficesInSelectedDistrict.csv')
+  }
+  const handleDownloadDisaster = () => {
+    //dowanload as a csv file
+    const csv = convertJsonToCsv(disasters)
+    const blob = new Blob([csv], { type: 'text/csv' })
+    saveAs(blob, 'DisasterInfo.csv')
   }
 
   return (
@@ -212,6 +251,7 @@ const AdminDisasterOverview = () => {
                           value={formData.type}
                           onChange={handleTypeSelect}
                         >
+                          {/* set the disaster types to drop down */}
                           <option value="">Disaster Type</option>
                           {disasterType.map((disaster, index) => (
                             <option key={index} value={disaster}>
@@ -249,11 +289,6 @@ const AdminDisasterOverview = () => {
                             </option>
                           ))}
                         </CFormSelect>
-                        <CInputGroupText>
-                          <CButton color="secondary">
-                            <CIcon icon={cilArrowCircleBottom} />
-                          </CButton>
-                        </CInputGroupText>
                       </CInputGroup>
                       <CInputGroup className={`mb-3`}>
                         <CInputGroupText>Select Province</CInputGroupText>
@@ -269,6 +304,13 @@ const AdminDisasterOverview = () => {
                             </option>
                           ))}
                         </CFormSelect>
+                        {offices.length > 0 && (
+                          <CInputGroupText>
+                            <CButton color="secondary" onClick={handleDownload}>
+                              Download offices in province{' '}
+                            </CButton>
+                          </CInputGroupText>
+                        )}
                       </CInputGroup>
                       <CInputGroup className={`mb-3`}>
                         <CInputGroupText>Select District</CInputGroupText>
@@ -284,18 +326,20 @@ const AdminDisasterOverview = () => {
                             </option>
                           ))}
                         </CFormSelect>
-                        <CInputGroupText>
-                          <CButton color="secondary">
-                            <CIcon icon={cilArrowCircleBottom} />
-                          </CButton>
-                        </CInputGroupText>
+                        {filteredOffices.length > 0 && (
+                          <CInputGroupText>
+                            <CButton color="secondary" onClick={handleDownloadDistrict}>
+                              Download offices in district{' '}
+                            </CButton>
+                          </CInputGroupText>
+                        )}
                       </CInputGroup>
                       <CInputGroup className={`mb-3`}>
                         <CInputGroupText>Select Office</CInputGroupText>
                         <CFormSelect
                           name="office_id"
                           value={formData.office_id}
-                          onChange={handleTypeSelect}
+                          onChange={handleOfficeSelect}
                         >
                           <option value="">Select Office</option>
                           {filteredOffices.map((office, index) => (
@@ -304,14 +348,9 @@ const AdminDisasterOverview = () => {
                             </option>
                           ))}
                         </CFormSelect>
-                        <CInputGroupText>
-                          <CButton color="secondary">
-                            <CIcon icon={cilArrowCircleBottom} />
-                          </CButton>
-                        </CInputGroupText>
                       </CInputGroup>
                       <div className="d-grid">
-                        <CButton color="success" onClick={handleNewItemSendButtonSubmit}>
+                        <CButton color="success" onClick={handleSubmit}>
                           Submit
                         </CButton>
 
@@ -355,6 +394,13 @@ const AdminDisasterOverview = () => {
                                   <CTableDataCell>{disaster.district}</CTableDataCell>
                                   <CTableDataCell>{disaster.office_id}</CTableDataCell>
                                   <CTableDataCell>{disaster.type}</CTableDataCell>
+                                  <CTableDataCell>
+                                    <CInputGroupText>
+                                      <CButton color="success" onClick={handleDownloadDisaster}>
+                                        Download{' '}
+                                      </CButton>
+                                    </CInputGroupText>
+                                  </CTableDataCell>
                                 </CTableRow>
                               )
                             ),

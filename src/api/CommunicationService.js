@@ -24,7 +24,7 @@ const sendMailToOfficer = async (subject, message, officerList) => {
   const token = localStorage.getItem('token')
   try {
     const response = await axios.post(
-      `${API_BASE_URL}/communication/mail/officer/send`,
+      `${API_BASE_URL}/communication/send`,
       { receivers: officerList, subject: subject, message: message },
       {
         headers: {
@@ -41,6 +41,7 @@ const sendMailToOfficer = async (subject, message, officerList) => {
 
 const searchMails = async (formData, page, per_page) => {
   const token = localStorage.getItem('token')
+
   try {
     const response = await axios.post(
       `${API_BASE_URL}/communication/mail/search`,
@@ -63,7 +64,7 @@ const searchMails = async (formData, page, per_page) => {
     )
     return response
   } catch (error) {
-    console.error('Failed to fetch farm details:', error)
+    console.error('Failed to fetch details:', error)
     return
   }
 }

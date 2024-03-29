@@ -9,16 +9,19 @@ import HarvestChart from './HarvestChart'
 import EstimatedHarvestByTime from './EstimatedHarvestByTime'
 import FarmersByOffice from './FarmersByOffice'
 
+//Public reports set
 const DefaultReportSet = () => {
   // Separate data sets for the charts
   const [farmerData, setFarmerData] = useState([])
 
+  //API call for get farmer count by district
   useEffect(() => {
     axios.get(`${API_BASE_URL}/report/users/farmer/count-by-district`).then((response) => {
       setFarmerData(response.data)
     })
   }, [])
 
+  //Farmer Data by district Chart
   const chartFarmerData = {
     labels: farmerData.map((item) => item.district),
     datasets: [
@@ -37,9 +40,10 @@ const DefaultReportSet = () => {
         <CCol xs="12" sm="6" lg="6">
           <CCard style={{ marginBottom: '10px' }}>
             <CCardHeader style={{ fontWeight: 'bold' }}>
-              Paddy Cultivation In District 2024
+              Paddy Cultivation In Districts 2024, Sri Lanka
             </CCardHeader>
             <CCardBody style={{ height: '800px' }}>
+              {/* ReportMapCrops.js */}
               <ReportMapCrops />
             </CCardBody>
           </CCard>
@@ -47,7 +51,9 @@ const DefaultReportSet = () => {
 
         <CCol xs="12" sm="6" lg="6">
           <CCard style={{ marginBottom: '10px' }}>
-            <CCardHeader style={{ fontWeight: 'bold' }}>Registered Farmers in District</CCardHeader>
+            <CCardHeader style={{ fontWeight: 'bold' }}>
+              Total Registered Farmers in Districts, Sri Lanka
+            </CCardHeader>
             <CCardBody style={{ height: '800px' }}>
               <CChart
                 type="bar"
@@ -68,7 +74,9 @@ const DefaultReportSet = () => {
       <CRow>
         <CCol xs="12" sm="6" lg="6">
           <CCard>
-            <CCardHeader style={{ fontWeight: 'bold' }}>Harvest(tons) By years</CCardHeader>
+            <CCardHeader style={{ fontWeight: 'bold' }}>
+              Total Harvest(tons) in Si Lanka (Filter By years)
+            </CCardHeader>
             <CCardBody style={{ height: '700px' }}>
               <HarvestChart />
             </CCardBody>
@@ -78,7 +86,7 @@ const DefaultReportSet = () => {
         <CCol xs="12" sm="6" lg="6">
           <CCard>
             <CCardHeader style={{ fontWeight: 'bold' }}>
-              Estimated Crop Harvest(tons) By Months
+              Estimated Monthly Crop Harvest(tons) in Sri Lanka, 2024
             </CCardHeader>
             <CCardBody style={{ height: '700px' }}>
               <EstimatedHarvestByTime />
@@ -90,6 +98,7 @@ const DefaultReportSet = () => {
   )
 }
 
+// Admin Report set
 const AdminReportSet = () => {
   const [farmerData, setFarmerData] = useState([])
 

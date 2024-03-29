@@ -17,6 +17,7 @@ import UserOperations from 'src/views/management/user/UserOperations'
 import AidDistributionOperations from 'src/views/management/aid/distribution/AidDistributionOperations'
 import FarmerOperations from 'src/views/management/farmer/FarmerOperations'
 import AdminMessageOperations from 'src/views/management/message/admin/AdminMessageOpreations'
+import OfficerMessageOperations from 'src/views/management/message/officer/FieldOfficerMessageOperations'
 import AdsOperations from 'src/views/marketplace/OfficerAdsOperations'
 import FarmerAdsOperations from 'src/views/marketplace/FarmerAdsOperations'
 import CultivationOperations from 'src/views/management/cultivation/CultivationOperations'
@@ -297,7 +298,7 @@ const DataOfficerCollection = () => {
                   <Card.Img variant="top" src={images[4]} />
                   <Card.Body className="card-body-adminops">
                     <Card.Text style={{ fontWeight: 'bold' }}>{tasks[4]}</Card.Text>
-                    <Button className="card-button-adminops" onClick={() => handleButtonClick(3)}>
+                    <Button className="card-button-adminops" onClick={() => handleButtonClick(4)}>
                       Open
                     </Button>
                   </Card.Body>
@@ -311,7 +312,7 @@ const DataOfficerCollection = () => {
       <div>{isCultivationsClicked ? <CultivationOperations /> : null}</div>
       <div>{isAdiDistribution ? <AidDistributionOperations /> : null}</div>
       <div>{isAdvertisementClicked ? <AdsOperations /> : null}</div>
-      <div>{isMessageClicked ? <></> : null}</div>
+      <div>{isMessageClicked ? <OfficerMessageOperations /> : null}</div>
     </div>
   )
 }

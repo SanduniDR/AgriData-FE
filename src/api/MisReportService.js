@@ -16,6 +16,7 @@ const getUserGroupByRole = async (formData) => {
   }
 }
 
+//total distribution within given period
 const getAidDistributionsTotal = async (startDate, endDate) => {
   const token = localStorage.getItem('token')
   try {
@@ -304,6 +305,24 @@ const getAllTaxPayersByDistrictByOffice = async (district, office_id) => {
   }
 }
 
+const getAllTaxPayersDetailsByDistrictByOffice = async (formData) => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.get(`${API_BASE_URL}/report/get_info_tax/acre_tax`, {
+      params: {
+        district: formData.district,
+        office_id: formData.office_id,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to fetch offices:', error)
+  }
+}
+
 const getAllDistrictTaxData = async () => {
   const token = localStorage.getItem('token')
   try {
@@ -377,4 +396,5 @@ export {
   searchCultivationInfoCountByDistrictMonthly,
   searchCultivationInfoCountByDistrictMonthlyOffice,
   searchCultivationMapInfoByDistrictMonthlyOffice,
+  getAllTaxPayersDetailsByDistrictByOffice,
 }

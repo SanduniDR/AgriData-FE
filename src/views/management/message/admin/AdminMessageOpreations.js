@@ -206,8 +206,7 @@ const AdminMessageOperations = () => {
       return
     }
 
-    console.log(isAllSearchClicked)
-    if (!isAllSearchClicked && handleFormHasNoData()) {
+    if (handleFormHasNoData()) {
       return
     }
 
@@ -373,6 +372,10 @@ const AdminMessageOperations = () => {
     console.log(messageSendingForm)
   }
 
+  const handleCloseForm = () => {
+    setMessages([])
+  }
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       {showForm ? (
@@ -533,6 +536,7 @@ const AdminMessageOperations = () => {
               </CButton>
             </CCol>
           </CRow>
+
           <CRow className="justify-content-center">
             <CCol md={9} lg={7} xl={6}>
               <CCard className="mx-4">
@@ -540,81 +544,48 @@ const AdminMessageOperations = () => {
                   <CForm>
                     <h1>Search Mail information</h1>
                     <p className="text-medium-emphasis">Filter Mail records</p>
-                    <div className="radio-border">
-                      <CFormCheck
-                        type="radio"
-                        name="searchOptionSelectionRadio"
-                        id="searchOptionSelectionRadio2"
-                        onChange={handleRadioChange}
-                        value="true"
-                        label="Get all records with no filters"
-                        disabled={true}
-                      />
-                    </div>
-                    <div className="radio-border">
-                      <CFormCheck
-                        type="radio"
-                        name="searchOptionSelectionRadio"
-                        id="searchOptionSelectionRadio1"
-                        onChange={handleRadioChange}
-                        value="false"
-                        label="Use Filters to Search"
-                        defaultChecked
-                      />
-                      <div className="FilterSet">
-                        <CInputGroup
-                          className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}
-                        >
-                          <CInputGroupText>Email</CInputGroupText>
-                          <CFormInput
-                            placeholder="Email"
-                            autoComplete="Email"
-                            onChange={handleInputChange}
-                            name="email"
-                            value={formData.email}
-                            disabled={isAllSearchClicked}
-                          />
-                        </CInputGroup>
-                        <CInputGroup
-                          className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}
-                        >
-                          <CInputGroupText>Subject</CInputGroupText>
-                          <CFormInput
-                            placeholder="Subject"
-                            autoComplete="subject"
-                            onChange={handleInputChange}
-                            name="subject"
-                            value={formData.subject}
-                            disabled={isAllSearchClicked}
-                          />
-                        </CInputGroup>
-                        <CInputGroup
-                          className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}
-                        >
-                          <CInputGroupText>Sent Status</CInputGroupText>
-                          <CFormInput
-                            placeholder="Status [SENT, NOT_SENT]"
-                            autoComplete="Status"
-                            onChange={handleInputChange}
-                            name="status_sent"
-                            value={formData.status_sent}
-                            disabled={isAllSearchClicked}
-                          />
-                        </CInputGroup>
-                        <CInputGroup
-                          className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}
-                        >
-                          <CInputGroupText>Sent to</CInputGroupText>
-                          <CFormInput
-                            placeholder="Sent To"
-                            autoComplete="Send to"
-                            onChange={handleInputChange}
-                            name="sent_to"
-                            value={formData.sent_to}
-                            disabled={isAllSearchClicked}
-                          />
-                        </CInputGroup>
-                      </div>
+                    <div className="FilterSet">
+                      <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
+                        <CInputGroupText>Email</CInputGroupText>
+                        <CFormInput
+                          placeholder="Email"
+                          autoComplete="Email"
+                          onChange={handleInputChange}
+                          name="email"
+                          value={formData.email}
+                        />
+                      </CInputGroup>
+                      <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
+                        <CInputGroupText>Subject</CInputGroupText>
+                        <CFormInput
+                          placeholder="Subject"
+                          autoComplete="subject"
+                          onChange={handleInputChange}
+                          name="subject"
+                          value={formData.subject}
+                        />
+                      </CInputGroup>
+                      <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
+                        <CInputGroupText>Sent Status</CInputGroupText>
+                        <CFormInput
+                          placeholder="Status [SENT, NOT_SENT]"
+                          autoComplete="Status"
+                          onChange={handleInputChange}
+                          name="status_sent"
+                          value={formData.status_sent}
+                        />
+                      </CInputGroup>
+                      <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
+                        <CInputGroupText>Sent to</CInputGroupText>
+                        <CFormInput
+                          placeholder="Sent To"
+                          autoComplete="Send to"
+                          onChange={handleInputChange}
+                          name="sent_to"
+                          value={formData.sent_to}
+                          disabled={isAllSearchClicked}
+                        />
+                      </CInputGroup>
                     </div>
                     <div className="d-grid">
                       <CButton color="primary" onClick={handleSubmit}>
@@ -644,6 +615,11 @@ const AdminMessageOperations = () => {
                           <CTableHeaderCell>Status</CTableHeaderCell>
                           <CTableHeaderCell>Sent To</CTableHeaderCell>
                           <CTableHeaderCell>Response</CTableHeaderCell>
+                          <CTableHeaderCell>
+                            <CButton color="danger" onClick={handleCloseForm}>
+                              Close{' '}
+                            </CButton>
+                          </CTableHeaderCell>
                         </CTableRow>
                       </CTableHead>
                       <CTableBody>

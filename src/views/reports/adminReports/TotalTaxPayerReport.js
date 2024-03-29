@@ -10,22 +10,22 @@ import {
   CCardBody,
   CInputGroup,
 } from '@coreui/react'
-import { cilArrowCircleBottom } from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
+import { Button } from 'react-bootstrap'
 import { CChartBar } from '@coreui/react-chartjs'
-import { API_BASE_URL } from 'src/Config'
 import { Container } from 'react-bootstrap'
-import Papa from 'papaparse'
 import { exportData } from 'src/utils/Utils'
 import {
   getAllOfficesByDistrict,
   getAllTaxPayersByDistrictByOffice,
   getAllDistrictTaxData,
+  getAllTaxPayersDetailsByDistrictByOffice,
 } from 'src/api/MisReportService'
+import { convertJsonToCsv } from 'src/api/UserService'
+import { saveAs } from 'file-saver'
 
 const TotalTaxPayerReport = () => {
   const [taxPayers, setTaxPayers] = useState([])
-  const [district, setDistrict] = useState([])
+  const [taxPayersInfo, setTaxPayersInfo] = useState([])
   const [offices, setOffices] = useState([])
   const [formData, setFormData] = useState({
     district: '',
@@ -62,21 +62,18 @@ const TotalTaxPayerReport = () => {
     setTaxPayers(response.data)
   }
 
+  const handleGetTaxPayerInfo = async () => {
+    const response = await getAllTaxPayersDetailsByDistrictByOffice(formData)
+    console.log(response)
+    setTaxPayersInfo(response.data)
+  }
+
   useEffect(() => {
     if (formData.district !== '' && formData.office_id !== '') {
       handleFarmerCount()
+      handleGetTaxPayerInfo()
     }
   }, [formData])
-
-  const handleDownloadByDistrict = (event) => {
-    const jsonData = JSON.stringify(taxPayers)
-    exportData(jsonData, 'taxpayers.csv', 'text/csv;charset=utf-8;')
-  }
-
-  const handleDownloadByoffice = (event) => {
-    const jsonData = JSON.stringify(taxPayers)
-    exportData(jsonData, 'taxpayers.csv', 'text/csv;charset=utf-8;')
-  }
 
   const handleInputChange = (event) => {
     const { name, value } = event.target
@@ -85,20 +82,6 @@ const TotalTaxPayerReport = () => {
       [name]: value,
     }))
   }
-  const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ]
 
   const districts = [
     'Ampara',
@@ -128,13 +111,26 @@ const TotalTaxPayerReport = () => {
     'Vavuniya',
   ]
 
+  const resetData = () => {
+    // Clear the state variables
+    setTaxPayers([])
+    setOffices([])
+    setTaxPayersInfo([])
+  }
+  const handleDownload = () => {
+    //dowanload as a csv file
+    const csv = convertJsonToCsv(taxPayersInfo)
+    const blob = new Blob([csv], { type: 'text/csv' })
+    saveAs(blob, 'taxpayersInfoofSelectedDistrict.csv')
+  }
+
   return (
     <Container>
       <CCard>
-        <CCardBody>
+        <CCardBody style={{ height: '600px' }}>
           <CRow>
             <CCol>
-              <h4>Acre Tax Payer Tracking Report</h4>
+              <h4>Total Acre Tax Payers in Districts</h4>
               <div style={{ height: 'auto', marginTop: '40px' }}>
                 <CInputGroup className={`mb-3`}>
                   <CFormSelect
@@ -165,6 +161,14 @@ const TotalTaxPayerReport = () => {
                       </option>
                     ))}
                   </CFormSelect>
+                  {/* if data set to taxPayersInfo [] */}
+                  {taxPayersInfo.length > 0 && (
+                    <CInputGroupText>
+                      <CButton color="secondary" onClick={handleDownload}>
+                        Download (.csv){' '}
+                      </CButton>
+                    </CInputGroupText>
+                  )}
                 </CInputGroup>
                 <CChartBar
                   style={{ height: '300px', marginTop: '10px' }}
@@ -197,6 +201,11 @@ const TotalTaxPayerReport = () => {
                     },
                   }}
                 />
+              </div>
+              <div style={{ position: 'absolute', bottom: '10px', right: '10px' }}>
+                <Button variant="danger" onClick={resetData}>
+                  Reset
+                </Button>{' '}
               </div>
             </CCol>
           </CRow>

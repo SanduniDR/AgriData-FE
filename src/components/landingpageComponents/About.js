@@ -1,14 +1,7 @@
 import React from 'react'
 import 'src/App.css'
 
-import LankaMap from 'src/views/maps/LankaMap'
-import backgroundImageMapContainer from 'src/assets/landing_page/home-banner-background.png'
-import img1 from 'src/assets/landing_page/Footer_Bar/img1.jpg'
-import img2 from 'src/assets/landing_page/Footer_Bar/img2.jpg'
-import img3 from 'src/assets/landing_page/Footer_Bar/img3.jpg'
-import { Card } from 'react-bootstrap'
 import PageBanner from './PageBanner'
-import AidOperations from 'src/views/management/aid/AidOperations'
 
 const About = () => {
   return (

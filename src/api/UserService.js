@@ -280,7 +280,7 @@ const searchOfficers = async (formdata, page = 1, per_page = 50) => {
 }
 
 //Get all farmers by office id
-const getAllFarmersByOfficeID = async (office_id = 0, field_area_id = 0, per_page = 50) => {
+const getAllFarmersByOfficeID = async (office_id, field_area_id, per_page = 50) => {
   const token = localStorage.getItem('token')
   let page = 1
   let allFarmers = []
@@ -307,7 +307,7 @@ const getAllFarmersByOfficeID = async (office_id = 0, field_area_id = 0, per_pag
       break
     }
   }
-
+  //dowanload as a csv file
   const csv = convertJsonToCsv(allFarmers)
   const blob = new Blob([csv], { type: 'text/csv' })
   saveAs(blob, 'farmers.csv')
@@ -338,4 +338,5 @@ export {
   searchOfficers,
   deleteOfficer,
   getAllFarmersByOfficeID,
+  convertJsonToCsv,
 }

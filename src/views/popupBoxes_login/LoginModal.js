@@ -57,9 +57,6 @@ function LoginModal({ show, handleClose }) {
                   localStorage.setItem('user', JSON.stringify(validateResponse.data.user))
                   setIsValidUser(true)
                   setResponse(validateResponse)
-                  handleClose()
-                  setUsername('')
-                  setPassword('')
                   toast('Sign In Successful !', {
                     position: 'bottom-right',
                     autoClose: 4000,
@@ -69,6 +66,9 @@ function LoginModal({ show, handleClose }) {
                     draggable: true,
                     progress: undefined,
                   })
+                  handleClose()
+                  setUsername('')
+                  setPassword('')
                 } else {
                   toast('Sign In Failure !', {
                     position: 'bottom-right',

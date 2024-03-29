@@ -4,11 +4,11 @@ import 'src/App.css'
 import { UserContext } from 'src'
 import MainContent from './MainContent'
 import DefaultLayout from 'src/layout/DefaultLayout'
-import NavigationBar from 'src/components/landingpage/Navbar'
-import About from 'src/components/landingpage/About'
-import RequestData from 'src/components/landingpage/RequestData'
+import NavigationBar from 'src/components/landingpageComponents/Navbar'
+import About from 'src/components/landingpageComponents/About'
+import RequestData from 'src/components/landingpageComponents/RequestData'
 import { DefaultReportSet, AdminReportSet } from 'src/views/reports/ReportSet'
-import Contact from 'src/components/landingpage/Contact'
+import Contact from 'src/components/landingpageComponents/Contact'
 import {
   DataAdminCollection,
   DataGenericCollection,
@@ -17,7 +17,7 @@ import {
 import AdminReport from '../reports/AdminReport'
 import OfficerReport from '../reports/OfficerReport'
 import ProductListPage from 'src/views/marketplace/forms/ProductListPage'
-import RequestDataTable from 'src/components/landingpage/RequestDataTable'
+import RequestDataTable from 'src/components/landingpageComponents/RequestDataTable'
 
 function LandingPage() {
   const { isValidUser, setIsValidUser } = useContext(UserContext)

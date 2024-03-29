@@ -8,6 +8,7 @@ const HarvestChart = () => {
   const [harvestData, setHarvestData] = useState([])
   const [year, setYear] = useState(new Date().getFullYear())
 
+  //API Call
   useEffect(() => {
     const getData = async () => {
       try {
@@ -27,6 +28,7 @@ const HarvestChart = () => {
 
   return (
     <div>
+      {/* Dropdown to select year */}
       <CFormSelect custom name="year" id="year" onChange={handleYearChange}>
         <option value="2020">2020</option>
         <option value="2021">2021</option>

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { CFormSelect, CCol, CCard, CRow, CCardBody } from '@coreui/react'
+import { CFormSelect, CCol, CCard, CRow, CCardBody, CButton } from '@coreui/react'
 import { CChartBar } from '@coreui/react-chartjs'
 import { API_BASE_URL } from 'src/Config'
 import { Container } from 'react-bootstrap'
+import { saveAs } from 'file-saver'
+import { convertJsonToCsv } from 'src/api/UserService'
 
 const HarvestEstimatedVsActual = () => {
   const [harvestData, setHarvestData] = useState([])
@@ -27,17 +29,29 @@ const HarvestEstimatedVsActual = () => {
     setYear(e.target.value)
   }
 
+  const handleDownload = () => {
+    //dowanload as a csv file
+    const csv = convertJsonToCsv(harvestData)
+    const blob = new Blob([csv], { type: 'text/csv' })
+    saveAs(blob, 'totalHarvest.csv')
+  }
+
   return (
     <Container>
       <CCard className="mx-4">
-        <CCardBody>
+        <CCardBody style={{ height: '600px' }}>
           <CRow>
             <CCol>
-              <h4>Total aid distribution in the following time range:</h4>
+              <h4>Total Harvest - Expected vs Actual in Years:</h4>
               <div className="small text-medium-emphasis">
                 {' '}
                 {formData.start_date} : {formData.end_date}
               </div>
+              <div className="text-end">
+                {' '}
+                <CButton onClick={handleDownload}>Download Data (.csv)</CButton>
+              </div>
+
               <div style={{ height: 'auto', marginTop: '40px' }}>
                 <CFormSelect custom name="year" id="year" onChange={handleYearChange}>
                   <option value="2020">2020</option>
@@ -77,7 +91,7 @@ const HarvestEstimatedVsActual = () => {
                           stepSize: Math.ceil(250 / 5),
                           max:
                             Math.max(...harvestData.map((data) => data.total_harvested_amount)) +
-                            100, // Adjusted max value
+                            100,
                         },
                       },
                     },

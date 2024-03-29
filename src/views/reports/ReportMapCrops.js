@@ -23,9 +23,11 @@ function StatesDataLayer() {
       .then((response) => {
         if (response.status === 200) {
           const apiData = response.data
-          const apiDataByDistrict = apiData.reduce((acc, curr) => {
-            acc[curr.district] = curr
-            return acc
+          const apiDataByDistrict = apiData.reduce((dataMap, item) => {
+            if (item.crop_name === 'Tea') {
+              dataMap[item.district] = item //map:key:val pair
+            }
+            return dataMap
           }, {})
 
           statesData.features.forEach((feature) => {
@@ -36,6 +38,7 @@ function StatesDataLayer() {
             }
             console.log(feature.properties)
           })
+
           setData(statesData)
         } else {
           setData(statesData)
@@ -60,7 +63,7 @@ function StatesDataLayer() {
       info.current.update = function (props) {
         this._div.innerHTML =
           '<h4 class="mapBanner" style="z-index: 500;"> District Overall Cultivation Info 2024/h1 </h4>' +
-          (props ? '<b>Paddy(Acrs):' + props.total_cultivated : 'Hover over a district')
+          (props ? '<b>Tea(kg):' + props.total_cultivated : 'Hover over a district')
       }
 
       info.current.addTo(map)

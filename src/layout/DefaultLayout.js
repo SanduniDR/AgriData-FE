@@ -22,7 +22,11 @@ function DefaultLayout({ children }) {
                 </div>
                 <div className="ms-auto">
                   <span className="me-1">Supervised By</span>
-                  <a href="https://coreui.io/react" target="_blank" rel="noopener noreferrer">
+                  <a
+                    href="https://scholar.google.com/citations?user=116_3ZIAAAAJ&hl=en"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Dr Noel Fernando
                   </a>
                 </div>

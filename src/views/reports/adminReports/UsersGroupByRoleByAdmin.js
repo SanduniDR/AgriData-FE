@@ -24,7 +24,7 @@ import { getAllFarmersByOfficeID } from 'src/api/UserService'
 
 const UsersGroupByRoleByAdmin = () => {
   const [data, setData] = useState({})
-  const currentDate = new Date().toLocaleString()
+  const currentDate = new Date().toLocaleString() //current date
   const [district, setDistrict] = useState([])
   const [offices, setOffices] = useState([])
   const [isOfficeSelected, setOfficeSelected] = useState(false)
@@ -48,30 +48,32 @@ const UsersGroupByRoleByAdmin = () => {
   ]
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await getFarmersCountByDistrict()
-      console.log(response)
-      setData(response.data)
-    }
-
     fetchData()
   }, [])
 
   useEffect(() => {
+    // when select province
     if (formData.province !== '') {
       handleInputProvinceChange()
     }
+    //when select province and district
     if (formData.province !== '' && formData.district !== '') {
       handleInputProvinceAndDistrictChange()
     }
   }, [formData.province, formData.district])
 
+  //when select all 3 options
   useEffect(() => {
     if (formData.province !== '' && formData.district !== '' && formData.office_id !== '') {
       setOfficeSelected(true)
     }
   }, [formData.district, formData.office_id])
 
+  const fetchData = async () => {
+    const response = await getFarmersCountByDistrict()
+    console.log(response)
+    setData(response.data)
+  }
   const resetFormData = () => {
     setFormData({
       office_id: '',
@@ -82,6 +84,7 @@ const UsersGroupByRoleByAdmin = () => {
     setDistrict([])
     setOffices([])
     setData({})
+    fetchData()
   }
 
   const handleInputProvinceChange = async (event) => {
@@ -98,6 +101,7 @@ const UsersGroupByRoleByAdmin = () => {
     setData(response.data)
   }
 
+  //get farmer count by district
   const handleInputChange = async (event) => {
     const { name, value } = event.target
     setFormData((prevFormData) => ({
@@ -209,7 +213,7 @@ const UsersGroupByRoleByAdmin = () => {
                 {isOfficeSelected ? (
                   <>
                     <CButton onClick={handleDownload}>
-                      Download Farmer Data of Office ID: {formData.office_id}
+                      Download Farmer Data of Office ID (.csv): {formData.office_id}
                     </CButton>
                   </>
                 ) : (

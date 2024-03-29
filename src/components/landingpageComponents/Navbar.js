@@ -8,9 +8,8 @@ import Image from 'react-bootstrap/Image'
 import Logo from 'src/assets/landing_page/logo-no-background.png'
 import 'src/App.css'
 import { UserContext } from 'src'
-import LoginModal from 'src/views/popupBoxes/LoginModal'
+import LoginModal from 'src/views/popupBoxes_login/LoginModal'
 import PropTypes from 'prop-types'
-import { ToastContainer, toast } from 'react-toastify'
 
 function NavigationBar({ handleNavClick }) {
   const { isValidUser, setIsValidUser } = useContext(UserContext)
@@ -55,7 +54,6 @@ function NavigationBar({ handleNavClick }) {
 
   return (
     <div className="NavigationBar">
-      <ToastContainer />
       <Navbar expand="lg" className="bg-body-tertiary">
         <Navbar.Brand style={{ marginRight: '100px' }}>
           {' '}
@@ -96,8 +94,10 @@ function NavigationBar({ handleNavClick }) {
               </NavDropdown.Item> */}
             </NavDropdown>
             &nbsp;&nbsp;
+            {/* Access Reports */}
             <NavDropdown title="Reports" id="basic-nav-dropdown" style={{ fontSize: '30px' }}>
               <NavDropdown.Item onClick={() => handleNavClick('Latest_Reports')}>
+                {/* previewing strings */}
                 {role === 1
                   ? 'Administrative Reports'
                   : role === 4

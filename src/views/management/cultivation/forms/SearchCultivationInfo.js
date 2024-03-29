@@ -288,23 +288,23 @@ const SearchCultivationInfo = () => {
                         ),
                       )}
                     </CTableBody>
-                    <CPagination
-                      size="sm"
-                      activePage={currentPage}
-                      pages={totalPages}
-                      onActivePageChange={(i) => handlePageChange(i)}
-                    >
-                      {Array.from({ length: totalPages }, (_, index) => (
-                        <CPaginationItem
-                          key={index + 1}
-                          active={index + 1 === currentPage}
-                          onClick={() => handlePageChange(index + 1)}
-                        >
-                          {index + 1}
-                        </CPaginationItem>
-                      ))}
-                    </CPagination>
                   </CTable>
+                  <CPagination
+                    size="sm"
+                    activePage={currentPage}
+                    pages={totalPages}
+                    onActivePageChange={(i) => handlePageChange(i)}
+                  >
+                    {Array.from({ length: totalPages }, (_, index) => (
+                      <CPaginationItem
+                        key={index + 1}
+                        active={index + 1 === currentPage}
+                        onClick={() => handlePageChange(index + 1)}
+                      >
+                        {index + 1}
+                      </CPaginationItem>
+                    ))}
+                  </CPagination>
                 </CCardBody>
               </CCard>
             </CCol>

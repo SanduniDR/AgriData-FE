@@ -20,8 +20,8 @@ import UsersGroupByRoleByAdmin from 'src/views/reports/adminReports/UsersGroupBy
 import FertilizersUsage from 'src/views/reports/adminReports/FertilizerUsage'
 import AidsAdminTable from 'src/views/reports/adminReports/AidsAdminTable'
 import AidFundingAdminTable from 'src/views/reports/adminReports/AidFundingAdminTable'
-import AidDistributionByAidTypeAdmin from './adminReports/AidDistributionByAidTypeAdmin'
-import LankaMapByCropYieldAdmin from './adminReports/LankaMapByCropYeildAdmin'
+import AidDistributionByAidTypeAdmin from '../adminReports/AidDistributionByAidTypeAdmin'
+import LankaMapByCropYieldAdmin from '../adminReports/LankaMapByCropYeildAdmin'
 
 const AdminReportViewer = () => {
   const [activeKey, setActiveKey] = useState('')

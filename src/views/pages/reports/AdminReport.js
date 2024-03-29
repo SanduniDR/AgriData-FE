@@ -3,7 +3,7 @@ import { Image } from 'react-bootstrap'
 import image from 'src/assets/landing_page/reports/adminReports/adr.png'
 import { CContainer, CRow, CCol } from '@coreui/react'
 
-import AdminReportViewer from 'src/views/reports/AdminReportViewer'
+import AdminReportViewer from 'src/views/reports/ReportViewersPages/AdminReportViewer'
 const AdminReport = () => {
   return (
     <div className="main-content" style={{ marginTop: '60px', justifyContent: 'left' }}>

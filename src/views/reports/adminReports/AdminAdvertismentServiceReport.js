@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Button } from 'react-bootstrap'
 import axios from 'axios'
 import {
   CFormSelect,
@@ -15,8 +16,8 @@ import CIcon from '@coreui/icons-react'
 import { CChartBar } from '@coreui/react-chartjs'
 import { API_BASE_URL } from 'src/Config'
 import { Container } from 'react-bootstrap'
-import Papa from 'papaparse'
-import { exportData } from 'src/utils/Utils'
+import { convertJsonToCsv } from 'src/api/UserService'
+import { saveAs } from 'file-saver'
 
 const AdminAdvertismentServiceReport = () => {
   const [AdData, setAdData] = useState([])
@@ -55,9 +56,16 @@ const AdminAdvertismentServiceReport = () => {
     setType(e.target.value)
   }
 
-  const handleDownload = (event) => {
-    const jsonData = JSON.stringify(AdData)
-    exportData(jsonData, 'AdvertisementDataByMonth.csv', 'text/csv;charset=utf-8;')
+  // const handleDownload = (event) => {
+  //   const jsonData = JSON.stringify(AdData)
+  //   exportData(jsonData, 'AdvertisementDataByMonth.csv', 'text/csv;charset=utf-8;')
+  // }
+
+  const handleDownload = () => {
+    //dowanload as a csv file
+    const csv = convertJsonToCsv(AdData)
+    const blob = new Blob([csv], { type: 'text/csv' })
+    saveAs(blob, 'AddsCount.csv')
   }
   const monthNames = [
     'January',
@@ -92,13 +100,20 @@ const AdminAdvertismentServiceReport = () => {
       })
   }, [])
 
+  const resetData = () => {
+    // Clear the state variables
+    setAdData([])
+    setCrops([])
+    setYear('')
+    setType('')
+  }
   return (
     <Container>
       <CCard>
-        <CCardBody>
+        <CCardBody style={{ height: '600px' }}>
           <CRow>
             <CCol>
-              <h4>Total aid distribution in the following time range:</h4>
+              <h4>Total Advertisements:</h4>
               <div style={{ height: 'auto', marginTop: '40px' }}>
                 <CInputGroup className={`mb-3`}>
                   <CFormSelect custom name="year" id="year" onChange={handleYearChange}>
@@ -124,7 +139,7 @@ const AdminAdvertismentServiceReport = () => {
                   {AdData.length > 0 && (
                     <CInputGroupText>
                       <CButton color="secondary" onClick={handleDownload}>
-                        <CIcon icon={cilArrowCircleBottom} />
+                        Download{' '}
                       </CButton>
                     </CInputGroupText>
                   )}
@@ -160,6 +175,13 @@ const AdminAdvertismentServiceReport = () => {
                     },
                   }}
                 />
+                {AdData.length > 0 && (
+                  <div style={{ position: 'absolute', bottom: '10px', right: '10px' }}>
+                    <Button variant="danger" onClick={resetData}>
+                      Reset
+                    </Button>{' '}
+                  </div>
+                )}
               </div>
             </CCol>
           </CRow>

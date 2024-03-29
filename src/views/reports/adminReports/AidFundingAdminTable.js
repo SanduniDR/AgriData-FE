@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react'
+import { React, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getAidDistributionsTotal, getAidDistributionsTotalByFund } from 'src/api/MisReportService'
 import {
@@ -12,20 +12,16 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-  CTable,
-  CTableHead,
-  CTableRow,
-  CTableHeaderCell,
   CFormSelect,
 } from '@coreui/react'
+import { Button } from 'react-bootstrap'
 import CIcon from '@coreui/icons-react'
 import { cilArrowCircleBottom } from '@coreui/icons'
-import { CChartBar } from '@coreui/react-chartjs'
 import PieChart from 'src/views/management/charts/PieChart'
 import { searchTotalAidInfo } from 'src/api/AidService'
 import Papa from 'papaparse'
 import { exportData } from 'src/utils/Utils'
-import AidDistributionByAidTypeAdmin from 'src/views/reports/adminReports/AidDistributionByAidTypeAdmin'
+
 const AidFundingAdminTable = () => {
   const navigate = useNavigate()
   const [needToGetTotal, setNeedToGetTotal] = useState(false)
@@ -94,20 +90,24 @@ const AidFundingAdminTable = () => {
     setFundChartData(response.data.total_aid_distributions)
   }
 
+  //handle download data
   const handleDownloadYearFunds = (event) => {
     const csvData = Papa.unparse(fundAids)
     exportData(csvData, 'aid_funds_by_year.csv', 'text/csv;charset=utf-8;')
   }
+  //handle download data
 
   const handleDownloadDataByFunds = (event) => {
     const jsonData = JSON.stringify(chartToPrint.data)
     exportData(jsonData, 'aid_distribution_by_fund.csv', 'text/csv;charset=utf-8;')
   }
+  //handle download data
 
   const handleDownloadDataByTime = (event) => {
     const jsonData = JSON.stringify(chartData)
     exportData(jsonData, 'aid_funds_by_year.csv', 'text/csv;charset=utf-8;')
   }
+
   const handleCleanForm = () => {
     setFormData({
       aid_id: '',
@@ -124,6 +124,12 @@ const AidFundingAdminTable = () => {
     })
     setChartData({})
     setIsClosed(true)
+  }
+
+  const resetData = () => {
+    setChartData({})
+    setFundChartData({})
+    setFundAids([])
   }
 
   return (
@@ -149,7 +155,8 @@ const AidFundingAdminTable = () => {
                         <CCardBody>
                           <CRow>
                             <CCol>
-                              <h4>Total aid distributions in the following time range:</h4>
+                              <h4>Total Aid distribution</h4>
+                              <p>Aid Distributed among farmers within the selected period</p>
                               <div className="small text-medium-emphasis">
                                 {' '}
                                 {formData.start_date} : {formData.end_date}
@@ -182,12 +189,13 @@ const AidFundingAdminTable = () => {
                     </CCol>
                   </CRow>
                 ) : (
+                  // Search form
                   <CRow>
                     <CCol style={{ margin: '30px' }}>
                       <CCard>
                         <CCardBody>
                           <CForm>
-                            <h4>Search Distribution information</h4>
+                            <h4>Search Total Aid Distribution information</h4>
                             <p className="text-medium-emphasis">Filter distribution records</p>
                             <CInputGroup className={`mb-3`}>
                               <CInputGroupText>Date</CInputGroupText>
@@ -233,10 +241,11 @@ const AidFundingAdminTable = () => {
             <>
               <CContainer>
                 <CCard>
-                  <CCardBody>
+                  <CCardBody style={{ width: '800px' }}>
                     <CRow>
                       <CCol style={{ margin: '30px' }}>
-                        <h4>Total Aid distribution based on Funding:</h4>
+                        <h4>Total Aid distribution based on Funding Type (Yearly)</h4>
+                        <p>Eg:Total Aids distributed, received under _IndianAgriTrustFund_ </p>
                         <div style={{ height: 'auto', marginTop: '40px' }}>
                           <CInputGroup className={`mb-3`}>
                             <CFormSelect custom name="year" id="year" onChange={handleYearChange}>
@@ -248,19 +257,19 @@ const AidFundingAdminTable = () => {
                             </CFormSelect>
                             <CInputGroupText>
                               <CButton color="secondary" onClick={handleDownloadYearFunds}>
-                                <CIcon icon={cilArrowCircleBottom} />
+                                Download Aid_Funds in Year{' '}
                               </CButton>
                             </CInputGroupText>
                           </CInputGroup>
 
                           <CInputGroup className={`mb-3`}>
-                            <CInputGroupText>Select Fund</CInputGroupText>
+                            <CInputGroupText>Select Aid_Fund Name</CInputGroupText>
                             <CFormSelect
                               name="fund_aid"
                               value={formData.fund_aid}
                               onChange={handleFundSelect}
                             >
-                              <option value="">Select Fund for</option>
+                              <option value="">Select Fund for ...</option>
                               {fundAids.map((fund_aid, index) => (
                                 <option key={index} value={fund_aid.aid_id}>
                                   {fund_aid.aid_name}
@@ -269,10 +278,15 @@ const AidFundingAdminTable = () => {
                             </CFormSelect>
                             <CInputGroupText>
                               <CButton color="secondary" onClick={handleDownloadDataByFunds}>
-                                <CIcon icon={cilArrowCircleBottom} />
+                                Download Distributed Amount{' '}
                               </CButton>
                             </CInputGroupText>
                           </CInputGroup>
+                          <div style={{ position: 'absolute', bottom: '10px', right: '10px' }}>
+                            <Button variant="danger" onClick={resetData}>
+                              Reset
+                            </Button>{' '}
+                          </div>
                           <PieChart data={fundChartData} />
                         </div>
                       </CCol>

@@ -22,17 +22,24 @@ function StatesDataLayer() {
       })
       .then((response) => {
         if (response.status === 200) {
+          console.log(response)
           const apiData = response.data
-          const apiDataByDistrict = apiData.reduce((acc, curr) => {
-            acc[curr.district] = curr
-            return acc
+          console.log(apiData, 'apidata')
+          // putting json object in to key value map
+          const apiDataByDistrict = apiData.reduce((dataMap, item) => {
+            if (item.crop_name === 'Tea') {
+              dataMap[item.district] = item //map:key:val pair
+            }
+            return dataMap
           }, {})
 
+          console.log('converted map', apiDataByDistrict)
+          //set data to feature
           statesData.features.forEach((feature) => {
             const properties = feature.properties
-            const apiDataForFeature = apiDataByDistrict[properties.ADM2_EN] // replace ADM1_EN with the property that matches the keys in apiData
-            if (apiDataForFeature) {
-              feature.properties = { ...properties, ...apiDataForFeature }
+            const itemFromBE = apiDataByDistrict[properties.ADM2_EN] // replace ADM1_EN with the property that matches the keys in apiData
+            if (itemFromBE) {
+              feature.properties = { ...properties, ...itemFromBE }
             }
             console.log(feature.properties)
           })
@@ -47,6 +54,7 @@ function StatesDataLayer() {
   }, [])
 
   useEffect(() => {
+    //banner changes
     if (!info.current) {
       // only create a new info control if it doesn't already exist
       info.current = L.control()
@@ -59,13 +67,13 @@ function StatesDataLayer() {
 
       info.current.update = function (props) {
         this._div.innerHTML =
-          '<h4 class="mapBanner" style="z-index: 500;"> District Overall Cultivation Info 2024 </h4>' +
-          (props ? '<b>Paddy(Acrs):' + props.total_cultivated : '')
+          '<h4 class="mapBanner" style="z-index: 500;"> District Overall Cultivation Info 2023 </h4>' +
+          (props ? '<b>Tea(Kg):' + props.total_cultivated : '')
       }
 
       info.current.addTo(map)
     }
-
+    //pop up feature
     function onEachFeature(feature, layer) {
       layer.on({
         mouseover: function (e) {
