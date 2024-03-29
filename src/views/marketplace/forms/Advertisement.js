@@ -487,7 +487,7 @@ const Advertisement = () => {
                                 Delete{' '}
                               </CButton>
                               {/* <CButton color="info" onClick={() => handlePenClick(ad)}>
-                                <CIcon icon={cilPencil} />
+                                Update
                               </CButton> */}
                             </CTableDataCell>
                           </CTableRow>

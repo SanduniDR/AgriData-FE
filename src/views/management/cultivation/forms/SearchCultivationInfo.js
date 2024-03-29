@@ -277,10 +277,10 @@ const SearchCultivationInfo = () => {
                                   color="danger"
                                   onClick={() => handleDelete(cultivation.cultivation_id)}
                                 >
-                                  <CIcon icon={cilTrash} />
+                                  Delete
                                 </CButton>
                                 {/* <CButton color="info" onClick={() => handleUpdate(user.user_id)}>
-                                  <CIcon icon={cilPencil} />
+                                  Update
                                 </CButton> */}
                               </CTableDataCell>
                             </CTableRow>

@@ -18,7 +18,7 @@ function StatesDataLayer() {
     axios
       .post(`${API_BASE_URL}/report/cultivation-info/cropByDistrict`, {
         agri_year: 2023,
-        quarter: 'Q1',
+        quarter: '1',
       })
       .then((response) => {
         if (response.status === 200) {

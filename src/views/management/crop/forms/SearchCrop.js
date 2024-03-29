@@ -262,10 +262,10 @@ const SearchCropForm = () => {
                                   color="danger"
                                   onClick={() => handleDelete(crop.crop_id)}
                                 >
-                                  <CIcon icon={cilTrash} />
+                                  Delete
                                 </CButton>
                                 {/* <CButton color="info" onClick={() => handleUpdate(user.user_id)}>
-                                  <CIcon icon={cilPencil} />
+                                  Update
                                 </CButton> */}
                               </CTableDataCell>
                             </CTableRow>

@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import { API_BASE_URL } from 'src/Config'
 import { cilArrowCircleBottom } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 import {
   CContainer,
   CCard,
@@ -29,13 +30,12 @@ import {
   searchCultivationInfoCountByDistrictMonthlyOffice,
 } from 'src/api/MisReportService'
 
-let geojson
-
-function MapFeatureDataLayer({ formData }) {
+function MapFeatureDataLayer1({ formData }) {
   const { year, month, crop_id, district, office_id } = formData
-  const map = useMap()
+  const mapNew = useMap(null)
   const info = useRef(null)
   const [data, setData] = useState(null)
+  let geojson
 
   // useEffect(() => {
   //   axios
@@ -212,10 +212,12 @@ function MapFeatureDataLayer({ formData }) {
           if (response.status === 200) {
             const apiData = response.data
             const apiDataByDistrict = apiData.reduce((acc, curr) => {
-              acc[curr.district] = curr
+              if (curr.crop_id === formData.crop_id) {
+                acc[curr.district] = curr
+              }
               return acc
             }, {})
-
+            console.log('result', apiDataByDistrict)
             freshStatesData.features.forEach((feature) => {
               console.log('Admin fresh office feature', feature)
               console.log('Admin office feature', feature)
@@ -255,7 +257,7 @@ function MapFeatureDataLayer({ formData }) {
           (props ? '<b>' + props.crop_name + ':' + props.total_harvested : 'Hover over a district')
       }
 
-      info.current.addTo(map)
+      info.current.addTo(mapNew)
     }
 
     function onEachFeature(feature, layer) {
@@ -296,9 +298,9 @@ function MapFeatureDataLayer({ formData }) {
           }
         },
         onEachFeature: onEachFeature,
-      }).addTo(map)
+      }).addTo(mapNew)
     }
-  }, [map, data])
+  }, [mapNew, data])
 
   return null
 }
@@ -347,7 +349,7 @@ const LankaMapByCropYieldAdmin = () => {
   ]
 
   useEffect(() => {
-    setMapKey((prevKey) => prevKey + 1)
+    setMapKey((prevKey) => prevKey + 10)
   }, [formData])
 
   useEffect(() => {
@@ -420,6 +422,17 @@ const LankaMapByCropYieldAdmin = () => {
     return offices.filter((office) => office.district === district)
   }
 
+  const handleCleanForm = () => {
+    setFormData({
+      year: '',
+      month: '',
+      crop_id: '',
+      type: '',
+      district: '',
+      office_id: '',
+    })
+  }
+
   return (
     <div>
       {loading ? (
@@ -478,9 +491,7 @@ const LankaMapByCropYieldAdmin = () => {
                           ))}
                         </CFormSelect>
                         <CInputGroupText>
-                          <CButton color="secondary">
-                            <CIcon icon={cilArrowCircleBottom} />
-                          </CButton>
+                          <CButton color="secondary">Download</CButton>
                         </CInputGroupText>
                       </CInputGroup>
                       <CInputGroup className={`mb-3`}>
@@ -513,9 +524,7 @@ const LankaMapByCropYieldAdmin = () => {
                           ))}
                         </CFormSelect>
                         <CInputGroupText>
-                          <CButton color="secondary">
-                            <CIcon icon={cilArrowCircleBottom} />
-                          </CButton>
+                          <CButton color="secondary">Download</CButton>
                         </CInputGroupText>
                       </CInputGroup>
                       <CInputGroup className={`mb-3`}>
@@ -533,14 +542,17 @@ const LankaMapByCropYieldAdmin = () => {
                           ))}
                         </CFormSelect>
                         <CInputGroupText>
-                          <CButton color="secondary">
-                            <CIcon icon={cilArrowCircleBottom} />
-                          </CButton>
+                          <CButton color="secondary">Download</CButton>
                         </CInputGroupText>
                       </CInputGroup>
                     </div>
                   </CCol>
                 </CRow>
+                <CInputGroupText>
+                  <CButton color="primary" onClick={handleCleanForm}>
+                    Clear
+                  </CButton>
+                </CInputGroupText>
               </CCardBody>
             </CCard>
           </CContainer>
@@ -571,7 +583,7 @@ const LankaMapByCropYieldAdmin = () => {
                   attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                   maxZoom={8}
                 />
-                <MapFeatureDataLayer formData={formData} />
+                <MapFeatureDataLayer1 formData={formData} />
               </MapContainer>
             </div>
           </div>
@@ -601,7 +613,7 @@ function getColor(d) {
   }
 }
 
-MapFeatureDataLayer.propTypes = {
+MapFeatureDataLayer1.propTypes = {
   ADM2_EN: PropTypes.string.isRequired,
   total_cultivated: PropTypes.number.isRequired,
   total_harvested: PropTypes.string.isRequired,

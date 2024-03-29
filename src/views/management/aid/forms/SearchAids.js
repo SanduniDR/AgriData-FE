@@ -1,6 +1,5 @@
 import { React, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import {
   CButton,
   CCard,
@@ -22,10 +21,8 @@ import {
   CPaginationItem,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilUser, cilTrash } from '@coreui/icons'
+import { cilUser } from '@coreui/icons'
 import { searchAidInfo, deleteAid } from 'src/api/AidService'
-import ShowMap from 'src/views/maps/ShowMap'
-import { API_BASE_URL } from 'src/Config'
 
 const SearchAIds = () => {
   const navigate = useNavigate()
@@ -244,10 +241,10 @@ const SearchAIds = () => {
                                   color="danger"
                                   onClick={() => handleDelete(aid.aid_id)}
                                 >
-                                  <CIcon icon={cilTrash} />
+                                  Delete
                                 </CButton>
                                 {/* <CButton color="info" onClick={() => handleUpdate(user.user_id)}>
-                                  <CIcon icon={cilPencil} />
+                                  Update
                                 </CButton> */}
                               </CTableDataCell>
                             </CTableRow>
@@ -255,23 +252,23 @@ const SearchAIds = () => {
                         ),
                       )}
                     </CTableBody>
-                    <CPagination
-                      size="sm"
-                      activePage={currentPage}
-                      pages={totalPages}
-                      onActivePageChange={(i) => handlePageChange(i)}
-                    >
-                      {Array.from({ length: totalPages }, (_, index) => (
-                        <CPaginationItem
-                          key={index + 1}
-                          active={index + 1 === currentPage}
-                          onClick={() => handlePageChange(index + 1)}
-                        >
-                          {index + 1}
-                        </CPaginationItem>
-                      ))}
-                    </CPagination>
                   </CTable>
+                  <CPagination
+                    size="sm"
+                    activePage={currentPage}
+                    pages={totalPages}
+                    onActivePageChange={(i) => handlePageChange(i)}
+                  >
+                    {Array.from({ length: totalPages }, (_, index) => (
+                      <CPaginationItem
+                        key={index + 1}
+                        active={index + 1 === currentPage}
+                        onClick={() => handlePageChange(index + 1)}
+                      >
+                        {index + 1}
+                      </CPaginationItem>
+                    ))}
+                  </CPagination>
                 </CCardBody>
               </CCard>
             </CCol>

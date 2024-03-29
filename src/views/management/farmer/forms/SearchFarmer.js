@@ -22,7 +22,7 @@ import {
   CPaginationItem,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilUser, cilCalendar, cilCreditCard, cilTrash } from '@coreui/icons'
+import { cilUser, cilCalendar, cilCreditCard } from '@coreui/icons'
 import { API_BASE_URL } from 'src/Config'
 
 const SearchFarmerForm = () => {
@@ -277,10 +277,10 @@ const SearchFarmerForm = () => {
                               color="danger"
                               onClick={() => handleDelete(farmer.user.user_id)}
                             >
-                              <CIcon icon={cilTrash} />
+                              Delete
                             </CButton>
                             {/* <CButton color="info" onClick={() => handleUpdate(user.user_id)}>
-                                  <CIcon icon={cilPencil} />
+                                  Update
                                 </CButton> */}
                           </CTableDataCell>
                         </CTableRow>

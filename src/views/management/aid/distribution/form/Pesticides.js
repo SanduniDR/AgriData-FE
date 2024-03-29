@@ -28,7 +28,6 @@ import {
 import CIcon from '@coreui/icons-react'
 import {
   cilUser,
-  cilTrash,
   cilPlant,
   cilFork,
   cilBuilding,
@@ -508,10 +507,10 @@ const Pesticides = () => {
                                 color="danger"
                                 onClick={() => handleDelete(aid.pesticides_id)}
                               >
-                                <CIcon icon={cilTrash} />
+                                Delete
                               </CButton>
                               <CButton color="info" onClick={() => handlePenClick(aid)}>
-                                <CIcon icon={cilPencil} />
+                                Update
                               </CButton>
                             </CTableDataCell>
                           </CTableRow>

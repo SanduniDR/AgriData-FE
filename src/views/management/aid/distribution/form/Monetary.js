@@ -26,16 +26,7 @@ import {
   CModalBody,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import {
-  cilUser,
-  cilTrash,
-  cilPlant,
-  cilFork,
-  cilBuilding,
-  cilDescription,
-  cilApplicationsSettings,
-  cilPencil,
-} from '@coreui/icons'
+import { cilUser, cilPlant, cilFork, cilBuilding, cilPencil } from '@coreui/icons'
 import { searchMonetaryAidInfo, deleteMonetaryAid, updateMonetaryAid } from 'src/api/AidService'
 import { API_BASE_URL } from 'src/Config'
 
@@ -409,32 +400,32 @@ const Monetary = () => {
                                 color="danger"
                                 onClick={() => handleDelete(aid.monetaryAid_id)}
                               >
-                                <CIcon icon={cilTrash} />
+                                Delete
                               </CButton>
                               <CButton color="info" onClick={() => handlePenClick(aid)}>
-                                <CIcon icon={cilPencil} />
+                                Update
                               </CButton>
                             </CTableDataCell>
                           </CTableRow>
                         ))}
                       </CTableBody>
-                      <CPagination
-                        size="sm"
-                        activePage={currentPage}
-                        pages={totalPages}
-                        onActivePageChange={(i) => handlePageChange(i)}
-                      >
-                        {Array.from({ length: totalPages }, (_, index) => (
-                          <CPaginationItem
-                            key={index + 1}
-                            active={index + 1 === currentPage}
-                            onClick={() => handlePageChange(index + 1)}
-                          >
-                            {index + 1}
-                          </CPaginationItem>
-                        ))}
-                      </CPagination>
                     </CTable>
+                    <CPagination
+                      size="sm"
+                      activePage={currentPage}
+                      pages={totalPages}
+                      onActivePageChange={(i) => handlePageChange(i)}
+                    >
+                      {Array.from({ length: totalPages }, (_, index) => (
+                        <CPaginationItem
+                          key={index + 1}
+                          active={index + 1 === currentPage}
+                          onClick={() => handlePageChange(index + 1)}
+                        >
+                          {index + 1}
+                        </CPaginationItem>
+                      ))}
+                    </CPagination>
                     <CModal visible={showModal} onClose={() => setShowModal(false)}>
                       <CModalHeader onClose={handleClose}>
                         <CModalTitle>Update Record</CModalTitle>

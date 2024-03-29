@@ -268,9 +268,7 @@ const LankaMapByFieldMapping = () => {
                           ))}
                         </CFormSelect>
                         <CInputGroupText>
-                          <CButton color="secondary">
-                            <CIcon icon={cilArrowCircleBottom} />
-                          </CButton>
+                          <CButton color="secondary">Download</CButton>
                         </CInputGroupText>
                       </CInputGroup>
                       <CInputGroup className={`mb-3`}>
@@ -303,9 +301,7 @@ const LankaMapByFieldMapping = () => {
                           ))}
                         </CFormSelect>
                         <CInputGroupText>
-                          <CButton color="secondary">
-                            <CIcon icon={cilArrowCircleBottom} />
-                          </CButton>
+                          <CButton color="secondary">Download</CButton>
                         </CInputGroupText>
                       </CInputGroup>
                       <CInputGroup className={`mb-3`}>
@@ -323,9 +319,7 @@ const LankaMapByFieldMapping = () => {
                           ))}
                         </CFormSelect>
                         <CInputGroupText>
-                          <CButton color="secondary">
-                            <CIcon icon={cilArrowCircleBottom} />
-                          </CButton>
+                          <CButton color="secondary">Download</CButton>
                         </CInputGroupText>
                       </CInputGroup>
                     </div>

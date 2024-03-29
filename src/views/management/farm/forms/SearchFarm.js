@@ -407,10 +407,10 @@ const SearchFarmForm = () => {
                                   color="danger"
                                   onClick={() => handleDelete(farm.farm_id)}
                                 >
-                                  <CIcon icon={cilTrash} />
+                                  Delete
                                 </CButton>
                                 {/* <CButton color="info" onClick={() => handleUpdate(user.user_id)}>
-                                  <CIcon icon={cilPencil} />
+                                  Update
                                 </CButton> */}
                               </CTableDataCell>
                             </CTableRow>

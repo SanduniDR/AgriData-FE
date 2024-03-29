@@ -293,7 +293,7 @@ const SearchUserForm = () => {
                                   color="danger"
                                   onClick={() => handleDelete(user.user_id)}
                                 >
-                                  <CIcon icon={cilTrash} />
+                                  Delete
                                 </CButton>
                               </CTableDataCell>
                             </CTableRow>
