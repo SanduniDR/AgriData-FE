@@ -94,7 +94,7 @@ const Fertilizers = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -110,7 +110,7 @@ const Fertilizers = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -146,7 +146,7 @@ const Fertilizers = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -191,7 +191,7 @@ const Fertilizers = () => {
 
   if (!token) {
     alert('Please login first.')
-    navigate('/login', { replace: true })
+
     return
   }
 
@@ -267,7 +267,7 @@ const Fertilizers = () => {
                   <CForm>
                     <h1>Add Fertilizer information</h1>
                     <p className="text-medium-emphasis">
-                      Add Fertilizer distribution for distribution
+                      Add Fertilizer details received under Aid Funds
                     </p>
                     <CInputGroup className={`mb-3 ${isFormEmpty ? 'border border-danger' : ''}`}>
                       <CInputGroupText>

@@ -63,7 +63,7 @@ const UpdateFarmerForm = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -115,7 +115,7 @@ const UpdateFarmerForm = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -169,7 +169,7 @@ const UpdateFarmerForm = () => {
         const token = localStorage.getItem('token')
         if (!token) {
           alert('Please login first.')
-          navigate('/login', { replace: true })
+
           return
         }
         const farmer = await getFarmerById(user.user_id)

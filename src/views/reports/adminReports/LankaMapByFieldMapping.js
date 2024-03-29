@@ -4,8 +4,6 @@ import axios from 'axios'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import { API_BASE_URL } from 'src/Config'
-import { cilArrowCircleBottom } from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
 import iconImage from 'src/assets/map/paddy.png'
 import {
   CContainer,
@@ -16,7 +14,6 @@ import {
   CInputGroup,
   CFormSelect,
   CInputGroupText,
-  CButton,
 } from '@coreui/react'
 import Spinner from 'react-bootstrap/Spinner'
 import {
@@ -267,9 +264,9 @@ const LankaMapByFieldMapping = () => {
                             </option>
                           ))}
                         </CFormSelect>
-                        <CInputGroupText>
+                        {/* <CInputGroupText>
                           <CButton color="secondary">Download</CButton>
-                        </CInputGroupText>
+                        </CInputGroupText> */}
                       </CInputGroup>
                       <CInputGroup className={`mb-3`}>
                         <CInputGroupText>Select Province</CInputGroupText>
@@ -300,9 +297,9 @@ const LankaMapByFieldMapping = () => {
                             </option>
                           ))}
                         </CFormSelect>
-                        <CInputGroupText>
+                        {/* <CInputGroupText>
                           <CButton color="secondary">Download</CButton>
-                        </CInputGroupText>
+                        </CInputGroupText> */}
                       </CInputGroup>
                       <CInputGroup className={`mb-3`}>
                         <CInputGroupText>Select Office</CInputGroupText>
@@ -318,9 +315,9 @@ const LankaMapByFieldMapping = () => {
                             </option>
                           ))}
                         </CFormSelect>
-                        <CInputGroupText>
+                        {/* <CInputGroupText>
                           <CButton color="secondary">Download</CButton>
-                        </CInputGroupText>
+                        </CInputGroupText> */}
                       </CInputGroup>
                     </div>
                   </CCol>

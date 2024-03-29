@@ -14,7 +14,6 @@ const FarmerOperations = () => {
   useEffect(() => {
     if (!isValidUser) {
       localStorage.clear()
-      navigate('/login', { replace: true })
     }
   }, [])
 

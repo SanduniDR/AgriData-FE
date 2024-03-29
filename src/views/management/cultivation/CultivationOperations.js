@@ -14,7 +14,6 @@ const CultivationOperations = () => {
   useEffect(() => {
     if (!isValidUser) {
       localStorage.clear()
-      navigate('/login', { replace: true })
     }
   }, [])
 

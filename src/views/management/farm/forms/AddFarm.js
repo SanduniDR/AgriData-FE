@@ -46,7 +46,7 @@ const AddFarmForm = () => {
 
   if (!token) {
     alert('Please login first.')
-    navigate('/login', { replace: true })
+   
     return
   }
 

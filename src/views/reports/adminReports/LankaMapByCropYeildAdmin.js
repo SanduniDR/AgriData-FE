@@ -6,9 +6,8 @@ import L from 'leaflet'
 import MapFeatureData from 'src/defaultData/LankaMapData/District_geo.json' // replace with the path to your MapFeatureData file
 import PropTypes from 'prop-types'
 import { API_BASE_URL } from 'src/Config'
-import { cilArrowCircleBottom } from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
-import { freeSet } from '@coreui/icons'
+import Papa from 'papaparse'
+import { exportData } from 'src/utils/Utils'
 import {
   CContainer,
   CCard,
@@ -21,7 +20,6 @@ import {
   CButton,
 } from '@coreui/react'
 import Spinner from 'react-bootstrap/Spinner'
-import { getTotalCultivationRecordsByYearByType } from 'src/api/CultivationService'
 import {
   getAllOfficesAndDistrictsByProvince,
   searchCultivationInfoCountByYearly,
@@ -36,39 +34,6 @@ function MapFeatureDataLayer1({ formData }) {
   const info = useRef(null)
   const [data, setData] = useState(null)
   let geojson
-
-  // useEffect(() => {
-  //   axios
-  //     .post(`${API_BASE_URL}/report/cultivation-info/cropByDistrict`, {
-  //       agri_year: year,
-  //       month: month,
-  //       crop: crop,
-  //     })
-  //     .then((response) => {
-  //       if (response.status === 200) {
-  //         const apiData = response.data
-  //         const apiDataByDistrict = apiData.reduce((acc, curr) => {
-  //           acc[curr.district] = curr
-  //           return acc
-  //         }, {})
-
-  //         MapFeatureData.features.forEach((feature) => {
-  //           const properties = feature.properties
-  //           const apiDataForFeature = apiDataByDistrict[properties.ADM2_EN] // replace ADM1_EN with the property that matches the keys in apiData
-  //           if (apiDataForFeature) {
-  //             feature.properties = { ...properties, ...apiDataForFeature }
-  //           }
-  //           console.log(feature.properties)
-  //         })
-  //         setData(MapFeatureData)
-  //       } else {
-  //         setData(MapFeatureData)
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setData(MapFeatureData)
-  //     })
-  // }, [formData.year])
 
   useEffect(() => {
     const freshStatesData = JSON.parse(JSON.stringify(MapFeatureData))
@@ -89,14 +54,11 @@ function MapFeatureDataLayer1({ formData }) {
             }, {})
 
             freshStatesData.features.forEach((feature) => {
-              console.log('Admin fresh feature', feature)
-              console.log('Admin feature', feature)
               const properties = feature.properties
               const apiDataForFeature = apiDataByDistrict[properties.ADM2_EN] // replace ADM1_EN with the property that matches the keys in apiData
               if (apiDataForFeature) {
-                feature.properties = { ...apiDataForFeature, ...properties }
+                feature.properties = { ...properties, ...apiDataForFeature }
               }
-              console.log("'Admin feature after'", feature.properties)
             })
             setData(freshStatesData)
           } else {
@@ -128,14 +90,11 @@ function MapFeatureDataLayer1({ formData }) {
             }, {})
 
             freshStatesData.features.forEach((feature) => {
-              console.log('Admin fresh Month feature', feature)
-              console.log('Admin Month feature', feature)
               const properties = feature.properties
               const apiDataForFeature = apiDataByDistrict[properties.ADM2_EN] // replace ADM1_EN with the property that matches the keys in apiData
               if (apiDataForFeature) {
-                feature.properties = { ...apiDataForFeature, ...properties }
+                feature.properties = { ...properties, ...apiDataForFeature }
               }
-              console.log("'Admin feature Month after'", feature.properties)
             })
             setData(freshStatesData)
           } else {
@@ -172,14 +131,11 @@ function MapFeatureDataLayer1({ formData }) {
             }, {})
 
             freshStatesData.features.forEach((feature) => {
-              console.log('Admin fresh district feature', feature)
-              console.log('Admin district feature', feature)
               const properties = feature.properties
               const apiDataForFeature = apiDataByDistrict[properties.ADM2_EN] // replace ADM1_EN with the property that matches the keys in apiData
               if (apiDataForFeature) {
-                feature.properties = { ...apiDataForFeature, ...properties }
+                feature.properties = { ...properties, ...apiDataForFeature }
               }
-              console.log("'Admin feature district after'", feature.properties)
             })
             setData(freshStatesData)
           } else {
@@ -217,16 +173,12 @@ function MapFeatureDataLayer1({ formData }) {
               }
               return acc
             }, {})
-            console.log('result', apiDataByDistrict)
             freshStatesData.features.forEach((feature) => {
-              console.log('Admin fresh office feature', feature)
-              console.log('Admin office feature', feature)
               const properties = feature.properties
               const apiDataForFeature = apiDataByDistrict[properties.ADM2_EN] // replace ADM1_EN with the property that matches the keys in apiData
               if (apiDataForFeature) {
-                feature.properties = { ...apiDataForFeature, ...properties }
+                feature.properties = { ...properties, ...apiDataForFeature }
               }
-              console.log("'Admin feature office after'", feature.properties)
             })
             setData(freshStatesData)
           } else {
@@ -251,7 +203,6 @@ function MapFeatureDataLayer1({ formData }) {
       }
 
       info.current.update = function (props) {
-        console.log('props', props)
         this._div.innerHTML =
           '<h4 class="mapBanner" style="z-index: 500;"> District Overall Cultivation Info 2024 </h4>' +
           (props ? '<b>' + props.crop_name + ':' + props.total_harvested : 'Hover over a district')
@@ -310,7 +261,7 @@ const LankaMapByCropYieldAdmin = () => {
   const [offices, setOffices] = useState([])
   const [crops, setCrops] = useState([])
   const [loading, setLoading] = useState(false)
-  const [records, setRecords] = useState([])
+  const [dataToDownload, setDownloadData] = useState([])
   const monthNames = [
     'January',
     'February',
@@ -400,9 +351,7 @@ const LankaMapByCropYieldAdmin = () => {
       ...prevFormData,
       [name]: value,
     }))
-    console.log(formData)
     const response = await getAllOfficesAndDistrictsByProvince(value)
-    console.log(response)
     setOffices(response.data.offices)
     setDistrict(response.data.districts)
   }
@@ -414,7 +363,6 @@ const LankaMapByCropYieldAdmin = () => {
       district: value,
     }))
     const filteredOffices = filterOfficesByDistrict(offices, value)
-    console.log('filtered offices', filteredOffices)
     setFilteredOffices(filteredOffices)
   }
 
@@ -431,6 +379,12 @@ const LankaMapByCropYieldAdmin = () => {
       district: '',
       office_id: '',
     })
+  }
+
+  //handle download data
+  const handleDownloadData = (event) => {
+    const csvData = Papa.unparse(dataToDownload)
+    exportData(csvData, 'dataset.csv', 'text/csv;charset=utf-8;')
   }
 
   return (
@@ -490,9 +444,6 @@ const LankaMapByCropYieldAdmin = () => {
                             </option>
                           ))}
                         </CFormSelect>
-                        <CInputGroupText>
-                          <CButton color="secondary">Download</CButton>
-                        </CInputGroupText>
                       </CInputGroup>
                       <CInputGroup className={`mb-3`}>
                         <CInputGroupText>Select Province</CInputGroupText>
@@ -523,9 +474,6 @@ const LankaMapByCropYieldAdmin = () => {
                             </option>
                           ))}
                         </CFormSelect>
-                        <CInputGroupText>
-                          <CButton color="secondary">Download</CButton>
-                        </CInputGroupText>
                       </CInputGroup>
                       <CInputGroup className={`mb-3`}>
                         <CInputGroupText>Select Office</CInputGroupText>
@@ -541,9 +489,6 @@ const LankaMapByCropYieldAdmin = () => {
                             </option>
                           ))}
                         </CFormSelect>
-                        <CInputGroupText>
-                          <CButton color="secondary">Download</CButton>
-                        </CInputGroupText>
                       </CInputGroup>
                     </div>
                   </CCol>

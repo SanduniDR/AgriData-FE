@@ -42,7 +42,9 @@ const HarvestEstimatedVsActual = () => {
         <CCardBody style={{ height: '600px' }}>
           <CRow>
             <CCol>
-              <h4>Total Harvest - Expected vs Actual in Years:</h4>
+              <h4>
+                Total Harvest - Expected vs Actual in Years: (measurement in standard Units Kg, L)
+              </h4>
               <div className="small text-medium-emphasis">
                 {' '}
                 {formData.start_date} : {formData.end_date}

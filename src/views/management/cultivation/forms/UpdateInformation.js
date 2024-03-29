@@ -46,6 +46,7 @@ const UpdateInformation = () => {
   const [isMapOpen, setOpenMap] = useState(false)
 
   useEffect(() => {
+    console.log('error place', formData)
     if (formData.estimated_harvesting_date.length > 0 && formData.started_date.length > 0) {
       if (formData.estimated_harvesting_date < formData.started_date) {
         setIsErrorDates(true)
@@ -65,26 +66,29 @@ const UpdateInformation = () => {
 
   const handleCultInfoSearch = async () => {
     try {
-      const info = await getCultivationInfoById(formData)
-      if (info.status === 200 && info) {
+      const infoRaw = await getCultivationInfoById(formData)
+      console.log('cultivationInfo', infoRaw)
+      const info = infoRaw.data.cultivation_Info
+      console.log('cultivationInfo', info)
+      if (infoRaw.status === 200 && info) {
         setInfoFound(true)
-        setCultInformation(info.data)
+        setCultInformation(info)
         setFormData((prevFormData) => ({
           ...prevFormData,
-          display_name: info.data.display_name,
-          crop_id: info.data.crop_id,
-          latitude: info.data.latitude,
-          longitude: info.data.longitude,
-          area_of_cultivation: info.data.area_of_cultivation,
-          started_date: info.data.started_date,
-          estimated_harvesting_date: info.data.estimated_harvesting_date,
-          estimated_harvest: info.data.estimated_harvest,
-          cultivation_info_id: info.data.cultivation_info_id,
-          agri_year: info.data.agri_year,
-          quarter: info.data.quarter,
-          farm_id: info.data.farm_id,
-          harvested_date: info.data.harvested_date,
-          harvested_amount: info.data.harvested_amount,
+          display_name: info.display_name,
+          crop_id: info.crop_id,
+          latitude: info.latitude,
+          longitude: info.longitude,
+          area_of_cultivation: info.area_of_cultivation,
+          started_date: info.started_date,
+          estimated_harvesting_date: info.estimated_harvesting_date,
+          estimated_harvest: info.estimated_harvest,
+          cultivation_info_id: info.cultivation_info_id,
+          agri_year: info.agri_year,
+          quarter: info.quarter,
+          farm_id: info.farm_id,
+          harvested_date: info.harvested_date,
+          harvested_amount: info.harvested_amount,
         }))
       }
     } catch (error) {

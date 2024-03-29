@@ -15,8 +15,6 @@ import {
   CFormSelect,
 } from '@coreui/react'
 import { Button } from 'react-bootstrap'
-import CIcon from '@coreui/icons-react'
-import { cilArrowCircleBottom } from '@coreui/icons'
 import PieChart from 'src/views/management/charts/PieChart'
 import { searchTotalAidInfo } from 'src/api/AidService'
 import Papa from 'papaparse'
@@ -67,7 +65,7 @@ const AidFundingAdminTable = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+      navigate('/', { replace: true })
       return
     }
 
@@ -80,7 +78,7 @@ const AidFundingAdminTable = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+      navigate('/', { replace: true })
       return
     }
 
@@ -156,7 +154,10 @@ const AidFundingAdminTable = () => {
                           <CRow>
                             <CCol>
                               <h4>Total Aid distribution</h4>
-                              <p>Aid Distributed among farmers within the selected period</p>
+                              <p>
+                                Aid Distributed among farmers within the selected period ( Please
+                                refer standard measurement units (Kg, L))
+                              </p>
                               <div className="small text-medium-emphasis">
                                 {' '}
                                 {formData.start_date} : {formData.end_date}
@@ -254,6 +255,7 @@ const AidFundingAdminTable = () => {
                               <option value="2021">2021</option>
                               <option value="2022">2022</option>
                               <option value="2023">2023</option>
+                              <option value="2024">2024</option>
                             </CFormSelect>
                             <CInputGroupText>
                               <CButton color="secondary" onClick={handleDownloadYearFunds}>

@@ -49,7 +49,7 @@ const UpdateAidForm = () => {
 
   if (!token) {
     alert('Please login first.')
-    navigate('/login', { replace: true })
+
     return
   }
 
@@ -112,7 +112,7 @@ const UpdateAidForm = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 

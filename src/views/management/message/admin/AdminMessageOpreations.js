@@ -172,7 +172,7 @@ const AdminMessageOperations = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -187,7 +187,7 @@ const AdminMessageOperations = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
     console.log(id)
@@ -202,7 +202,7 @@ const AdminMessageOperations = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -297,7 +297,7 @@ const AdminMessageOperations = () => {
 
   if (!token) {
     alert('Please login first.')
-    navigate('/login', { replace: true })
+
     return
   }
 

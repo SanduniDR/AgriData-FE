@@ -85,7 +85,7 @@ const Fuel = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -100,7 +100,7 @@ const Fuel = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -136,7 +136,7 @@ const Fuel = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -176,7 +176,7 @@ const Fuel = () => {
 
   if (!token) {
     alert('Please login first.')
-    navigate('/login', { replace: true })
+
     return
   }
 

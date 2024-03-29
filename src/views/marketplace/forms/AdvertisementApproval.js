@@ -103,7 +103,7 @@ const AdvertisementApproval = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -118,7 +118,7 @@ const AdvertisementApproval = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
     const response = await deleteAdvertisement(ad_id)
@@ -140,7 +140,7 @@ const AdvertisementApproval = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -185,7 +185,7 @@ const AdvertisementApproval = () => {
 
   if (!token) {
     alert('Please login first.')
-    navigate('/login', { replace: true })
+
     return
   }
 

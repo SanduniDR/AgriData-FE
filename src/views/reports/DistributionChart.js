@@ -52,7 +52,7 @@ const DistributionChart = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+     
       return
     }
 

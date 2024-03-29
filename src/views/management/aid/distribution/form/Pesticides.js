@@ -94,7 +94,7 @@ const Pesticides = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -110,7 +110,7 @@ const Pesticides = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -146,7 +146,7 @@ const Pesticides = () => {
     const token = localStorage.getItem('token')
     if (!token) {
       alert('Please login first.')
-      navigate('/login', { replace: true })
+
       return
     }
 
@@ -191,7 +191,7 @@ const Pesticides = () => {
 
   if (!token) {
     alert('Please login first.')
-    navigate('/login', { replace: true })
+
     return
   }
 
@@ -415,7 +415,7 @@ const Pesticides = () => {
                 <CCardBody className="p-4">
                   <CForm>
                     <h1>Search Pesticide info</h1>
-                    <p className="text-medium-emphasis">Filter Aid records</p>
+                    <p className="text-medium-emphasis">Filter Pesticide details under Aid Funds</p>
                     <CInputGroup className={`mb-3`}>
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
