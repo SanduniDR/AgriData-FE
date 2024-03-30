@@ -378,6 +378,23 @@ const searchDisasterInfoByDistrictMonthlyOffice = async (formData, page, per_pag
   }
 }
 
+const getFarmerDetailByOffice = async (office_id) => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.get(`${API_BASE_URL}/report/farmer_mails_by_office_Id`, {
+      params: {
+        office_id: office_id,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to fetch farmers:', error)
+  }
+}
+
 export {
   searchDisasterInfoByDistrictMonthlyOffice,
   getAllOfficesByDistrict,
@@ -397,4 +414,5 @@ export {
   searchCultivationInfoCountByDistrictMonthlyOffice,
   searchCultivationMapInfoByDistrictMonthlyOffice,
   getAllTaxPayersDetailsByDistrictByOffice,
+  getFarmerDetailByOffice,
 }

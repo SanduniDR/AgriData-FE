@@ -69,4 +69,23 @@ const searchMails = async (formData, page, per_page) => {
   }
 }
 
-export { sendBulkMailsByProvice, sendMailToOfficer, searchMails }
+const sendMailToFarmer = async (subject, message, farmerList) => {
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/communication/send`,
+      { receivers: farmerList, subject: subject, message: message },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    return response
+  } catch (error) {
+    console.error('Failed to fetch farm details:', error)
+    return
+  }
+}
+
+export { sendBulkMailsByProvice, sendMailToOfficer, searchMails, sendMailToFarmer }
