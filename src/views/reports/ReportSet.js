@@ -40,7 +40,7 @@ const DefaultReportSet = () => {
         <CCol xs="12" sm="6" lg="6">
           <CCard style={{ marginBottom: '10px' }}>
             <CCardHeader style={{ fontWeight: 'bold' }}>
-              Paddy Cultivation In Districts 2024, Sri Lanka
+              Tea Cultivation In Districts 2024, Sri Lanka
             </CCardHeader>
             <CCardBody style={{ height: '800px' }}>
               {/* ReportMapCrops.js */}
@@ -75,7 +75,7 @@ const DefaultReportSet = () => {
         <CCol xs="12" sm="6" lg="6">
           <CCard>
             <CCardHeader style={{ fontWeight: 'bold' }}>
-              Total Harvest(tons) in Si Lanka (Filter By years)
+              Total Harvest(in Tons) in Si Lanka (Filter By years)
             </CCardHeader>
             <CCardBody style={{ height: '700px' }}>
               <HarvestChart />

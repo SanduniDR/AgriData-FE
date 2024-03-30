@@ -18,13 +18,13 @@ function StatesDataLayer() {
     axios
       .post(`${API_BASE_URL}/report/cultivation-info/cropByDistrict`, {
         agri_year: 2024,
-        quarter: 'Q1',
+        quarter: '1',
       })
       .then((response) => {
         if (response.status === 200) {
           const apiData = response.data
           const apiDataByDistrict = apiData.reduce((dataMap, item) => {
-            if (item.crop_name === 'Tea') {
+            if (item.crop_name === 'Paddy') {
               dataMap[item.district] = item //map:key:val pair
             }
             return dataMap
@@ -63,7 +63,7 @@ function StatesDataLayer() {
       info.current.update = function (props) {
         this._div.innerHTML =
           '<h4 class="mapBanner" style="z-index: 500;"> District Overall Cultivation Info 2024/h1 </h4>' +
-          (props ? '<b>Tea(kg):' + props.total_cultivated : 'Hover over a district')
+          (props ? '<b>Paddy(kg):' + props.total_cultivated : 'Hover over a district')
       }
 
       info.current.addTo(map)

@@ -156,11 +156,9 @@ const OfficerMessageOperations = () => {
     console.log(messageSendingForm)
     try {
       if (
-        messageSendingForm.isAllSelected === true &&
         messageSendingForm.farmerList.length !== 0 &&
         messageSendingForm.message !== '' &&
-        messageSendingForm.subject !== '' &&
-        messageSendingForm.province !== ''
+        messageSendingForm.subject !== ''
       ) {
         setIsLoading(true)
         const response = await sendMailToFarmer(
